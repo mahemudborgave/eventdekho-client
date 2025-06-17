@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { HashLoader } from 'react-spinners';
+import { HashLoader, ScaleLoader } from 'react-spinners';
 import Eventt from './Eventt';
 import { Typewriter } from 'react-simple-typewriter'
 import Search from './Search';
@@ -76,7 +76,7 @@ function MainSearch() {
 
         {loading && (
           <div className="flex justify-center items-center">
-            <HashLoader />
+            <ScaleLoader />
           </div>
         )}
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import dotenv from "dotenv";
-import { HashLoader } from 'react-spinners';
+import { ScaleLoader } from 'react-spinners';
 import Eventt from '../components/Eventt';
 import Search from '../components/Search';
 import UserContext from '../context/UserContext';
@@ -59,7 +59,7 @@ function Events() {
   if (loading) {
     return (
       <div className="flex justify-center items-center p-10">
-        <HashLoader />
+        <ScaleLoader />
       </div>
     )
   }
