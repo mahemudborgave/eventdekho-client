@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { HashLoader } from 'react-spinners';
+import { HashLoader, ScaleLoader } from 'react-spinners';
 import UserContext from "../../context/UserContext";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -113,7 +113,7 @@ function ShowEventsAdmin() {
   if (loading) {
     return (
       <div className="flex justify-center items-center p-10">
-        <HashLoader />
+        <ScaleLoader />
       </div>
     );
   }

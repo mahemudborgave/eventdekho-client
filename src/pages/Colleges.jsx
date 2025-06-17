@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { HashLoader } from 'react-spinners';
+import { HashLoader, ScaleLoader } from 'react-spinners';
 import collegeList from "../college_list.json";
 import Search from "../components/Search";
 import UserContext from "../context/UserContext";
@@ -53,7 +53,7 @@ function Colleges() {
   if (loading) {
     return (
       <div className="flex justify-center items-center p-10">
-        <HashLoader />
+        <ScaleLoader />
       </div>
     );
   }

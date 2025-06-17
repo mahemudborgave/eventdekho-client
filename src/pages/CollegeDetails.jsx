@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Events from './Events'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
-import { HashLoader } from 'react-spinners';
+import { HashLoader, ScaleLoader } from 'react-spinners';
 import axios from 'axios';
 import Eventt from '../components/Eventt';
 import collegeList from "../college_list.json";
@@ -62,7 +62,7 @@ function CollegeDetails() {
   if (loading) {
     return (
       <div className="flex justify-center items-center p-10">
-        <HashLoader />
+        <ScaleLoader />
       </div>
     );
   }

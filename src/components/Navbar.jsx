@@ -66,15 +66,13 @@ function Navbar() {
                         <li>
                             <NavLink to="/myParticipations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'text-amber-500 px-5 py-1 border-b' : 'black px-5 py-2'}>My Participations</NavLink>
                         </li>
-                        {role === "organizer" && (
-                            <li>
-                                <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)} className='px-5 py-2 text-black'>
-                                    Dashboard
-                                </NavLink>
-                            </li>
-                        )}
                     </ul>
-                    <div className='mt-8 flex justify-start my-5 lg:hidden'>
+                    <div className='mt-8 flex flex-col items-center justify-start my-5 lg:hidden'>
+                        {role === "organizer" && (
+                            <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)} className='px-5 py-1 text-black border rounded-full hover:bg-[#bebdbd4f] hover:border-[#bebdbd4f]'>
+                                Dashboard
+                            </NavLink>
+                        )}
                         {!isValid ? (
                             <div className='flex justify-center items-center'>
                                 <Link to="/login" onClick={() => setMenuOpen(false)} className='inline-block mr-1` px-5 py-1 lg:px-5 lg:py-2 bg-[#0d0c22] rounded-full border text-white'>Log in</Link>
@@ -93,7 +91,12 @@ function Navbar() {
                     </div>
 
                 </div>
-                <div className='hidden lg:block'>
+                <div className='hidden lg:flex items-center'>
+                    {role === "organizer" && (
+                        <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)} className='px-5 py-1 text-black border rounded-full hover:bg-[#bebdbd4f] hover:border-[#bebdbd4f]'>
+                            Dashboard
+                        </NavLink>
+                    )}
                     {!isValid ? (
                         <div className='flex justify-start items-center ml-10'>
                             <Link to="/login" onClick={() => setMenuOpen(false)} className='inline-block mr-3 px-5 py-1 lg:px-5 lg:py-2 bg-[#0d0c22] rounded-full border text-white'>Log in</Link>

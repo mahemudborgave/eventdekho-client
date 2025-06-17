@@ -62,7 +62,7 @@ function Eventt({ events }) {
               !location.pathname.startsWith('/admin/eventdetail') && (
                 <div className="flex items-center mb-2">
                   {registeredEventIds.includes(eventt._id) && (
-                    <span className="text-green-600 text-sm italic mr-2 lg:mr-0">Registered !</span>
+                    <span className="text-green-600 text-sm italic mr-2">Registered !</span>
                   )}
                   <Link
                     className="inline-block px-7 py-2 bg-[#0d0c22] rounded-full text-white hover:bg-[#0d0c22d2]"

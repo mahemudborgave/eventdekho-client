@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import UserContext from '../context/UserContext';
-import { HashLoader } from 'react-spinners';
+import { HashLoader, ScaleLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -79,7 +79,7 @@ function MyParticipations() {
   if (loading) {
     return (
       <div className="flex justify-center items-center p-10">
-        <HashLoader />
+        <ScaleLoader />
       </div>
     );
   }

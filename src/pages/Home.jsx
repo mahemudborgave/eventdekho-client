@@ -13,11 +13,17 @@ function Home() {
             <div className='grid md:grid-cols-2 grid-cols-1  items-center'>
                 <div className='block w-full px-10 h-[300px] lg:h-[500px] overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative'>
                     <Carousel slideInterval={1000} className="overflow-hidden">
-                        {/* <div className='flex justify-center w-[500px] h-[500px]'>
+                        <div className='flex justify-center w-[500px] h-[500px]'>
                             <img src={i1} alt="..." className='w-full h-full' />
-                        </div> */}
+                        </div>
                         <div className='flex justify-center w-full h-full'>
                             <img src={i2} alt="..." className='w-full h-full' />
+                        </div>
+                        <div className='flex justify-center w-full h-full'>
+                            <img src={i3} alt="..." className='w-full h-full' />
+                        </div>
+                        <div className='flex justify-center w-full h-full'>
+                            <img src={i4} alt="..." className='w-full h-full' />
                         </div>
                     
                     </Carousel>
