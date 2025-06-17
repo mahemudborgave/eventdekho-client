@@ -1,0 +1,802 @@
+[
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-26",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-06-03",
+    "closeOn": "2025-06-24"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-09",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-16",
+    "closeOn": "2025-05-08"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-15",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-23",
+    "closeOn": "2025-06-10"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Northern State",
+    "eventDate": "2025-06-12",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-30",
+    "closeOn": "2025-06-09"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-21",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-31",
+    "closeOn": "2025-06-18"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-08",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-04-24",
+    "closeOn": "2025-05-06"
+  },
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-18",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-28",
+    "closeOn": "2025-06-13"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-17",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-23",
+    "closeOn": "2025-06-15"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-01",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-07",
+    "closeOn": "2025-04-27"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-27",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-04-28",
+    "closeOn": "2025-05-23"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-17",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-04-21",
+    "closeOn": "2025-05-13"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-02",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-13",
+    "closeOn": "2025-04-30"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-11",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-26",
+    "closeOn": "2025-06-06"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-30",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-06-15",
+    "closeOn": "2025-06-26"
+  },
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-06",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-16",
+    "closeOn": "2025-05-02"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-21",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-22",
+    "closeOn": "2025-05-19"
+  },
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-27",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-10",
+    "closeOn": "2025-05-26"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-26",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-13",
+    "closeOn": "2025-05-21"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-01",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-04-02",
+    "closeOn": "2025-04-28"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-29",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-16",
+    "closeOn": "2025-05-24"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-12",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-23",
+    "closeOn": "2025-06-09"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-14",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-30",
+    "closeOn": "2025-06-11"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-02",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-22",
+    "closeOn": "2025-04-30"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-21",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-30",
+    "closeOn": "2025-06-19"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-31",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-15",
+    "closeOn": "2025-05-30"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-27",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-06-02",
+    "closeOn": "2025-06-22"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-01",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-02",
+    "closeOn": "2025-05-28"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-13",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-17",
+    "closeOn": "2025-06-10"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-05",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-05",
+    "closeOn": "2025-05-02"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-26",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-09",
+    "closeOn": "2025-05-21"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-02",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-20",
+    "closeOn": "2025-06-01"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-27",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-07",
+    "closeOn": "2025-05-22"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-22",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-29",
+    "closeOn": "2025-06-17"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-21",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-02",
+    "closeOn": "2025-05-16"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-13",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-02",
+    "closeOn": "2025-05-12"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-14",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-15",
+    "closeOn": "2025-05-11"
+  },
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-12",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-24",
+    "closeOn": "2025-05-10"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-30",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-18",
+    "closeOn": "2025-05-26"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-23",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-06",
+    "closeOn": "2025-05-21"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-24",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-29",
+    "closeOn": "2025-06-23"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-13",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-28",
+    "closeOn": "2025-06-11"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-14",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-29",
+    "closeOn": "2025-06-12"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-18",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-04-28",
+    "closeOn": "2025-05-15"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-26",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-06-02",
+    "closeOn": "2025-06-23"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-29",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-11",
+    "closeOn": "2025-05-24"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-11",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-01",
+    "closeOn": "2025-05-10"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-14",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-19",
+    "closeOn": "2025-06-13"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-11",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-27",
+    "closeOn": "2025-06-08"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-14",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-24",
+    "closeOn": "2025-05-13"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-03",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-17",
+    "closeOn": "2025-04-29"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-03",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-04-16",
+    "closeOn": "2025-04-29"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-17",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-25",
+    "closeOn": "2025-06-12"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-26",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-06-02",
+    "closeOn": "2025-06-25"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-20",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-10",
+    "closeOn": "2025-05-18"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-06-21",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-06-01",
+    "closeOn": "2025-06-18"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-21",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-06-05",
+    "closeOn": "2025-06-17"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-28",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-06-03",
+    "closeOn": "2025-06-27"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-21",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-28",
+    "closeOn": "2025-06-20"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-14",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-23",
+    "closeOn": "2025-06-13"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-08",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-28",
+    "closeOn": "2025-06-07"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-19",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-07",
+    "closeOn": "2025-05-15"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-21",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-06-11",
+    "closeOn": "2025-06-16"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-05",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-06",
+    "closeOn": "2025-05-03"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Northern State",
+    "eventDate": "2025-06-10",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-30",
+    "closeOn": "2025-06-07"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-06-18",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-06-08",
+    "closeOn": "2025-06-14"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-03",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-04-08",
+    "closeOn": "2025-04-28"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-23",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-05",
+    "closeOn": "2025-05-18"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-21",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-22",
+    "closeOn": "2025-05-16"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-04",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-11",
+    "closeOn": "2025-05-30"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Northern State",
+    "eventDate": "2025-06-13",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-05-26",
+    "closeOn": "2025-06-11"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-03",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-24",
+    "closeOn": "2025-05-30"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-25",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-28",
+    "closeOn": "2025-05-24"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-03",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-11",
+    "closeOn": "2025-04-30"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-01",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-04-14",
+    "closeOn": "2025-04-29"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-30",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-10",
+    "closeOn": "2025-05-27"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-10",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-20",
+    "closeOn": "2025-06-09"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-18",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-06-03",
+    "closeOn": "2025-06-16"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-16",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-23",
+    "closeOn": "2025-06-11"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-06-20",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-29",
+    "closeOn": "2025-06-17"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Northern State",
+    "eventDate": "2025-06-07",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-08",
+    "closeOn": "2025-06-06"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-10",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-04-15",
+    "closeOn": "2025-05-05"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-22",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-08",
+    "closeOn": "2025-05-20"
+  },
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-10",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-20",
+    "closeOn": "2025-05-06"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-19",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-30",
+    "closeOn": "2025-05-16"
+  },
+  {
+    "eventName": "AI Meetup 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-30",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-05-17",
+    "closeOn": "2025-05-27"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-05-02",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-04-05",
+    "closeOn": "2025-04-28"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-06-01",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-05-15",
+    "closeOn": "2025-05-27"
+  },
+  {
+    "eventName": "Innovation Fest 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-07",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-21",
+    "closeOn": "2025-05-03"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-16",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-16",
+    "closeOn": "2025-05-15"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-13",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-21",
+    "closeOn": "2025-05-08"
+  },
+  {
+    "eventName": "Data Hack 2025",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-06-30",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-06-04",
+    "closeOn": "2025-06-27"
+  },
+  {
+    "eventName": "Tech Symposium 2026",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-05",
+    "eventLocation": "Virtual Event",
+    "postedOn": "2025-04-15",
+    "closeOn": "2025-05-04"
+  },
+  {
+    "eventName": "Tech Symposium 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-06",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-13",
+    "closeOn": "2025-05-02"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-14",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-22",
+    "closeOn": "2025-05-10"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Northern State",
+    "eventDate": "2025-05-19",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-21",
+    "closeOn": "2025-05-17"
+  },
+  {
+    "eventName": "AI Meetup 2026",
+    "collegeName": "Sunrise Academy",
+    "eventDate": "2025-06-16",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-05-31",
+    "closeOn": "2025-06-15"
+  },
+  {
+    "eventName": "Code Sprint 2025",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-10",
+    "eventLocation": "Lab 3",
+    "postedOn": "2025-04-20",
+    "closeOn": "2025-05-08"
+  },
+  {
+    "eventName": "Code Sprint 2026",
+    "collegeName": "Tech Valley College",
+    "eventDate": "2025-05-07",
+    "eventLocation": "Main Auditorium",
+    "postedOn": "2025-04-13",
+    "closeOn": "2025-05-05"
+  },
+  {
+    "eventName": "Innovation Fest 2025",
+    "collegeName": "Blue Ridge University",
+    "eventDate": "2025-05-15",
+    "eventLocation": "Conference Room 2",
+    "postedOn": "2025-04-23",
+    "closeOn": "2025-05-14"
+  },
+  {
+    "eventName": "Data Hack 2026",
+    "collegeName": "Greenfield Institute",
+    "eventDate": "2025-05-27",
+    "eventLocation": "Hall A",
+    "postedOn": "2025-05-08",
+    "closeOn": "2025-05-26"
+  }
+]

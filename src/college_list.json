@@ -1,0 +1,1887 @@
+[
+  {
+    "dte_code": "6312",
+    "college_name": "Abhinav Education society College of Engineering and Technology (Diploma), Wadwadi, Tal. Khandala",
+    "short_name": "AESCET"
+  },
+  {
+    "dte_code": "4015",
+    "college_name": "Acharya Shrimannarayan Polytechnic, Pimpri -Wardha",
+    "short_name": "ASPPW"
+  },
+  {
+    "dte_code": "5415",
+    "college_name": "Adarsh Polytechnic, Dhule",
+    "short_name": "APD"
+  },
+  {
+    "dte_code": "1153",
+    "college_name": "Adarsha Bahuuddeshiya Shikshan Prasarak Mandal, Dr. R . N. Lahoti Polytechnic, Sultanpur",
+    "short_name": "ABSPMDRNLPS"
+  },
+  {
+    "dte_code": "2183",
+    "college_name": "Aditya Bahuddeshiya Sanstha, Aditya Polytechnic, Beed",
+    "short_name": "ABSAPB"
+  },
+  {
+    "dte_code": "2282",
+    "college_name": "Aditya Education Trust's Mitthulalji Sarada Polytechnic, Nalwandi Road, Beed",
+    "short_name": "AETMSPNRB"
+  },
+  {
+    "dte_code": "3258",
+    "college_name": "Agnel Polytechnic (Fr. Agnel Charities) , Vashi, Navi Mumbai",
+    "short_name": "APFACVNM"
+  },
+  {
+    "dte_code": "5382",
+    "college_name": "Ahmednagar Jilha Maratha Vidya Prasarak Samajache, Shri. Chhatrapati Shivaji Maharaj College of Engineering, Nepti",
+    "short_name": "AJMVPSSCSMCEN"
+  },
+  {
+    "dte_code": "5420",
+    "college_name": "Akole Taluka Education Society's Faculty of Polytechnic, Akole",
+    "short_name": "ATESFPA"
+  },
+  {
+    "dte_code": "3218",
+    "college_name": "Aldel Education Trust's St. John College of Engineering & Management, Vevoor, Palghar",
+    "short_name": "AETSJCEMVP"
+  },
+  {
+    "dte_code": "6415",
+    "college_name": "All India Shri Shivaji Memorial Society's Polytechnic, Pune,",
+    "short_name": "AISSMSPP"
+  },
+  {
+    "dte_code": "4135",
+    "college_name": "Amar Seva Mandal's Shree Govindrao Vanjari College of Engineering & Technology, Nagpur",
+    "short_name": "ASMSGVCETN"
+  },
+  {
+    "dte_code": "5363",
+    "college_name": "Amruta Vaishnavi Education & Welfare Trust's Shatabdi Institute of Technology, Agastkhind, Tal Sinner",
+    "short_name": "AVEWTSITATS"
+  },
+  {
+    "dte_code": "5232",
+    "college_name": "Amrutvahini Sheti & Shikshan Vikas Sanstha's Amrutvahini Polytechnic, Amrutnagar",
+    "short_name": "ASSVSAPA"
+  },
+  {
+    "dte_code": "2292",
+    "college_name": "Anand Charitable Trusts, Diploma in Engineering & Technology, Murshadapur, Ashti, Dist. Beed",
+    "short_name": "ACTDETMADB"
+  },
+  {
+    "dte_code": "3278",
+    "college_name": "Anjuman -I-Islam's Abdul Razzak Kalsekar Polytechnic,Panvel, Navi Mumbai",
+    "short_name": "AIIARKPPNM"
+  },
+  {
+    "dte_code": "4223",
+    "college_name": "Anjuman Hami -E-Islam's Anjuman Polytechnic, Nagpur",
+    "short_name": "AHEIAPN"
+  },
+  {
+    "dte_code": "4142",
+    "college_name": "Ankush Shikshan Sanstha's G. H. Raisoni Institute of Engineering & Technology, Nagpur",
+    "short_name": "ASSGHRIETN"
+  },
+  {
+    "dte_code": "5395",
+    "college_name": "Ashok Institute of Engineering & Technology(Polytechnic), Shrirampur.",
+    "short_name": "AIETPS"
+  },
+  {
+    "dte_code": "3436",
+    "college_name": "B.R. Harne College of Engineering & Technology, Karav, Tal -Ambernath.",
+    "short_name": "BRHCETKTA"
+  },
+  {
+    "dte_code": "4229",
+    "college_name": "Bajaj Chandrapur Polytechnic, Chandrapur",
+    "short_name": "BCPC"
+  },
+  {
+    "dte_code": "4610",
+    "college_name": "Ballarpur Seva Samiti, Jainuddin Zaweri Polytechnic, Dewai Govindpur, Tukum, Chandrapur",
+    "short_name": "BSSJZPDGTC"
+  },
+  {
+    "dte_code": "6716",
+    "college_name": "Barshi Shikshan Prasarak Mandal, Shriman Bhausaheb Zadbuke Institute of Polytechnic, Puri, Tal -Barshi, Solapur",
+    "short_name": "BSPMSBZIPPTBS"
+  },
+  {
+    "dte_code": "6781",
+    "college_name": "Bhagwant Institute of Technology, Barshi",
+    "short_name": "BITB"
+  },
+  {
+    "dte_code": "3256",
+    "college_name": "Bharati Vidyapeeth's Institute of Technology, Navi Mumbai",
+    "short_name": "BVITNM"
+  },
+  {
+    "dte_code": "6422",
+    "college_name": "Bharati Vidyapeeth's Institute of Technology, Palus, Sangli",
+    "short_name": "BVITPS"
+  },
+  {
+    "dte_code": "6408",
+    "college_name": "Bharti Vidyaapeeth's Jawaharlal Nehru Institute of Technology, Pune",
+    "short_name": "BVJNITP"
+  },
+  {
+    "dte_code": "3288",
+    "college_name": "Bhartiya Education/Social Charitable Trust, Sheth Shri Otarmal Sheshmal Parmar College Of Diploma Engg, Velshet -Nagothane,Raigad",
+    "short_name": "BESCTSSOSPCDEVNR"
+  },
+  {
+    "dte_code": "6427",
+    "college_name": "Bhivrabai Sawant Polytechnic, Wagholi, Pune",
+    "short_name": "BSPWP"
+  },
+  {
+    "dte_code": "1244",
+    "college_name": "Bhiwsan Patil Shinde Shikshan Gramin Vikas & Bahu Sanstha,Shinde Polytechnic, Anjani Bk Tal: Mehkar, Dist: Buldhana",
+    "short_name": "BPSSGVBSSPABTMDB"
+  },
+  {
+    "dte_code": "6428",
+    "college_name": "BMSPM's Ashokrao Mane Polytechnic, Vathar Tarf Vadgaon",
+    "short_name": "BAMPVTV"
+  },
+  {
+    "dte_code": "2176",
+    "college_name": "Chatrapati Shahu Maharaj Shikshan Sanstha, C.S.M.S. Sansthas College Of Polytechnic, Kanchanwadi, Aurangabad",
+    "short_name": "CSMSSCSMSSCPKA"
+  },
+  {
+    "dte_code": "6723",
+    "college_name": "Chh.Shivaji Shikshan Mandal,Chh.Shivaji Polytechnic Institute,Vaduj, Tal -Khatav, Dist. Satara",
+    "short_name": "CSSMCSPIVTKDS"
+  },
+  {
+    "dte_code": "6149",
+    "college_name": "Choudhary Attar Singh Yadav Memorial Trust,Siddhant College of Engineering, Maval",
+    "short_name": "CASYMTSCEM"
+  },
+  {
+    "dte_code": "5396",
+    "college_name": "College of Engineering and Technology ,North Maharashtra Knowledge City, Jalgaon",
+    "short_name": "CETNMKCJ"
+  },
+  {
+    "dte_code": "6006",
+    "college_name": "College of Engineering, Pune",
+    "short_name": "COEP"
+  },
+  {
+    "dte_code": "6020",
+    "college_name": "Cusrow Wadia Institute of Technology( Aided ), Pune",
+    "short_name": "CWITAP"
+  },
+  {
+    "dte_code": "6454",
+    "college_name": "D. Y. Patil Educational Socity's D.Y. Patil College Of Engineering & Polytechnic, Kolhapur",
+    "short_name": "DYPESDYPCEPK"
+  },
+  {
+    "dte_code": "3469",
+    "college_name": "Dalvi Education and charitable trust Maharashtra Polytechnic, Soveli, Tal. Mandangad",
+    "short_name": "DEMPSTM"
+  },
+  {
+    "dte_code": "6225",
+    "college_name": "Dattajirao Kadam Technical Education Society's Textile & Engineering Institute, Ichalkaranji.",
+    "short_name": "DKTESTEII"
+  },
+  {
+    "dte_code": "6628",
+    "college_name": "Dattakala Group Of Institutions,  Swami - Chincholi Tal. Daund Dist. Pune",
+    "short_name": "DGISCTDDP"
+  },
+  {
+    "dte_code": "3466",
+    "college_name": "Devi Mahalaxmi Polytechnic, Titwala, Kalyan",
+    "short_name": "DMPTK"
+  },
+  {
+    "dte_code": "4258",
+    "college_name": "Dharampeth Education Soceity's Dharampeth Polytechnic, Nagpur",
+    "short_name": "DESDPN"
+  },
+  {
+    "dte_code": "2185",
+    "college_name": "Dharati Janseva Pratishthan, Diploma In Engineering & Technology Institute, Jalna",
+    "short_name": "DJPDETIJ"
+  },
+  {
+    "dte_code": "3353",
+    "college_name": "Dilkap Research Institute Of Engineering and Management Studies, At.Mamdapur, Post - Neral, Tal - Karjat, Mumbai",
+    "short_name": "DRIEMSAMPNTKM"
+  },
+  {
+    "dte_code": "6434",
+    "college_name": "Dinkarrao K. Shinde Smarak Trust, Dr. A.D. Shinde Institute Of Technology, Gadhinglaj",
+    "short_name": "DKSSTDADSITG"
+  },
+  {
+    "dte_code": "6800",
+    "college_name": "DKTE Society's Yashwantrao Chavan Polytechnic, Ichalkaranji",
+    "short_name": "DSYCPI"
+  },
+  {
+    "dte_code": "6715",
+    "college_name": "Dnyan Kala Krida & Krushi Pratishan,Babasaheb Phadtare Polytechnic, Kalamb Walchandnagar, Tal-Indapur, Dist. Pune",
+    "short_name": "DKKKPBPPKWTIDP"
+  },
+  {
+    "dte_code": "3285",
+    "college_name": "Dnyan Prasarak Shikshan Sanstha's, Balasaheb Mhatre Polytechnic,Ambarnath",
+    "short_name": "DPSSBMPA"
+  },
+  {
+    "dte_code": "6797",
+    "college_name": "Dnyanshree Institute Engineering and Technology, Satara",
+    "short_name": "DIETS"
+  },
+  {
+    "dte_code": "3040",
+    "college_name": "Dr. Babasaheb Ambedkar Tech.University,Institute of Petrochemical Engineering,Lonere,Raigad",
+    "short_name": "DBATUIPELR"
+  },
+  {
+    "dte_code": "6421",
+    "college_name": "Dr. D. Y. Patil Prathisthan's Dr. D.Y. Patil Polytechnic, Kolhapur",
+    "short_name": "DDYPPDDYPPK"
+  },
+  {
+    "dte_code": "6410",
+    "college_name": "Dr. D. Y. Patil Pratishthan's, Yashwantrao Bhaurao Patil Polytechnic, Pune",
+    "short_name": "DDYPPYBPPP"
+  },
+  {
+    "dte_code": "6786",
+    "college_name": "Dr. D. Y. Patil School of Engineering & Technology, Charholi(Bk), Via  Lohgaon, Pune",
+    "short_name": "DDYPSETCBVLP"
+  },
+  {
+    "dte_code": "6732",
+    "college_name": "Dr. D. Y. Patil School OF Engineering, Lohegaon, Pune",
+    "short_name": "DDYPSOELP"
+  },
+  {
+    "dte_code": "6441",
+    "college_name": "Dr.D.Y.Patil Educational Academy's D. Y. Patil Polytechnic, Ambi., Talegaon",
+    "short_name": "DDYPEADYPPAT"
+  },
+  {
+    "dte_code": "1123",
+    "college_name": "Dr.Rajendra Gode Institute of Technology & Research, Amravati",
+    "short_name": "DRGITRA"
+  },
+  {
+    "dte_code": "2192",
+    "college_name": "Education Society, Kalawatibai College Of Engineering & Technology (Polytechnic), Naigaon, Nanded",
+    "short_name": "ESKCETPNN"
+  },
+  {
+    "dte_code": "6404",
+    "college_name": "Ekalavya Shikshan Sanstha's Polytechnic,pune",
+    "short_name": "ESSP"
+  },
+  {
+    "dte_code": "6756",
+    "college_name": "Fabtech Technical Campus College of Engineering and Research, Sangola",
+    "short_name": "FTCCERS"
+  },
+  {
+    "dte_code": "3028",
+    "college_name": "Father Agnel Technical College (Polytechnic), Bandra(W), Mumbai",
+    "short_name": "FATCPBWM"
+  },
+  {
+    "dte_code": "5171",
+    "college_name": "Godavari Foundation's Godavari College Of Engineering, Jalgaon",
+    "short_name": "GFGCEJ"
+  },
+  {
+    "dte_code": "5434",
+    "college_name": "Gokhale Education Society's Sir Dr.M.S.Gosavi Polytechnic Institute, Nashik Road",
+    "short_name": "GESSDMSGPINR"
+  },
+  {
+    "dte_code": "3448",
+    "college_name": "Gokhale Education Society, Katgara Polytechnic Institute, Bordi.",
+    "short_name": "GESKPIB"
+  },
+  {
+    "dte_code": "4245",
+    "college_name": "Gopal Education Soceity's Shri Mukundrao Pannase Polytechnic, Mauza Mondha",
+    "short_name": "GESSMPPMM"
+  },
+  {
+    "dte_code": "3006",
+    "college_name": "Government Institute of Printing Technology, Mumbai",
+    "short_name": "GIPTM"
+  },
+  {
+    "dte_code": "1015",
+    "college_name": "Government Polytechnic , Achalpur",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "4011",
+    "college_name": "Government Polytechnic Gondia",
+    "short_name": "GPG"
+  },
+  {
+    "dte_code": "5006",
+    "college_name": "Government Polytechnic, Ahmednagar",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "2013",
+    "college_name": "Government Polytechnic, Ambad",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "1008",
+    "college_name": "Government Polytechnic, Amravati",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "4013",
+    "college_name": "Government Polytechnic, Arvi",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "2010",
+    "college_name": "Government Polytechnic, Aurangabad",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "6011",
+    "college_name": "Government Polytechnic, Awasari (khurd)",
+    "short_name": "GPA"
+  },
+  {
+    "dte_code": "2011",
+    "college_name": "Government Polytechnic, Beed",
+    "short_name": "GPB"
+  },
+  {
+    "dte_code": "4009",
+    "college_name": "Government Polytechnic, Bramhapuri",
+    "short_name": "GPB"
+  },
+  {
+    "dte_code": "4010",
+    "college_name": "Government Polytechnic, Gadchiroli",
+    "short_name": "GPG"
+  },
+  {
+    "dte_code": "2012",
+    "college_name": "Government Polytechnic, Hingoli",
+    "short_name": "GPH"
+  },
+  {
+    "dte_code": "5008",
+    "college_name": "Government Polytechnic, Jalgaon",
+    "short_name": "GPJ"
+  },
+  {
+    "dte_code": "2014",
+    "college_name": "Government Polytechnic, Jalna",
+    "short_name": "GPJ"
+  },
+  {
+    "dte_code": "2019",
+    "college_name": "Government Polytechnic, Jintur",
+    "short_name": "GPJ"
+  },
+  {
+    "dte_code": "6016",
+    "college_name": "Government Polytechnic, Karad",
+    "short_name": "GPK"
+  },
+  {
+    "dte_code": "1009",
+    "college_name": "Government Polytechnic, Khamgaon",
+    "short_name": "GPK"
+  },
+  {
+    "dte_code": "6010",
+    "college_name": "Government Polytechnic, Kolhapur",
+    "short_name": "GPK"
+  },
+  {
+    "dte_code": "3010",
+    "college_name": "Government Polytechnic, Malvan",
+    "short_name": "GPM"
+  },
+  {
+    "dte_code": "6015",
+    "college_name": "Government Polytechnic, Miraj",
+    "short_name": "GPM"
+  },
+  {
+    "dte_code": "3007",
+    "college_name": "Government Polytechnic, Mumbai",
+    "short_name": "GPM"
+  },
+  {
+    "dte_code": "1006",
+    "college_name": "Government Polytechnic, Murtijapur",
+    "short_name": "GPM"
+  },
+  {
+    "dte_code": "2017",
+    "college_name": "Government Polytechnic, Nanded",
+    "short_name": "GPN"
+  },
+  {
+    "dte_code": "5009",
+    "college_name": "Government Polytechnic, Nandurbar",
+    "short_name": "GPN"
+  },
+  {
+    "dte_code": "5010",
+    "college_name": "Government Polytechnic, Nashik",
+    "short_name": "GPN"
+  },
+  {
+    "dte_code": "2018",
+    "college_name": "Government Polytechnic, Osmanabad",
+    "short_name": "GPO"
+  },
+  {
+    "dte_code": "3008",
+    "college_name": "Government Polytechnic, Pen",
+    "short_name": "GPP"
+  },
+  {
+    "dte_code": "6013",
+    "college_name": "Government Polytechnic, Pune",
+    "short_name": "GPP"
+  },
+  {
+    "dte_code": "3009",
+    "college_name": "Government Polytechnic, Ratnagiri",
+    "short_name": "GPR"
+  },
+  {
+    "dte_code": "4012",
+    "college_name": "Government Polytechnic, Sadar, Nagpur",
+    "short_name": "GPSN"
+  },
+  {
+    "dte_code": "4008",
+    "college_name": "Government Polytechnic, Sakoli",
+    "short_name": "GPS"
+  },
+  {
+    "dte_code": "6017",
+    "college_name": "Government Polytechnic, Solapur",
+    "short_name": "GPS"
+  },
+  {
+    "dte_code": "3011",
+    "college_name": "Government Polytechnic, Thane",
+    "short_name": "GPT"
+  },
+  {
+    "dte_code": "3013",
+    "college_name": "Government Polytechnic, Vikramgad.",
+    "short_name": "GPV"
+  },
+  {
+    "dte_code": "1010",
+    "college_name": "Government Polytechnic, Washim",
+    "short_name": "GPW"
+  },
+  {
+    "dte_code": "1011",
+    "college_name": "Government Polytechnic, Yavatmal",
+    "short_name": "GPY"
+  },
+  {
+    "dte_code": "6014",
+    "college_name": "Government Residence Women Polytechnic, Tasgaon",
+    "short_name": "GRWPT"
+  },
+  {
+    "dte_code": "2016",
+    "college_name": "Government Residential Women's Polytechnic, Latur",
+    "short_name": "GRWPL"
+  },
+  {
+    "dte_code": "2508",
+    "college_name": "GRAMIN TECHNICAL AND MANAGEMENT CAMPUS NANDED.",
+    "short_name": "GTAMCN"
+  },
+  {
+    "dte_code": "2224",
+    "college_name": "Gramodyogik Shikshan Mandal's Marathwada Institute of Technology, Aurangabad",
+    "short_name": "GSMMITA"
+  },
+  {
+    "dte_code": "2171",
+    "college_name": "Gramodyogik Shikshan Mandal's Marathwada Institute Of Technology, Rotegaon, Vaijapur, Dist. Aurangabad.",
+    "short_name": "GSMMITRVDA"
+  },
+  {
+    "dte_code": "2186",
+    "college_name": "Gunai Shikshan Prasarak Mandal, Rajiv Gandhi Polytechnic, Udgir, Dist Latur",
+    "short_name": "GSPMRGPUDL"
+  },
+  {
+    "dte_code": "5240",
+    "college_name": "Guru Gobind Singh Foundation's Guru Gobind Singh Polytechnic, Nashik",
+    "short_name": "GGSFGGSPN"
+  },
+  {
+    "dte_code": "5404",
+    "college_name": "Gurukul Education Society's Institute of Engineering & Technology, Nandgaon",
+    "short_name": "GESIETN"
+  },
+  {
+    "dte_code": "4601",
+    "college_name": "Guruvandan Mahila Kalyankari Bahuuddeshiya Mandal's Guru Sai Polytechnic College, Mauza Datala, Chandrapur",
+    "short_name": "GMKBMGSPCMDC"
+  },
+  {
+    "dte_code": "3222",
+    "college_name": "Haji Jamaluddin Thim Trust's Theem College of Engineering, At. Villege Betegaon, Boisar",
+    "short_name": "HJTTTCEAVBB"
+  },
+  {
+    "dte_code": "2187",
+    "college_name": "Hindustani  Education Society, N.B.S. Institute Of Polytechnic, Ausa, Latur",
+    "short_name": "HESNBSIPAL"
+  },
+  {
+    "dte_code": "6315",
+    "college_name": "Holy -Wood Academy's Sanjeevan Engineering and Technology Institute, Panhala",
+    "short_name": "HWASETIP"
+  },
+  {
+    "dte_code": "5251",
+    "college_name": "Hon. Shri. Babanrao Pachpute Vichardhara Trust's Parikrama Polytechnic,Kashti",
+    "short_name": "HSBPVTPPK"
+  },
+  {
+    "dte_code": "6018",
+    "college_name": "Institute of Civil and Rural Engineering(aided), Gargoti, Kolhapur",
+    "short_name": "ICREGK"
+  },
+  {
+    "dte_code": "5241",
+    "college_name": "Jagdamba Edu Soc., Santosh N. Darade Polytechnic, Yeola, Nashik",
+    "short_name": "JESSNDPYN"
+  },
+  {
+    "dte_code": "6712",
+    "college_name": "Jai Bhavani Education Society,Rajiv Gandhi Polytechnic College,Ziprapwadi, Tal. Phaltan, Dist. Satara",
+    "short_name": "JBESRGPCZTPDS"
+  },
+  {
+    "dte_code": "4255",
+    "college_name": "Jai Mahakali Shikshan Sanstha's Agnihotri Polytechnic, Sindhi (Meghe), Wardha",
+    "short_name": "JMSSAPSMW"
+  },
+  {
+    "dte_code": "4235",
+    "college_name": "Jai Mahakali Shikshan Sanstha's Agnihotri School of Technology, Ramnagar, Wardha",
+    "short_name": "JMSSASTRW"
+  },
+  {
+    "dte_code": "4597",
+    "college_name": "Jai Mahakali Shikshan Sanstha, Pulgaon Polytechnic,Pulgaon, Tah -Deoli,Wardha",
+    "short_name": "JMSSPPPTDW"
+  },
+  {
+    "dte_code": "4246",
+    "college_name": "Jaideo Education Society, J.D. Polytechnic, Khandala, Nagpur",
+    "short_name": "JESJDPKN"
+  },
+  {
+    "dte_code": "6418",
+    "college_name": "Jaihind Comprehensive Educational Institute's Jaihind Polytechnic, Kuran,Tal. Junnar",
+    "short_name": "JCEIJPKTJ"
+  },
+  {
+    "dte_code": "5239",
+    "college_name": "Jamiya Islamiya Ishatul Olu's Jamiya Polytechnic, Akkalkuwa",
+    "short_name": "JIIOJPA"
+  },
+  {
+    "dte_code": "6313",
+    "college_name": "Jaywant College of Engineering & Polytechnic , Kille Macchindragad Tal. Walva District - Sangali",
+    "short_name": "JCEPKMTWDS"
+  },
+  {
+    "dte_code": "6141",
+    "college_name": "Jaywant Shikshan Prasarak Mandal's,Rajarshi Shahu College of Engineering, Tathawade, Pune",
+    "short_name": "JSPMRSCETP"
+  },
+  {
+    "dte_code": "6425",
+    "college_name": "Jaywant shikshan prasarak Mandal,Jaywantrao Sawant Polytechnic, Hadapsar, Pune",
+    "short_name": "JMJSPHP"
+  },
+  {
+    "dte_code": "5260",
+    "college_name": "Jumma Masjid Charitable Trust's Polytechnic,Wadala Road, Wadala, Nashik",
+    "short_name": "JMCTPWRWN"
+  },
+  {
+    "dte_code": "6214",
+    "college_name": "K. E. Society's Rajarambapu Institute of Technology, Walwa, Sangli",
+    "short_name": "KESRITWS"
+  },
+  {
+    "dte_code": "3021",
+    "college_name": "K. J. Somaiya Polytechnic, Mumbai",
+    "short_name": "KJSPM"
+  },
+  {
+    "dte_code": "4193",
+    "college_name": "K.D.M. Education Society, Vidharbha Institute of Technology,Umred Road ,Nagpur",
+    "short_name": "KDMESVITURN"
+  },
+  {
+    "dte_code": "5226",
+    "college_name": "K.K Wagh Education Society's K. K. Wagh Polytechnic, Nashik",
+    "short_name": "KKWESKKWPN"
+  },
+  {
+    "dte_code": "6814",
+    "college_name": "K.P. Patil Institute ( Polytechnic ), Bhudargad, Dist.Kolhapur",
+    "short_name": "KPPIPBDK"
+  },
+  {
+    "dte_code": "5390",
+    "college_name": "K.V.N. Naik S. P. Sansth's Loknete Gopinathji Munde Institute of Engineering Education & Research, Nashik.",
+    "short_name": "KVNNSPSLGMIEERN"
+  },
+  {
+    "dte_code": "6446",
+    "college_name": "Kai. Amdar Bramhadevdada Mane Shikshan Va Samajik Pratishthan,Bramhadevdada Mane Polytechnic, Belati, Noth Solapur",
+    "short_name": "KABMSVSPBMPBNS"
+  },
+  {
+    "dte_code": "5246",
+    "college_name": "Kai. Vanjibaba Gramin Vikas Mandal, Shantidevi Chavhan Institute of Engineering & Technology, Chalisgaon",
+    "short_name": "KVGVMSCIETC"
+  },
+  {
+    "dte_code": "3275",
+    "college_name": "Kala Vidyamandir Institute of Technology (Polytechnic), Malad(W), Mumbai",
+    "short_name": "KVITPMWM"
+  },
+  {
+    "dte_code": "6406",
+    "college_name": "Karmaveer Bhaurao Patil Polytechnic,Satara",
+    "short_name": "KBPPS"
+  },
+  {
+    "dte_code": "5371",
+    "college_name": "Karmaveer R.S.Wagh Education & Health Institute, Kadwa Polytechnic, Rajaram Nagar, Tal -Dindori, Nashik",
+    "short_name": "KRSWEHIKPRNTDN"
+  },
+  {
+    "dte_code": "5417",
+    "college_name": "Karmaveer Shankarao Kale Education Society's Gautam Polytechnic Institute,Kpoargaon",
+    "short_name": "KSKESGPIK"
+  },
+  {
+    "dte_code": "6456",
+    "college_name": "Kasegaon Education Society's Rajarambapu Institute of Technology (Polytechnic), Lohgaon Pune",
+    "short_name": "KESRITPLP"
+  },
+  {
+    "dte_code": "5370",
+    "college_name": "Kedareshwar Gramin Vikas Pratishthan, Kai. Sau. Sunitatai Eknathrao Dhakane Polytehnic College,Rakshi,Ahmedngar",
+    "short_name": "KGVPKSSEDPCRA"
+  },
+  {
+    "dte_code": "3260",
+    "college_name": "Khalapur Taluka Shikshan Prasarak Mandal's, B.L. Patil Polytechnic, Khopoli, Dist.Raigad",
+    "short_name": "KTSPMBLPPKDR"
+  },
+  {
+    "dte_code": "5106",
+    "college_name": "Khandesh College Education Society's College Of Engineering And Management, Jalgaon",
+    "short_name": "KCESCEMJ"
+  },
+  {
+    "dte_code": "2284",
+    "college_name": "Kiran Bahuuddeshiya Shikshan Sanstha's R R Polytechnic, Hasegaon (K), Tal. Kalamb, Dist Osmanabad",
+    "short_name": "KBSSRRPHKTKDO"
+  },
+  {
+    "dte_code": "1277",
+    "college_name": "Kirti Polytechnic, Amravati.",
+    "short_name": "KPA"
+  },
+  {
+    "dte_code": "5253",
+    "college_name": "Kisan Dnyanoday Mandal Gudhe's Dr. Uttamrao Mahajan Institute Of Engineering & Technology,Chalisgaon, Jalgaon",
+    "short_name": "KDMGDUMIETCJ"
+  },
+  {
+    "dte_code": "3219",
+    "college_name": "Koti Vidya Charitable Trust's Smt. Alamuri Ratnamala Institute of Engineering and Technology, Sapgaon, Tal. Shahapur",
+    "short_name": "KVCTSARIETSTS"
+  },
+  {
+    "dte_code": "4188",
+    "college_name": "Krushi Jivan Vikas Pratishthan, Ballarpur Institute of Technology, Mouza Bamni",
+    "short_name": "KJVPBITMB"
+  },
+  {
+    "dte_code": "4254",
+    "college_name": "Krushna Sahayogi Tantra Shikshan Sanstha, Chatrapati Shivaji Institute Of Technology, Deori, Gondia",
+    "short_name": "KSTSSCSITDG"
+  },
+  {
+    "dte_code": "2525",
+    "college_name": "Krushnaji Purushottam Chousalkar Yogeshwari Polytechnic, Ambajogai Beed",
+    "short_name": "KPCYPAB"
+  },
+  {
+    "dte_code": "6219",
+    "college_name": "KSGBS's Bharat - Ratna Indira Gandhi College of Engineering, Kegaon, Solapur",
+    "short_name": "KBRIGCEKS"
+  },
+  {
+    "dte_code": "5235",
+    "college_name": "Late Bhausaheb Hiray Smarnika Samiti Trust Sanchalit Polytechnic, Malegaon, Nashik",
+    "short_name": "LBHSSTSPMN"
+  },
+  {
+    "dte_code": "4234",
+    "college_name": "Late M.D. Yergude Memorial Shikshan Prasarak Mandal's Shri Sai Polytechnic, Chandrapur",
+    "short_name": "LMDYMSPMSSPC"
+  },
+  {
+    "dte_code": "4253",
+    "college_name": "Late Shri Laxmaji Motghare Chritable Trust's Dr. Arun Motghare Polytechnic, Kosara -Konda, Bhandara",
+    "short_name": "LSLMCTDAMPKKB"
+  },
+  {
+    "dte_code": "6403",
+    "college_name": "Latthe Education Society's Polytechnic, Sangli",
+    "short_name": "LESPS"
+  },
+  {
+    "dte_code": "4247",
+    "college_name": "Laxmanrao Mankar College Of Polytechnic, Amgaon, Gondia",
+    "short_name": "LMCPAG"
+  },
+  {
+    "dte_code": "3286",
+    "college_name": "Leela Education Society, G. V. Acharya Polytechnic,Shelu, Karjat",
+    "short_name": "LESGVAPSK"
+  },
+  {
+    "dte_code": "4233",
+    "college_name": "Lokmanya Tilak Jankalyan Shikshan Sanstha's Priyadarshini Polytechnic, Nagpur",
+    "short_name": "LTJSSPPN"
+  },
+  {
+    "dte_code": "6304",
+    "college_name": "Loknete Hanumantrao Charitable Trust's Adarsh Institute of Technology and Research Centre, Vita,Sangli",
+    "short_name": "LHCTAITRCVS"
+  },
+  {
+    "dte_code": "3026",
+    "college_name": "M. H. Saboo Siddik Polytechnic, Mumbai",
+    "short_name": "MHSSPM"
+  },
+  {
+    "dte_code": "4190",
+    "college_name": "M.D. Yergude Memorial Shikshan Prasarak Mandal's Shri Sai College of Engineering & Technology, Badravati",
+    "short_name": "MDYMSPMSSCETB"
+  },
+  {
+    "dte_code": "6827",
+    "college_name": "MAHADEVRAO WANDRE INSTITUTE OF TECHNOLOGY, TURKEWADI",
+    "short_name": "MWIOTT"
+  },
+  {
+    "dte_code": "6526",
+    "college_name": "Maharashtra Academy of Engg & Education Research's MIT Polytechnic, Pune",
+    "short_name": "MAEERMPP"
+  },
+  {
+    "dte_code": "4603",
+    "college_name": "Maharashtra Institute of Polytechnic, Betala, Bramhapuri,Chandrapur",
+    "short_name": "MIPBBC"
+  },
+  {
+    "dte_code": "6019",
+    "college_name": "Maharashtra Institute of Printing Technology(Aided), Pune",
+    "short_name": "MIPTAP"
+  },
+  {
+    "dte_code": "4598",
+    "college_name": "Maharashtra Shikshan Prasarak Mandals,Sommaya Diploma In Engineering, Wadgaon Dist Chandrapur",
+    "short_name": "MSPMSDEWDC"
+  },
+  {
+    "dte_code": "5357",
+    "college_name": "Maharashtra Shikshan Vikas Mandal's Loknete Gopalraoji Gulwe, Polytehnic,Vilholi,Nashik",
+    "short_name": "MSVMLGGPVN"
+  },
+  {
+    "dte_code": "6027",
+    "college_name": "Maharashtra State Institute of Hotel Management & Catering Technology,Pune",
+    "short_name": "MSIHMCTP"
+  },
+  {
+    "dte_code": "3283",
+    "college_name": "Mahatma  Education Society's, Pillai HOC Polytechnic, Rasayani",
+    "short_name": "MESPHPR"
+  },
+  {
+    "dte_code": "2181",
+    "college_name": "Mahatma Basaveshwar Education Society's T.B.Girwalkar Polytechnic, Ambejogai, Dist.Beed",
+    "short_name": "MBESTBGPADB"
+  },
+  {
+    "dte_code": "5374",
+    "college_name": "Mahatma Phule Samajik & Shaikshanik Vikas Mandal, Samrat Ashok Polytechnic,Dhule Road, Chalisgaon ,Dist Jalgaon",
+    "short_name": "MPSSVMSAPDRCDJ"
+  },
+  {
+    "dte_code": "5238",
+    "college_name": "Mahavir Polytechnic, Nashik",
+    "short_name": "MPN"
+  },
+  {
+    "dte_code": "1275",
+    "college_name": "Manav School of Polytechnic, Vyala, Tal.Balapur, Akola",
+    "short_name": "MSPVTBA"
+  },
+  {
+    "dte_code": "3255",
+    "college_name": "Mandar Education Society's Rajaram Shinde Institute of Engineering and Technology, Pedhambe",
+    "short_name": "MESRSIETP"
+  },
+  {
+    "dte_code": "4250",
+    "college_name": "Maratha Shikshan Sanstha's P.R.Patil Instittute Of Polytechnic, Talegaon, Asthi, Wardha",
+    "short_name": "MSSPRPIPTAW"
+  },
+  {
+    "dte_code": "6449",
+    "college_name": "Marathwada Mitra Mandal's Polytechnic, Pune",
+    "short_name": "MMMPP"
+  },
+  {
+    "dte_code": "2182",
+    "college_name": "Marathwada Shikshan Prasarak Mandal, Yeshwantrao Chavan Institute Of Polytechnic, Beed",
+    "short_name": "MSPMYCIPB"
+  },
+  {
+    "dte_code": "4242",
+    "college_name": "Mata Mahakali Bahuuddeshiya Shikshan Prasarak Mandal's Mata Mahakali Polytechnic College, Warora",
+    "short_name": "MMBSPMMMPCW"
+  },
+  {
+    "dte_code": "5256",
+    "college_name": "Matoshri Education Soceity, Matoshri Asarabai Polytechnic,Nashik",
+    "short_name": "MESMAPN"
+  },
+  {
+    "dte_code": "5263",
+    "college_name": "Matoshri Education Soceity, Matoshri Institute Of Technology, Dhanore, Nashik",
+    "short_name": "MESMITDN"
+  },
+  {
+    "dte_code": "2194",
+    "college_name": "Matoshri Pratishthan, Vishwabharati Polytechnic Institute, Vishnupuri, Nanded.",
+    "short_name": "MPVPIVN"
+  },
+  {
+    "dte_code": "2138",
+    "college_name": "Matsyodari Shikshan Sansatha's College of Engineering and Technology, Jalna",
+    "short_name": "MSSCETJ"
+  },
+  {
+    "dte_code": "5411",
+    "college_name": "Maulana Mukhtar Ahmad Nadvi Technical Campus, Malegaon.",
+    "short_name": "MMANTCM"
+  },
+  {
+    "dte_code": "5419",
+    "college_name": "Mauli Institute of Technology (Polytechnic), Amalner, Dist. Jalgaon",
+    "short_name": "MITPADJ"
+  },
+  {
+    "dte_code": "2293",
+    "college_name": "Mauli Shikhan Prasarak Mandal's Lal Bahadur Shastri Polytechnic, Udgir Dist Latur",
+    "short_name": "MSPMLBSPUDL"
+  },
+  {
+    "dte_code": "5244",
+    "college_name": "MET's Institute of Technology Polytechnic, Bhujbal Knowledge City, Adgaon Nashik",
+    "short_name": "MITPBKCAN"
+  },
+  {
+    "dte_code": "3440",
+    "college_name": "Metropolitan Institute of Technology & Management, Sukhalwad, Sindhudurg.",
+    "short_name": "MITMSS"
+  },
+  {
+    "dte_code": "2291",
+    "college_name": "MGMs Polytechnic , Aurangabad",
+    "short_name": "MPA"
+  },
+  {
+    "dte_code": "5223",
+    "college_name": "Mgts Mandal's Sharadchandrika Suresh Patil Institute Of Technology(Polytechnic), Chopda",
+    "short_name": "MMSSPITPC"
+  },
+  {
+    "dte_code": "6463",
+    "college_name": "Mokashi Krishi Vikas Prasisthan's Dadasaheb Mokashi Polytechnic, Sadashivgad, Satara",
+    "short_name": "MKVPDMPSS"
+  },
+  {
+    "dte_code": "5227",
+    "college_name": "Nagaon Education Society's Gangamai Polytechnic, Nagaon, Dhule",
+    "short_name": "NESGPND"
+  },
+  {
+    "dte_code": "2137",
+    "college_name": "Nagnathappa Halge Engineering College, Parli, Beed",
+    "short_name": "NHECPB"
+  },
+  {
+    "dte_code": "5243",
+    "college_name": "Nashik Gramin Shikshan Prasarak Mandals Brahma Valley Polytechnic, Nashik",
+    "short_name": "NGSPMBVPN"
+  },
+  {
+    "dte_code": "5369",
+    "college_name": "Nashik Institute  of Technology, Late Annasaheb Patil Polytechnic , Dindori Road Cannol road ,MERI ,Nashik",
+    "short_name": "NITLAPPDRCMN"
+  },
+  {
+    "dte_code": "5375",
+    "college_name": "Nath Nangebaba Malti Purpose Mandal's, Polytechnic, Parola, Dist -Jalgaon",
+    "short_name": "NNMPMPPDJ"
+  },
+  {
+    "dte_code": "3142",
+    "college_name": "Navjeevan Education Society's Polytechnic, Mumbai",
+    "short_name": "NESPM"
+  },
+  {
+    "dte_code": "4612",
+    "college_name": "Navneet Bahuuddeshya Sanstha, Kinkar Institute Of Technology,Seloo,Dist.Wardha",
+    "short_name": "NBSKITSDW"
+  },
+  {
+    "dte_code": "4232",
+    "college_name": "Navodaya Shikshan Sanstha's Shankarrao Dhawad Polytechnic, Nagpur",
+    "short_name": "NSSSDPN"
+  },
+  {
+    "dte_code": "6632",
+    "college_name": "Navsahyadri Education Society's Group of Institutions",
+    "short_name": "NESGI"
+  },
+  {
+    "dte_code": "5247",
+    "college_name": "NDMVPS Samaj's Rajarshee Shahu Maharaj Polytechnic, Nashik",
+    "short_name": "NSRSMPN"
+  },
+  {
+    "dte_code": "5413",
+    "college_name": "Netaji Subhashchandra Bose Edu Trust,Netaji Polytechnic.,Dhule",
+    "short_name": "NSBETNPD"
+  },
+  {
+    "dte_code": "3422",
+    "college_name": "New Jai Bharat Shikshan Prasarak Mandal’s Shantiniketan Polytechnic, New Panvel",
+    "short_name": "NJBSPMSPNP"
+  },
+  {
+    "dte_code": "6725",
+    "college_name": "New Satara Shikshan Sankul,New Satara College of Engineering & Management, Pandharpur",
+    "short_name": "NSSSNSCEMP"
+  },
+  {
+    "dte_code": "5414",
+    "college_name": "Nikam Institute of Technology(Polytechnic),Dhule",
+    "short_name": "NITPD"
+  },
+  {
+    "dte_code": "6729",
+    "college_name": "Ninaidevi Shikshan Prasarak Mandal,Shri. Shivajirao Deshmukh Institute of Technology, Shirala, Sangli",
+    "short_name": "NSPMSSDITSS"
+  },
+  {
+    "dte_code": "6768",
+    "college_name": "P.K. Technical Campus, Pune.",
+    "short_name": "PKTCP"
+  },
+  {
+    "dte_code": "1182",
+    "college_name": "Padmashri Dr. V.B. Kolte College of Engineering, Malkapur, Buldhana",
+    "short_name": "PDVBKCEMB"
+  },
+  {
+    "dte_code": "1250",
+    "college_name": "Paramhans Ramkrishna Mouni Baba Shikshan Sanstha's Anuradha Polytechnic, Anuradha Nagar,Chikhali, Buldhana",
+    "short_name": "PRMBSSAPANCB"
+  },
+  {
+    "dte_code": "2287",
+    "college_name": "People Education Society's P.E.S. Polytechnic, Nagsenvan, Aurangabad",
+    "short_name": "PESPESPNA"
+  },
+  {
+    "dte_code": "6766",
+    "college_name": "Phaltan Education Society's College of Engineering Thakurki Tal - Phaltan Dist -Satara",
+    "short_name": "PESCETTPDS"
+  },
+  {
+    "dte_code": "6413",
+    "college_name": "Pimpri Chinchwad Education Trust's Pimpri Chinchwad Polytechnic,Pune",
+    "short_name": "PCETPCPP"
+  },
+  {
+    "dte_code": "5231",
+    "college_name": "Poojya Sane Guruji Vidhya Prasarak Mandal's G. M. Choudhari Polytechnic, Shahada",
+    "short_name": "PSGVPMGMCPS"
+  },
+  {
+    "dte_code": "6417",
+    "college_name": "Poona District Education Association's, Institute of Technology,Hadpsar,Pune",
+    "short_name": "PDEAITHP"
+  },
+  {
+    "dte_code": "5366",
+    "college_name": "Potdar Foundation Taloda,Potdar Polytechnic, Patne, Malegaon, Nashik",
+    "short_name": "PFTPPPMN"
+  },
+  {
+    "dte_code": "5423",
+    "college_name": "Potdar Polytechnic, Pachora, Jalgaon",
+    "short_name": "PPPJ"
+  },
+  {
+    "dte_code": "5220",
+    "college_name": "Pravara Rural Education Society's Padmashri Dr. Vittalrao Vikhe Patil Institute of Technology and Engineering Polytechnic ,Pravaranagar",
+    "short_name": "PRESPDVVPITEPP"
+  },
+  {
+    "dte_code": "3027",
+    "college_name": "Premlila Vithaldas Polytechnic(Womens),Mumbai",
+    "short_name": "PVPWM"
+  },
+  {
+    "dte_code": "2015",
+    "college_name": "Puranmal Lahoti Government Polytechnic, Latur",
+    "short_name": "PLGPL"
+  },
+  {
+    "dte_code": "5433",
+    "college_name": "R.C. Patel Polytechnic, Shirpur",
+    "short_name": "RCPPS"
+  },
+  {
+    "dte_code": "5361",
+    "college_name": "Raghvendra Shikshan Prasarak Mandal's Late Junasing Mangtu College of Engg. (Diploma), Valthan, Tal Chalisgaon,Jalgaon",
+    "short_name": "RSPMLJMCEDVTCJ"
+  },
+  {
+    "dte_code": "5376",
+    "college_name": "Raj Laxmi Foundation, Sahkar Maharshi Rajaram Bapu Patil Polytechnic Institute, Madagaon ,Ahmednagar",
+    "short_name": "RLFSMRBPPIMA"
+  },
+  {
+    "dte_code": "6464",
+    "college_name": "Rajarshi Shahu Shikshan Sanstha's Vitthal Patil Polytechnic, Miraj",
+    "short_name": "RSSSVPPM"
+  },
+  {
+    "dte_code": "3420",
+    "college_name": "Rajendra Mane Polytechnic, Devrukh, Tal. Sangmeshwar, Dist. Ratnagiri",
+    "short_name": "RMPDTSDR"
+  },
+  {
+    "dte_code": "6324",
+    "college_name": "Rajgad Dnyanpeeth's Technical Campus,Dhangwadi, Bhor",
+    "short_name": "RDTCDB"
+  },
+  {
+    "dte_code": "5409",
+    "college_name": "Rajiv Gandhi College of Engineering, At Post Karjule Hariya Tal.Parner, Dist.Ahmednagar",
+    "short_name": "RGCEAPKHTPDA"
+  },
+  {
+    "dte_code": "2528",
+    "college_name": "Rajiv Gandhi Polytechnic, Markhel, Tal.Degloor, Dist.Nanded.",
+    "short_name": "RGPMTDDN"
+  },
+  {
+    "dte_code": "2281",
+    "college_name": "Ramchandra Sanskrutik Krida Mandal's Shri R D Bhakta Polytechnic, Daregaon Tal. & Dist Jalna",
+    "short_name": "RSKMSRDBPDTDJ"
+  },
+  {
+    "dte_code": "6471",
+    "college_name": "Ramkrishna Technical Education Soceity, Shivaji Polytechnic College, Sangola",
+    "short_name": "RTESSPCS"
+  },
+  {
+    "dte_code": "4639",
+    "college_name": "Renaissance Polytechnic,Chandrapur",
+    "short_name": "RPC"
+  },
+  {
+    "dte_code": "2278",
+    "college_name": "Renukamata KrishiVikas Pratisthan's Swami  Vivekanand Polytechnic, Jola, Post Devgaon Tq Kaij, Dist Beed",
+    "short_name": "RKPSVPJPDTKDB"
+  },
+  {
+    "dte_code": "6782",
+    "college_name": "Sahakar Maharshee Shankarrao Mohite Patil Institute of Technology & Research, Akluj",
+    "short_name": "SMSMPITRA"
+  },
+  {
+    "dte_code": "2193",
+    "college_name": "Sahayog Sevabhai Sanstha, Indira Institute Of Technology(Polytechnic), Nanded.",
+    "short_name": "SSSIITPN"
+  },
+  {
+    "dte_code": "5394",
+    "college_name": "Sahjivan Shikshan Prasarak Mandal's Vasantrao More Polytechnic, Tehu Tq.Parola, Jalgaon.",
+    "short_name": "SSPMVMPTTPJ"
+  },
+  {
+    "dte_code": "3264",
+    "college_name": "Sahyadri Shikshan Sanstha's Sahyadri Poly.Sawarde(Ratnagiri)",
+    "short_name": "SSSSPSR"
+  },
+  {
+    "dte_code": "6758",
+    "college_name": "Sahyadri Valley College of Engineering & Technology, Rajuri, Pune.",
+    "short_name": "SVCETRP"
+  },
+  {
+    "dte_code": "6431",
+    "college_name": "Sai Charitable Trust, Indira Institute Of Diploma Engineering(Poly), Sasure, Tal. Barshi",
+    "short_name": "SCTIIDEPSTB"
+  },
+  {
+    "dte_code": "3267",
+    "college_name": "Sai Shiva Education Trust's, Muchhala Polytechnic,Thane",
+    "short_name": "SSETMPT"
+  },
+  {
+    "dte_code": "5354",
+    "college_name": "Sakeshwar Gramin Vikas Seva Sanstha, Sau.Sundarbai Manik Adsul Polytechnic, Chas, Ahmednagar",
+    "short_name": "SGVSSSSMAPCA"
+  },
+  {
+    "dte_code": "6545",
+    "college_name": "Samarth Education Trust's Arvind Gavali College Of Engineering Panwalewadi, Varye,Satara.",
+    "short_name": "SETAGCEPVS"
+  },
+  {
+    "dte_code": "6451",
+    "college_name": "Samarth Rural Education Institute, Samarth Polytechnic, Bangarwadi, Belhe",
+    "short_name": "SREISPBB"
+  },
+  {
+    "dte_code": "3268",
+    "college_name": "Samarth. Samaj's. Shivajirao S. Jondhale Polytechnic, Ambernath(E), Mumbai",
+    "short_name": "SSSSJPAEM"
+  },
+  {
+    "dte_code": "5258",
+    "college_name": "Sandip Foundation's Sandip Polytechnic, Nashik",
+    "short_name": "SFSPN"
+  },
+  {
+    "dte_code": "5245",
+    "college_name": "Sangamner Medical Foundation & Research Institutes,Wamanrao Ethape Polytechnic, Velhale, Sangamner",
+    "short_name": "SMFRIWEPVS"
+  },
+  {
+    "dte_code": "5224",
+    "college_name": "Sanjay Education Society's Polytechnic, Wadibhokar, Dhule",
+    "short_name": "SESPWD"
+  },
+  {
+    "dte_code": "5255",
+    "college_name": "Sanjivani Pratishthan's Institute Of Technology,Kurund",
+    "short_name": "SPITK"
+  },
+  {
+    "dte_code": "5222",
+    "college_name": "Sanjivani Rural Education Society's Sanjivani K.B.P. Polytechnic, Kopargaon",
+    "short_name": "SRESSKBPPK"
+  },
+  {
+    "dte_code": "4231",
+    "college_name": "Sanmarg Shikshan Sanstha's Late Vasantdada Polytechnic, Nagpur.",
+    "short_name": "SSSLVPN"
+  },
+  {
+    "dte_code": "4238",
+    "college_name": "Sanmarg Shikshan Sanstha, Shri Krushnarao Pandav Polytechnic, Bahadura, Nagpur",
+    "short_name": "SSSSKPPBN"
+  },
+  {
+    "dte_code": "4241",
+    "college_name": "Sanmarg Shikshan Sanstha, Shri Sharadchandra Pawar Polytechnic, Bhilewada",
+    "short_name": "SSSSSPPB"
+  },
+  {
+    "dte_code": "6442",
+    "college_name": "Sant Gajanan Maharaj Rural Polytechnic, Gadhingaj, Kolhapur",
+    "short_name": "SGMRPGK"
+  },
+  {
+    "dte_code": "6828",
+    "college_name": "Sant Tukaram Polytechnic, Indori, Talegaon",
+    "short_name": "STPIT"
+  },
+  {
+    "dte_code": "4251",
+    "college_name": "Sant Tukdoji Maharaj Shikshan Sanstha's Shri Sai Taj Polytechnic, Drugdhamna, Nagpur",
+    "short_name": "STMSSSSTPDN"
+  },
+  {
+    "dte_code": "3282",
+    "college_name": "Saraswati Education Society, Yadavrao Tasgaonkar Polytechnic, Chandha, Nasarapur, Bhivpuri Road Railway",
+    "short_name": "SESYTPCNBRR"
+  },
+  {
+    "dte_code": "3281",
+    "college_name": "Saraswati Education Society,Saraswati Institute of Technology, Kharghar, Navi Mumbai",
+    "short_name": "SESSITKNM"
+  },
+  {
+    "dte_code": "5373",
+    "college_name": "Sarswati Vidya Prasarak Mandal, Aabasaheb Shivajirao Sitaram Patil Institute of Polytechnic, Chichpura, Tal - Dharangaon,Jalgaon",
+    "short_name": "SVPMASSPIPCTDJ"
+  },
+  {
+    "dte_code": "3020",
+    "college_name": "Sasmira's Institute of Manmade Textiles, Mumbai",
+    "short_name": "SIMTM"
+  },
+  {
+    "dte_code": "6407",
+    "college_name": "Satara Education Society's Satara Polytechnic, Satara",
+    "short_name": "SESSPS"
+  },
+  {
+    "dte_code": "5360",
+    "college_name": "Savitabai Phule Shikshan Prasarak Mandal's Rajendra Jotiram Phule Polytechnic, Mirajgaon Tal Karjat. Ahmednagar",
+    "short_name": "SPSPMRJPPMTKA"
+  },
+  {
+    "dte_code": "5368",
+    "college_name": "Seva Shikshan Prasarak Mandal, Dr. N. J. Paulbudhe Institute of Technology, Narayandoho Tal Nagar, Ahmednagar",
+    "short_name": "SSPMDNJPITNTNA"
+  },
+  {
+    "dte_code": "2296",
+    "college_name": "Sevadas Shikshan Prasarak Mandal's Vasantrao Naik Instiute of  Technology, Vasarni, Nanded",
+    "short_name": "SSPMVNITVN"
+  },
+  {
+    "dte_code": "6443",
+    "college_name": "Shanti Education Society, A.G. Patil Polytechnic Institute, Solapur",
+    "short_name": "SESAGPPIS"
+  },
+  {
+    "dte_code": "6436",
+    "college_name": "Sharad Institute of Technology Polytechnic, Yadrav( Ichalkaranji)",
+    "short_name": "SITPYI"
+  },
+  {
+    "dte_code": "2513",
+    "college_name": "Sharda Polytechnic College, At Post Aurad, Shahajani, Nilanga",
+    "short_name": "SPCAPASN"
+  },
+  {
+    "dte_code": "6266",
+    "college_name": "Shetkari Shikshan Mandal's Pad. Vasnatraodada Patil Institute of Technology, Budhgaon,(Diploma) Sangli",
+    "short_name": "SSMPVPITBDS"
+  },
+  {
+    "dte_code": "5007",
+    "college_name": "Shikshan Maharshi Dadasaheb Rawal Government Polytechnic, Dhule",
+    "short_name": "SMDRGPD"
+  },
+  {
+    "dte_code": "6420",
+    "college_name": "Shikshan Prasarak Mandal's Polytechnic,Solapur",
+    "short_name": "SPMPS"
+  },
+  {
+    "dte_code": "5362",
+    "college_name": "Shiva Trust's Ajitdada Pawar College of polytechnic,Vadala Mahadeo, Tal Shrirampur, Ahmednagar",
+    "short_name": "STAPCVMTSA"
+  },
+  {
+    "dte_code": "2175",
+    "college_name": "Shiva Trust's Sharadchanraji Pawar  Polytechnic College, Aurangabad.",
+    "short_name": "STSPPCA"
+  },
+  {
+    "dte_code": "3280",
+    "college_name": "Shivajirao S. Jondhle Polytechnic, Asangaon, Shahapur.Thane",
+    "short_name": "SSJPAST"
+  },
+  {
+    "dte_code": "6799",
+    "college_name": "Shivganga Charitable Trust, Sangli Vishveshwarya Technical Campus, Faculty of Diploma Engineering, Patgaon, Miraj",
+    "short_name": "SCTSVTCFDEPM"
+  },
+  {
+    "dte_code": "6405",
+    "college_name": "Shivnagar Vidya Prasarak Mandal's Institute of Tech. & Engg., Malegaon(Bk.)",
+    "short_name": "SVPMITEMB"
+  },
+  {
+    "dte_code": "2174",
+    "college_name": "Shree Bharavnath Nisarga Mandal, Diploma in Engineering and Technology, Gevrai Tanda, Aurangabad",
+    "short_name": "SBNMDETGTA"
+  },
+  {
+    "dte_code": "6714",
+    "college_name": "Shree Datta Shetakari Sahakari Sakhar Karkhana Ltd. Charitable Trust, Shree Datta Polytechnic College, Dattanagar Tal -Shirol, Dist Kolhapur",
+    "short_name": "SDSSSKLCTSDPCDTSDK"
+  },
+  {
+    "dte_code": "2184",
+    "college_name": "Shree Dhaneshwari Manav Vikas Mandal Diploma In Engineering  And Technology Institute, Hatta, Tal. Basmat, Hingoli",
+    "short_name": "SDMVMDETIHTBH"
+  },
+  {
+    "dte_code": "6447",
+    "college_name": "Shree Pandurang Pratishthan, Karmayogi Polytechnic College, Shelvhe, Tal.Pandharpur",
+    "short_name": "SPPKPCSTP"
+  },
+  {
+    "dte_code": "6402",
+    "college_name": "Shree Prince Shivaji Maratha Boarding House's New Polytechnic, Kolhapur",
+    "short_name": "SPSMBHNPK"
+  },
+  {
+    "dte_code": "6759",
+    "college_name": "Shree Ramchandra College of Engineering, Lonikand,Pune",
+    "short_name": "SRCELP"
+  },
+  {
+    "dte_code": "2168",
+    "college_name": "Shree Sai Samajik Vikas Sanstha, Nath Polytechnic, Paithan, Dist. Aurangabad",
+    "short_name": "SSSVSNPPDA"
+  },
+  {
+    "dte_code": "5356",
+    "college_name": "Shree Samarth Academy’s, Shree Samarth Polytechnic, Mhasane Village Mhasane , Tal.Parner, Ahmednagar",
+    "short_name": "SSASSPMVMTPA"
+  },
+  {
+    "dte_code": "3277",
+    "college_name": "Shree Shankar Narayan Education Trust,Pravin Patil College of Diploma Engg. & Technology, Bhayinder (E) Western Rly",
+    "short_name": "SSNETPPCDETBEWR"
+  },
+  {
+    "dte_code": "1139",
+    "college_name": "Shree Shivaji Education Society's Dr. Panjabrao Deshmukh Girls Polytechnic, Amravati",
+    "short_name": "SSESDPDGPA"
+  },
+  {
+    "dte_code": "1007",
+    "college_name": "Shree Shivaji Education Society's Dr. Panjabrao Deshmukh Polytechnic, Amravati",
+    "short_name": "SSESDPDPA"
+  },
+  {
+    "dte_code": "6437",
+    "college_name": "Shree Vitthal Edu. and Research Institute, College of Engineering (Polytechnic), Gopalpur, Pandharpur",
+    "short_name": "SVERICEPGP"
+  },
+  {
+    "dte_code": "2112",
+    "college_name": "Shree Yash Pratishthan, Shreeyash College of Engineering and Technology, Aurangabad",
+    "short_name": "SYPSCETA"
+  },
+  {
+    "dte_code": "5402",
+    "college_name": "Shree. Kapildhara Polytechnic, Igatpuri.",
+    "short_name": "SKPI"
+  },
+  {
+    "dte_code": "3025",
+    "college_name": "Shri Bhagubhai Mafatlal Polytechnic, Mumbai",
+    "short_name": "SBMPM"
+  },
+  {
+    "dte_code": "5221",
+    "college_name": "Shri Chhatrapati Shivaji Shikshan Sanstha's Indira Gandhi Poly. Belwandi (su) ,Tal -Shrigonda Dist - Ahmednagar",
+    "short_name": "SCSSSIGPBTSDA"
+  },
+  {
+    "dte_code": "2180",
+    "college_name": "Shri Chhatrapati Shivaji Shikshan Sanstha, Vasant Polytechnic College, Beed",
+    "short_name": "SCSSSVPCB"
+  },
+  {
+    "dte_code": "6816",
+    "college_name": "Shri Chimasaheb jagdale Institute of Technology, Narsobawadi, Tal.Shirol,  Kolhapur",
+    "short_name": "SCITNTSK"
+  },
+  {
+    "dte_code": "1247",
+    "college_name": "Shri Dadasaheb Gavai Charitable Trust's Vikramshila Polytechnic,Darapur, Tal. Daryapur, Dist. Amravati",
+    "short_name": "SDGCTVPDTDDA"
+  },
+  {
+    "dte_code": "5259",
+    "college_name": "SHri Dattakrupa Shaikshanik & Krishi Gram Vikas Pratisthan, Shri Siddhivinayak Polytechnic, Karjat, Ahmednagar",
+    "short_name": "SDSKGVPSSPKA"
+  },
+  {
+    "dte_code": "5358",
+    "college_name": "Shri Dattakrupa Shaikshanik & Krushi Gramvikas Pratisthn's Saikrupa Polytechnic, Ghargaon, Tal Shrigonda, Ahmednagar",
+    "short_name": "SDSKGPSPGTSA"
+  },
+  {
+    "dte_code": "2190",
+    "college_name": "Shri Ganesh Shikshan Prasarak Mandal, Balaghat Polytechnic College, Rudha, Latur",
+    "short_name": "SGSPMBPCRL"
+  },
+  {
+    "dte_code": "2285",
+    "college_name": "Shri Govindaprabhu Gramin & Shahari Vikas Sevabhavi Sanstha's MDA Institute of Polytechnic Kolpa, Latur",
+    "short_name": "SGGSVSSMIPKL"
+  },
+  {
+    "dte_code": "4602",
+    "college_name": "Shri Gurudeo Educational Memorial & Cultural Society, Om Polytechnic College, Mauza Parsodi, Tal -Umrer,Nagpur",
+    "short_name": "SGEMCSOPCMPTUN"
+  },
+  {
+    "dte_code": "6423",
+    "college_name": "Shri Jain Vidya Prasarak Mandal's Rasiklal M. Dhariwal Institute of Technology, Chinchwadgaon, Pune",
+    "short_name": "SJVPMRMDITCP"
+  },
+  {
+    "dte_code": "5237",
+    "college_name": "Shri Krishna Education & Cultural Mandal, Shri Gulabrao Deokar Polytechnic, Jalgaon",
+    "short_name": "SKECMSGDPJ"
+  },
+  {
+    "dte_code": "4608",
+    "college_name": "Shri Lalbahaddur Shastri Shikshan Prasarak Mandal, VJ Polytechnic, Mouza Khamona, Tah - Rajura, Chandrapur",
+    "short_name": "SLSSPMVPMKTRC"
+  },
+  {
+    "dte_code": "6728",
+    "college_name": "Shri Narsinha Shikshan Prasarak Mandal,Ramrao Nikam Polytechnic College, Indoli Tal -Karad, Dist -Satara",
+    "short_name": "SNSPMRNPCITKDS"
+  },
+  {
+    "dte_code": "5230",
+    "college_name": "Shri Neminath Jain Bramhacharyasharam's Shri H. H. J. B. Polytechnic,Chandwad",
+    "short_name": "SNJBSHHJBPC"
+  },
+  {
+    "dte_code": "4249",
+    "college_name": "Shri Nirmaladevi Education Soceity's Sonatai Pandav Polytehnic, Paradsinga",
+    "short_name": "SNESSPPP"
+  },
+  {
+    "dte_code": "4230",
+    "college_name": "Shri Sadashivrao Patil Shikshan Sanstha's Kamptee Polytechnic, Kamptee",
+    "short_name": "SSPSSKPK"
+  },
+  {
+    "dte_code": "2298",
+    "college_name": "Shri Sai Institute of Technology(Polytechnic),Aurangabad",
+    "short_name": "SSITPA"
+  },
+  {
+    "dte_code": "2294",
+    "college_name": "Shri Sai Janavikas Pratishtan's Sow.Shardadevi Pandit Polytechnic institute,Alani, Osmanabad",
+    "short_name": "SSJPSSPPAO"
+  },
+  {
+    "dte_code": "4248",
+    "college_name": "Shri Sai Shikshan Sanstha's Nit Polytechnic, Nagpur",
+    "short_name": "SSSSNPN"
+  },
+  {
+    "dte_code": "5228",
+    "college_name": "Shri Shivaji Viddhya Prasarak Sanstha's Bapusaheb Shivajirao Deore Polytechnic, Dhule",
+    "short_name": "SSVPSBSDPD"
+  },
+  {
+    "dte_code": "6722",
+    "college_name": "SHRI SOMESHWAR SHIKSHAN PRASARAK MANDALS SHARADCHANDRA PAWAR INSTITUTE OF TECHNOLOGY SOMESHWARNAGAR.",
+    "short_name": "SSSPMSPIOTS"
+  },
+  {
+    "dte_code": "6452",
+    "college_name": "Shri Umajirao Sanamadikar Medical Foundation's Siddharath Polytechnic, Jath",
+    "short_name": "SUSMFSPJ"
+  },
+  {
+    "dte_code": "6474",
+    "college_name": "Shri Vatavruksha Swami Maharaj Devasthan's, Kai.Kalyanrao (Balasaheb) Ingale Polytechnic College, Akkalkot",
+    "short_name": "SVSMDKKBIPCA"
+  },
+  {
+    "dte_code": "4609",
+    "college_name": "Shri Vyankatesh Shikshan Sanstha's,Shri Vyankatesh Polytechnic, Yelakeli, Ta - Seloo,Wardha",
+    "short_name": "SVSSSVPYTSW"
+  },
+  {
+    "dte_code": "6644",
+    "college_name": "Shri. Ambabai Talim Sanstha's Sanjay Bhokare Group of Institutes, Miraj",
+    "short_name": "SATSSBGIM"
+  },
+  {
+    "dte_code": "5381",
+    "college_name": "Shri. Jaykumar Rawal Institute of Technology, Dondaicha.",
+    "short_name": "SJRITD"
+  },
+  {
+    "dte_code": "2517",
+    "college_name": "Shri. Shivaji Polytechnic Institute, Wasmat road, Parbhani.",
+    "short_name": "SSPIWP"
+  },
+  {
+    "dte_code": "6458",
+    "college_name": "Shri. Siddheshwar Deosthan Trust's Siddheshwar Women's Polytechnic, Solapur",
+    "short_name": "SSDTSWPS"
+  },
+  {
+    "dte_code": "6473",
+    "college_name": "Shri. Venkateshwara Shikshan Sanstha's Nanasaheb Mahadik Polytechnic Institute, Peth",
+    "short_name": "SVSSNMPIP"
+  },
+  {
+    "dte_code": "6470",
+    "college_name": "Shriram Education Soceity's Shivaji Polytechnic, Atpadi, Sangli",
+    "short_name": "SESSPAS"
+  },
+  {
+    "dte_code": "6444",
+    "college_name": "Shriram Institute Of Engineering & Technology, (Poly), Paniv",
+    "short_name": "SIETPP"
+  },
+  {
+    "dte_code": "2197",
+    "college_name": "Shriram Pratishthan, Apurva Polytechnic, Rawalgaon, Parbhani.",
+    "short_name": "SPAPRP"
+  },
+  {
+    "dte_code": "1268",
+    "college_name": "Siddhivinayak Technical Campus, School of Engineering & Research Technology, Shirasgon, Nile",
+    "short_name": "STCSERTSN"
+  },
+  {
+    "dte_code": "6414",
+    "college_name": "Sinhgad Tech Education Society's Sou. Venutai Chavan Polytechnic, Pune",
+    "short_name": "STESSVCPP"
+  },
+  {
+    "dte_code": "3263",
+    "college_name": "Smarth Samaj's S. H. Jondhale Polytechnic, Dombivli",
+    "short_name": "SSSHJPD"
+  },
+  {
+    "dte_code": "3458",
+    "college_name": "Smt. Geeta D. Tatkare Polytechnic At Gove, Kolad",
+    "short_name": "SGDTPAGK"
+  },
+  {
+    "dte_code": "6475",
+    "college_name": "Smt. Premalatai Chavan Polytechnic, Karad",
+    "short_name": "SPCPK"
+  },
+  {
+    "dte_code": "6409",
+    "college_name": "Solapur Education Society's Polytechnic, Solapur",
+    "short_name": "SESPS"
+  },
+  {
+    "dte_code": "3024",
+    "college_name": "Sophia Shree B.K. Somani Memorial Polytechnic), Mumbai",
+    "short_name": "SSBKSMPM"
+  },
+  {
+    "dte_code": "6811",
+    "college_name": "SSDGCT's Sanjay Ghodawat Polytechnic, Kolhapur",
+    "short_name": "SSGPK"
+  },
+  {
+    "dte_code": "3023",
+    "college_name": "St. Xavier's Technical Institute, Mumbai",
+    "short_name": "SXTIM"
+  },
+  {
+    "dte_code": "2522",
+    "college_name": "STMEI's Sandipani Technical Campus -Faculty of Engineering, Latur.",
+    "short_name": "SSTCFEL"
+  },
+  {
+    "dte_code": "5248",
+    "college_name": "Sulochana Behelekar  Samajik & Bahu Uddeshiya Shikshan Sanstha,Dnyaneshwar Polytechnic, Ahmednagar",
+    "short_name": "SBSBUSSDPA"
+  },
+  {
+    "dte_code": "6767",
+    "college_name": "Suman Ramesh Tulsiani Technical Campus: Faculty of Engineering, Kamshet,Pune.",
+    "short_name": "SRTTCFEKP"
+  },
+  {
+    "dte_code": "5254",
+    "college_name": "Sunsuba Polytechnic, Igatpuri",
+    "short_name": "SPI"
+  },
+  {
+    "dte_code": "4613",
+    "college_name": "Suryodaya College of Engineering & Technology, Nagpur",
+    "short_name": "SCETN"
+  },
+  {
+    "dte_code": "2534",
+    "college_name": "Swami Vikekanand Institute of Polytechnic, Latur",
+    "short_name": "SVIPL"
+  },
+  {
+    "dte_code": "6467",
+    "college_name": "Swami Vivekananda Pratisthan, Swami Vivekananda Institute Of Technology,Khed, Solapur",
+    "short_name": "SVPSVITKS"
+  },
+  {
+    "dte_code": "6468",
+    "college_name": "Swami Vivekananda Shikshan Sanstha, Dr. Bapuji Salunkhe Institute Of Engineering & Technology,Kolhapur",
+    "short_name": "SVSSDBSIETK"
+  },
+  {
+    "dte_code": "4181",
+    "college_name": "Swaminarayan Siddhanta Institute Of Technology, Nagpur",
+    "short_name": "SSITN"
+  },
+  {
+    "dte_code": "1150",
+    "college_name": "Swavalambi Shikshan Sanstha's Sushganga Polytechnic, Wani",
+    "short_name": "SSSSPW"
+  },
+  {
+    "dte_code": "6888",
+    "college_name": "Tatyasaheb Kore Institute of Engineering & Technology(Polytechnic), Warananagar",
+    "short_name": "TKIETPW"
+  },
+  {
+    "dte_code": "6810",
+    "college_name": "The Great Maulana Abul Kalam Azad Minority Educational Trust's Maulana Azad Polytechnic, Solapur",
+    "short_name": "GMAKAMETMAPS"
+  },
+  {
+    "dte_code": "5252",
+    "college_name": "The People Education Society's, Diploma College Of Enggineering & Technology,Jamkhed",
+    "short_name": "PESDCETJ"
+  },
+  {
+    "dte_code": "5249",
+    "college_name": "Trimurti Shikshan Prasarak Mandal, Trimurti Institute Of Technology, Paladhi Bk, Jalgaon",
+    "short_name": "TSPMTITPBJ"
+  },
+  {
+    "dte_code": "6824",
+    "college_name": "Trinity Polytechnic, Pune",
+    "short_name": "TPP"
+  },
+  {
+    "dte_code": "6649",
+    "college_name": "TSSM's Bhivarabai Sawant College of Engineering and Research, Narhe, Pune",
+    "short_name": "TBSCERNP"
+  },
+  {
+    "dte_code": "5261",
+    "college_name": "Tulajabhavani Seva Pratisthan, Soniya Gandhi Polytechnic, Shrigonda",
+    "short_name": "TSPSGPS"
+  },
+  {
+    "dte_code": "6625",
+    "college_name": "Universal College of Engineering & Research, Sasewadi",
+    "short_name": "UCERS"
+  },
+  {
+    "dte_code": "3463",
+    "college_name": "Urja Education Society's Aditya Polytechnic, Ratnagiri",
+    "short_name": "UESAPR"
+  },
+  {
+    "dte_code": "2526",
+    "college_name": "V.J.Shinde Polytechnic Institute, Osmanabad.",
+    "short_name": "VJSPIO"
+  },
+  {
+    "dte_code": "5365",
+    "college_name": "Vardhaman Education & Welfare Society,Ahinsa Polytechnic, Post. Dondaicha, Dhule",
+    "short_name": "VEWSAPPDD"
+  },
+  {
+    "dte_code": "3012",
+    "college_name": "Veermata Jijabai Technological Institute(VJTI), Matunga, Mumbai",
+    "short_name": "VJTIVMM"
+  },
+  {
+    "dte_code": "2280",
+    "college_name": "Vetaleshwar Shikshan Sanstha's Rajiv Gandhi Instiute of Polytechnic, Hasegaon Tal. Ausa Dist Latur",
+    "short_name": "VSSRGIPHTADL"
+  },
+  {
+    "dte_code": "4151",
+    "college_name": "Vidarbha Bahu -Uddeshiya Shikshan Sanstha's Tulshiramji Gaikwad Patil College of Engineering & Technology, Nagpur",
+    "short_name": "VBUSSTGPCETN"
+  },
+  {
+    "dte_code": "1142",
+    "college_name": "Vidarbha Youth Welfare Society's Polytechnic, Badnera, Amravati",
+    "short_name": "VYWSPBA"
+  },
+  {
+    "dte_code": "4195",
+    "college_name": "Vidharbha Bahu uddeshiya Shikshan Sanstha's Abha Gaikwad – Patil College of Engineering, Nagpur",
+    "short_name": "VBSSAGPCEN"
+  },
+  {
+    "dte_code": "5408",
+    "college_name": "Vidya Niketan College of Engineering, Bota Sangamner",
+    "short_name": "VNCEBS"
+  },
+  {
+    "dte_code": "3257",
+    "college_name": "Vidya Prasarak Mandal's Polytechnic, Thane",
+    "short_name": "VPMPT"
+  },
+  {
+    "dte_code": "6445",
+    "college_name": "Vidya Pratishthan's Polytechnic College, Vidyanagari, Indapur",
+    "short_name": "VPPCVI"
+  },
+  {
+    "dte_code": "6429",
+    "college_name": "Vidya Vikas Pratishthan  Polytechnic, Solapur",
+    "short_name": "VVPPS"
+  },
+  {
+    "dte_code": "3274",
+    "college_name": "Vidyalankar Polytechnic, Mumbai",
+    "short_name": "VPM"
+  },
+  {
+    "dte_code": "6433",
+    "college_name": "Vidyavardhini Charitable Trust's Abhaysinhraje Bhonsle Institute of Technology, Shahunagar - Shendra, Satara",
+    "short_name": "VCTABITSSS"
+  },
+  {
+    "dte_code": "6472",
+    "college_name": "Vidyavardhini Educational Academy's Vidyavardhini Institute Of Technology,Bhudargad",
+    "short_name": "VEAVITB"
+  },
+  {
+    "dte_code": "3262",
+    "college_name": "Vidyavardhini's Bhausaheb Vartak Polytechnic",
+    "short_name": "VBVP"
+  },
+  {
+    "dte_code": "2254",
+    "college_name": "Vilasrao Deshmukh Foundation Group of Institutions, Latur",
+    "short_name": "VDFGIL"
+  },
+  {
+    "dte_code": "2178",
+    "college_name": "Vinayakrao Patil Shikshan Prasarak Mandal, Institute Of Engineering & Technology Kannad",
+    "short_name": "VPSPMIETK"
+  },
+  {
+    "dte_code": "3445",
+    "college_name": "Vishvatmak Jangli Maharaj Ashram Trust's Vishvatmak Om Gurudev College of Engineering, Mohili -Aghai, Shahpur.",
+    "short_name": "VJMATVOGCEMAS"
+  },
+  {
+    "dte_code": "5179",
+    "college_name": "Vishwabharati Academy's College of Engineering, Ahmednagar",
+    "short_name": "VACEA"
+  },
+  {
+    "dte_code": "2189",
+    "college_name": "Vishweshwarayya Abhiyantriki Padvika Mahavidyalay, Almala, Tq. Ausa, Dist. Latur",
+    "short_name": "VAPMATADL"
+  },
+  {
+    "dte_code": "3421",
+    "college_name": "VIVA College of Diploma Engg &Tech., At. Bolinj, Virar (W) Dist. Thane",
+    "short_name": "VCDETABVWDT"
+  },
+  {
+    "dte_code": "3145",
+    "college_name": "Vivekanand Education Society's Polytechnic, Mumbai",
+    "short_name": "VESPM"
+  },
+  {
+    "dte_code": "4227",
+    "college_name": "Vivekanand Polytechnic,SitaSaongi,Tal -Tumsar,Dist -Bhandara",
+    "short_name": "VPSTTDB"
+  },
+  {
+    "dte_code": "4145",
+    "college_name": "Wainganga College of Engineering and Management, Dongargaon, Nagpur",
+    "short_name": "WCEMDN"
+  },
+  {
+    "dte_code": "4642",
+    "college_name": "Wainganga Polytechnic, Sakoli",
+    "short_name": "WPS"
+  },
+  {
+    "dte_code": "6007",
+    "college_name": "Walchand College of Engineering, Sangli",
+    "short_name": "WCES WCOE"
+  },
+  {
+    "dte_code": "6757",
+    "college_name": "Yashoda Technical Campus, Wadhe, Satara.",
+    "short_name": "YTCWS"
+  },
+  {
+    "dte_code": "3470",
+    "college_name": "Yashwantrao Bhonsale Polytechnic, Charathe, Sawantwadi",
+    "short_name": "YBPCS"
+  },
+  {
+    "dte_code": "3143",
+    "college_name": "Zagdu Singh Charitable Trust's Thakur Polytechnic, Mumbai",
+    "short_name": "ZSCTTPM"
+  },
+  {
+    "dte_code": "6435",
+    "college_name": "Zeal Education Society, Zeal Polytechnic, Narhe Tal. Haveli, Pune",
+    "short_name": "ZESZPNTHP"
+  }
+]
