@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { HashLoader, ScaleLoader } from 'react-spinners';
 import Eventt from './Eventt';
 import { Typewriter } from 'react-simple-typewriter'
 import Search from './Search';
+import { ArrowBigRightDash } from 'lucide-react';
 
 function MainSearch() {
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -30,22 +31,40 @@ function MainSearch() {
     fetchEvents();
   }, [])
 
-  const handleClick = (e) => {
-    navigate('/events')
-  }
-
-  const handleChange = (e) => {
-    navigate('/events')
-  }
-
   return (
     <>
+      <style>
+        {`
+          .shiny-button {
+            position: relative;
+            overflow: hidden;
+          }
+          .shiny-button::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.2) 100%);
+            transform: rotate(25deg);
+            animation: shine 3s infinite;
+          }
+          @keyframes shine {
+            0% {
+              transform: rotate(25deg) translateX(-100%);
+            }
+            100% {
+              transform: rotate(25deg) translateX(100%);
+            }
+          }
+        `}
+      </style>
+
       <div className='text-center'>
-        <p
-          className='my-10 lg:my-0 text-3xl md:text-5xl font-medium' style={{ fontFamily: "'Source Serif 4', sans-serif" }}
-        >
+        <p className='my-10 lg:my-0 text-3xl md:text-5xl font-medium' style={{ fontFamily: "'Source Serif 4', sans-serif" }}>
           Discover India's&nbsp;
-          <br></br>
+          <br />
           <span className='text-amber-400'> best&nbsp;
             <Typewriter
               words={['college', 'technical', 'social']}
@@ -60,12 +79,20 @@ function MainSearch() {
           </span>
           events, <span className='text-amber-400'>all</span> in one place
         </p>
+
         <p className='py-10 hidden lg:block'>Explore events from the most vibrant and creative colleges
           <br />ready to inspire and engage your next experience</p>
 
+        <div className='my-5 md:my-10 lg:my-0'>
+          <div className='px-2 py-2 lg:py-3 lg:px-4 bg-gray-200 m-auto rounded-full flex items-center justify-center text-sm text-center'>
 
-        <div onClick={handleClick} className='my-5 md:my-10 lg:my-0'>
-          <Search handleChange={handleChange} />
+            <p className='shiny-button grow px-3 py-2 lg:py-3 bg-[#0d0c22] ml-2 text-gray-100 rounded-full flex items-center justify-center'>
+              Explore <ArrowBigRightDash className='ml-1' size={20} />
+            </p>
+
+            <NavLink to="/events" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full'>Events</NavLink>
+            <NavLink to="/colleges" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full'>Colleges</NavLink>
+          </div>
         </div>
 
         <div className='hidden lg:flex items-center lg:flex-row justify-center gap-2 my-3 text-sm text-[#535353]'>
@@ -79,10 +106,6 @@ function MainSearch() {
             <ScaleLoader />
           </div>
         )}
-
-      </div>
-      <div className='absolute h-200 block z-99'>
-        <Eventt events={searchResults} />
       </div>
     </>
   )

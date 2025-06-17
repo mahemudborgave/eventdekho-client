@@ -62,7 +62,7 @@ function Eventt({ events }) {
               !location.pathname.startsWith('/admin/eventdetail') && (
                 <div className="flex items-center mb-2">
                   {registeredEventIds.includes(eventt._id) && (
-                    <span className="text-green-600 text-sm italic mr-2">Registered !</span>
+                    <span className="hidden lg:inline-block text-green-600 text-sm italic mr-2">Registered !</span>
                   )}
                   <Link
                     className="inline-block px-7 py-2 bg-[#0d0c22] rounded-full text-white hover:bg-[#0d0c22d2]"
@@ -70,6 +70,9 @@ function Eventt({ events }) {
                   >
                     Get Detail
                   </Link>
+                  {registeredEventIds.includes(eventt._id) && (
+                    <span className="inline-block lg:hidden text-green-600 text-sm italic ml-2">Registered !</span>
+                  )}
                 </div>
               )}
             <p className="italic text-gray-400">

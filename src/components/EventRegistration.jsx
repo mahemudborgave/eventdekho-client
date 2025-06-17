@@ -46,10 +46,10 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
   };
 
   return (
-    <div className='my-10 bg-white lg:p-10 p-5 border-2 border-gray-400 text-black'>
-      <form onSubmit={handleSubmit} className=''>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-          <p className='text-2xl text-center mb-5 lg:[grid-column:span_2]'>Registration Form</p>
+    <div className='my-10 bg-white lg:p-10 p-4 border-1 border-gray-400 text-gray-700'>
+      <form onSubmit={handleSubmit}>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm lg:text-base'>
+          <p className='lg:text-2xl text-lg text-center mb-5 lg:[grid-column:span_2]'>Registration Form</p>
           <div>
             <label htmlFor="studentName" className='block mb-1'>Student Full Name</label>
             <input

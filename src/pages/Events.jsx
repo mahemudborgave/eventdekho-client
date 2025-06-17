@@ -71,7 +71,7 @@ function Events() {
         <div className= 'lg:px-30'>
           
           <div className='lg:w-1/2 mb-10'>
-            <Search handleChange={handleChange} handleClick={handleClick} />
+            <Search handleChange={handleChange} handleClick={handleClick} page="event"/>
           </div>
 
           {(events.length === 0 ? (
@@ -83,7 +83,6 @@ function Events() {
           }
 
         </div>
-        <div className='h-81'></div>
     </>
   )
 }

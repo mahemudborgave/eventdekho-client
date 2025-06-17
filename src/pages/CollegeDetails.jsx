@@ -75,8 +75,8 @@ function CollegeDetails() {
     <>
       <div className='mb-8'>
         {/* <div className='bg-gray-600 w-20 h-20 rounded-3xl mr-3'><img src="" alt="" /></div> */}
-        <div className='w-full bg-gray-200 p-10'>
-          <p className='text-amber-600 text-4xl mb-4'>{college.collegeName}</p>
+        <div className='w-full bg-gray-100 lg:p-10 p-4'>
+          <p className='text-amber-600 lg:text-2xl mb-4'>{college.collegeName}</p>
           <span className='border px-4 text-violet-500 mr-2'>Code - {college.collegeCode}</span>
           <span className='border px-4 text-green-500'> Total events - {collegeEvents.length}</span>
         </div>

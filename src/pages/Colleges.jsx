@@ -62,7 +62,7 @@ function Colleges() {
     <>
       <div>
         <div className="lg:w-1/2 mb-10">
-          <Search handleChange={handleChange} handleClick={handleClick} />
+          <Search handleChange={handleChange} handleClick={handleClick} page="colleges"/>
         </div>
         <div className="bg-white overflow-hidden w-full">
           <table className="w-full text-center text-xs lg:text-base">
@@ -85,7 +85,7 @@ function Colleges() {
                     <td className="lg:p-4 p-1 hidden lg:block">{college.dte_code}</td>
                     <td className="lg:p-4 p-2">{college.college_name}</td>
                     <td className="lg:p-4 p-1">
-                      <Link to={`/collegeDetails/${college.dte_code}`} className="inline-block px-5 py-2 bg-[#0d0c22] rounded-full text-white text-xs lg:text-sm">View Events</Link>
+                      <Link to={`/collegeDetails/${college.dte_code}`} className="inline-block px-5 py-2 bg-[#0d0c22] rounded-full text-white text-xs lg:text-sm"><span className="hidden lg:inline-block">View</span> Events</Link>
                     </td>
                   </tr>
                 ))

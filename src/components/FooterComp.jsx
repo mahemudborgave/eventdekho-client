@@ -34,8 +34,8 @@ function FooterComp() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/contact" className="hover:underline">
-                Contact
+              <NavLink to="/myParticipations" className="hover:underline">
+                My Participations
               </NavLink>
             </li>
           </ul>
