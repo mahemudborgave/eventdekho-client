@@ -91,9 +91,9 @@ function EventRegistrationsAdmin() {
   };
 
   return (
-    <div className='mx-[100px] py-10'>
+    <div className='lg:px-[100px] px-3 py-10'>
       <div className="mb-6">
-        <div className='flex justify-between'>
+        <div className='flex flex-col lg:flex-row justify-between'>
           <h2 className="text-xl font-semibold text-[#232946] mb-5">Event Registrations</h2>
           <div className="flex mt-4 space-x-3">
             <button
@@ -110,13 +110,14 @@ function EventRegistrationsAdmin() {
             </button>
           </div>
         </div>
+
         {eventInfo.eventName && (
-          <p className="text-sm text-gray-700 mt-2 inline-block">
+          <p className="text-sm text-gray-700 lg:mt-2 mt-4 inline-block">
             <span className="font-medium">Event:</span> {eventInfo.eventName}
           </p>
         )}
         {eventInfo.collegeName && (
-          <p className="text-sm text-gray-700 inline-block ml-5">
+          <p className="text-sm text-gray-700 inline-block lg:ml-5">
             <span className="font-medium">College:</span> {eventInfo.collegeName}
           </p>
         )}
@@ -128,8 +129,9 @@ function EventRegistrationsAdmin() {
       ) : registrations.length === 0 ? (
         <div className="text-gray-500">No registrations yet.</div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-xl">
+        <div className="w-full overflow-x-auto">
+              <div className="inline-block min-w-max">
+                <table className="table-auto bg-white shadow-md rounded-xl">
             <thead>
               <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
                 <th className="py-3 px-2 text-left">#</th>
@@ -159,6 +161,7 @@ function EventRegistrationsAdmin() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>
