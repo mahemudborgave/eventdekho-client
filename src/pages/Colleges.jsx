@@ -52,7 +52,7 @@ function Colleges() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-10">
+      <div className="flex justify-center items-center p-10 mb-100">
         <ScaleLoader />
       </div>
     );

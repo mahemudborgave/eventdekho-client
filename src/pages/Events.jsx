@@ -58,7 +58,7 @@ function Events() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center p-10">
+      <div className="flex justify-center items-center p-10 mb-100">
         <ScaleLoader />
       </div>
     )
@@ -75,7 +75,7 @@ function Events() {
           </div>
 
           {(events.length === 0 ? (
-            <div className="text-center mt-20 text-gray-500 text-lg">
+            <div className="text-center mt-20 text-gray-500 text-lg mb-100">
               No matching events found.
             </div>
           )

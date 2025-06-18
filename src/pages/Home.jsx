@@ -8,12 +8,14 @@ import i4 from '../assets/images/illustration4.svg'
 import CompaniesCoro from '../components/CompaniesCoro'
 import { NavLink } from 'react-router-dom'
 import { ArrowBigRightDash } from 'lucide-react'
+import HomeRecent from '../components/HomeRecent'
+import NumbersComp from '../components/NumbersComp'
 
 function Home() {
     return (
         <>
-            <div className='grid md:grid-cols-2 grid-cols-1  items-center'>
-                <div className='block w-full h-[300px] lg:h-[500px] overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative'>
+            <div className='grid md:grid-cols-2 grid-cols-1 items-center bg-gray-100 py-10'>
+                <div className='block w-full h-[300px] lg:h-[420px] overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative'>
                     <Carousel slideInterval={1000} className="overflow-hidden">
                         <div className='flex justify-center w-full h-full'>
                             <img src={i1} alt="..." className='w-full h-full' />
@@ -34,9 +36,16 @@ function Home() {
                     <MainSearch />
                 </div>
             </div>
-            <div className='my-10 lg:my-20 block'>
+            <div className='py-10 lg:py-20 block'>
                 <CompaniesCoro />
             </div>
+            <div>
+                <HomeRecent />
+            </div>
+            <div>
+                <NumbersComp />
+            </div>
+            
         </>
     )
 }

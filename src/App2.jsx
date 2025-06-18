@@ -10,7 +10,7 @@ function App2() {
     <>
       <Navbar />
       <div className='h-20 lg:h-30'></div>
-      <div className='2xl:mx-[200px] px-4'>
+      <div className='2xl:px-[200px] px-4'>
         <Outlet />
       </div>
       <FooterComp />

@@ -53,7 +53,7 @@ function Eventt({ events }) {
               {eventt.collegeCode} - {eventt.collegeName}
             </p>
             <div className="flex flex-col lg:flex-row lg:gap-3 lg:items-center text-gray-500">
-              <span><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {new Date(eventt.eventDate).toLocaleDateString('en-CA')}</span>
+              <span><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {new Date(eventt.eventDate).toLocaleDateString('en-GB').replace(/\//g, '-')}</span>
               <span><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span>
             </div>
           </div>

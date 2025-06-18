@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import PasswordIcon from '@mui/icons-material/Password';
 import MailIcon from '@mui/icons-material/Mail';
 import UserContext from '../context/UserContext';
+import { ScaleLoader } from 'react-spinners';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 function Login() {
     const baseURL = import.meta.env.VITE_BASE_URL;
@@ -16,22 +19,22 @@ function Login() {
     const { email, setEmail } = useContext(UserContext);
     const { token, setToken } = useContext(UserContext);
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); // loader state
 
     const handleChange = (e) => {
-        if (e.target.name == 'email') {
-            const value = e.target.value;
-            setEmail(value);
-            console.log(email);
+        if (e.target.name === 'email') {
+            setEmail(e.target.value);
         }
-        else if (e.target.name == 'password') {
+        else if (e.target.name === 'password') {
             setPassword(e.target.value);
         }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);  // Show loader
         try {
-            const res = await axios.post(`${baseURL}:${port}/login/login`, { email, password })
+            const res = await axios.post(`${baseURL}:${port}/login/login`, { email, password });
 
             if (res.data.token) {
                 localStorage.setItem('token', res.data.token);
@@ -39,16 +42,10 @@ function Login() {
                 localStorage.setItem('email', res.data.user.email);
                 setUser(res.data.user.name);
                 setToken(res.data.token);
-                console.log((user));
-                toast.success("Logged In!", {
-                    autoClose: 1000
-                });
-
+                toast.success("Logged In!", { autoClose: 1000 });
                 setTimeout(() => {
-                    navigate(-1);
-                }, 0);
-                console.log('some');
-
+                    navigate('/');
+                }, 1000);
             } else {
                 toast.error("Login failed: No username received", { autoClose: 1000 });
             }
@@ -63,6 +60,9 @@ function Login() {
             } else {
                 toast.error("Network or server error");
             }
+        }
+        finally {
+            setLoading(false); // Hide loader
         }
     }
 
@@ -81,7 +81,7 @@ function Login() {
                     <form onSubmit={handleSubmit}>
                         <div className='flex items-center justify-start bg-gray-100 w-full mb-4 p-2 '>
                             <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                            <input type="email" name="email" id="" placeholder='Enter your email' className='focus:outline-0 text-sm grow' onChange={handleChange} required />
+                            <input type="email" name="email" placeholder='Enter your email' className='focus:outline-0 text-sm grow' onChange={handleChange} required />
                         </div>
                         <div className='flex items-center justify-start bg-gray-100 w-full mb-7 p-2 '>
                             <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
@@ -97,7 +97,14 @@ function Login() {
                     <Link to='/register' className='text-[#8d8d8d] group text-sm'>New User ? <span className='group-hover:text-amber-500'>Register</span></Link>
                 </div>
             </div>
-            {/* <ToastContainer /> */}
+
+            <Modal open={loading} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Box className="flex justify-center items-center h-screen">
+                    <ScaleLoader color="#FF9C16" />
+                </Box>
+            </Modal>
+
+            <ToastContainer />
         </>
     )
 }

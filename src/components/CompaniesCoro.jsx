@@ -24,34 +24,34 @@ function CompaniesCoro() {
 
       <Marquee speed={100} gradient={false}>
         <div className='mr-20'>
-          <img src={c1} alt="" className='block h-7 lg:h-10' />
+          <img src={c1} alt="" className='block h-7 ' />
         </div>
         <div className='mr-20'>
-          <img src={c2} alt="" className='block h-7 lg:h-10' />
+          <img src={c2} alt="" className='block h-7 ' />
         </div>
         <div className='mr-20'>
-          <img src={c3} alt="" className='block h-7 lg:h-10' />
+          <img src={c3} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c4} alt="" className='block h-7 lg:h-10' />
+          <img src={c4} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c5} alt="" className='block h-7 lg:h-10' />
+          <img src={c5} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c6} alt="" className='block h-7 lg:h-10' />
+          <img src={c6} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c7} alt="" className='block h-7 lg:h-10' />
+          <img src={c7} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c8} alt="" className='block h-7 lg:h-10' />
+          <img src={c8} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c9} alt="" className='block h-7 lg:h-10' />
+          <img src={c9} alt="" className='block h-7' />
         </div>
         <div className='mr-20'>
-          <img src={c10} alt="" className='block h-7 lg:h-10' />
+          <img src={c10} alt="" className='block h-7' />
         </div>
 
       </Marquee>

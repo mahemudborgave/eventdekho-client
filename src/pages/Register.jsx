@@ -2,37 +2,35 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import PasswordIcon from '@mui/icons-material/Password';
 import MailIcon from '@mui/icons-material/Mail';
 import Face6Icon from '@mui/icons-material/Face6';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { ScaleLoader } from 'react-spinners';  // Using same loader as Login
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 function Register() {
 
     const baseURL = import.meta.env.VITE_BASE_URL;
     const port = import.meta.env.VITE_PORT;
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rpassword, setRPassword] = useState('');
     const [role, setRole] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
-        if (e.target.name == 'name') {
-            setName(e.target.value);
-        }
-        else if (e.target.name == 'email') {
-            setEmail(e.target.value);
-        }
-        else if (e.target.name == 'password') {
-            setPassword(e.target.value);
-        }
-        else if (e.target.name == 'rpassword') {
-            setRPassword(e.target.value);
-        }
+        const { name, value } = e.target;
+        if (name === 'name') setName(value);
+        else if (name === 'email') setEmail(value);
+        else if (name === 'password') setPassword(value);
+        else if (name === 'rpassword') setRPassword(value);
     }
 
     const handleSubmit = async (e) => {
@@ -44,14 +42,19 @@ function Register() {
             return;
         }
 
+        if (password !== rpassword) {
+            toast.warn("Password does not match");
+            return;
+        }
+
         try {
-            if (password != rpassword) {
-                toast.warn("Password does not match");
-            }
-            else {
-                const res = await axios.post(`${baseURL}:${port}/login/register`, { name, email, password, role })
-                // console.log(res);
-                toast.success("Sign Up successful");
+            setLoading(true);
+            const res = await axios.post(`${baseURL}:${port}/login/register`, { name, email, password, role });
+            if (res) {
+                toast.success("Sign Up successful", { autoClose: 1000 });
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1000);
             }
         }
         catch (error) {
@@ -65,14 +68,15 @@ function Register() {
                 toast.error("Network or server error");
             }
         }
+        finally {
+            setLoading(false);
+        }
     }
-
 
     return (
         <>
             <div className='flex lg:w-[900px] w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:shadow-[5px_5px_20px_rgba(0,0,0,0.3)]'>
-                <div
-                    className='w-[50%] hidden lg:flex justify-center items-center text-white font-bold'
+                <div className='w-[50%] hidden lg:flex justify-center items-center text-white font-bold'
                     style={{
                         background: 'linear-gradient(90deg, hsla(34, 100%, 54%, 1) 2%, hsla(39, 100%, 58%, 1) 53%, hsla(43, 100%, 60%, 1) 87%)'
                     }}>
@@ -88,13 +92,12 @@ function Register() {
                         </div>
                         <div className='flex items-center justify-start bg-gray-100 w-full mb-4 p-2 '>
                             <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                            <input type="email" name="email" id="" placeholder='Enter your email' className='block focus:outline-0 text-sm' onChange={handleChange} required />
+                            <input type="email" name="email" placeholder='Enter your email' className='block focus:outline-0 text-sm' onChange={handleChange} required />
                         </div>
                         <div className='flex justify mb-4'>
                             <label
                                 htmlFor="student"
-                                className={`p-2 text-sm mr-2 flex items-center grow ${role === 'student' ? 'bg-gray-300 border border-gray-400' : 'bg-gray-100'}`}
-                            >
+                                className={`p-2 text-sm mr-2 flex items-center grow ${role === 'student' ? 'bg-gray-300 border border-gray-400' : 'bg-gray-100'}`}>
                                 <input
                                     type="radio"
                                     name="role"
@@ -133,19 +136,23 @@ function Register() {
                             <input type="password" name="rpassword" placeholder='Reenter password' className='block focus:outline-0 text-sm' onChange={handleChange} required />
                         </div>
 
-                        <Button
-                            type="submit"
+                        <Button type="submit"
                             variant="contained"
                             sx={{ backgroundColor: '#FF9C16', mb: 2, display: 'block', fontWeight: 'bold', color: '#fff', width: '100%' }}
                         >Register</Button>
                     </form>
                     <Link to='/login' className='text-[#8d8d8d] group text-sm'>Have account ? <span className='group-hover:text-amber-500'>Login Here</span></Link>
-
                 </div>
             </div>
+
+            <Modal open={loading} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Box className="flex justify-center items-center h-screen">
+                    <ScaleLoader color="#FF9C16" />
+                </Box>
+            </Modal>
+
             <ToastContainer />
         </>
-
     )
 }
 

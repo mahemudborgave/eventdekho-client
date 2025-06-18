@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { User, AlignRight, X } from 'lucide-react';
+import { User, AlignRight, X, House, LogIn, LayoutDashboard } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
 import eventdekhoLogo from '../assets/images/eventdekho-logo.png';
 import UserContext from '../context/UserContext';
@@ -53,18 +53,18 @@ function Navbar() {
 
                 {/* Shared Menu */}
                 <div className={`absolute text-start lg:static top-[70px] left-0 w-full lg:w-auto bg-white lg:bg-transparent px-6 lg:px-0 transition-all duration-300 ease-in-out overflow-hidden ${menuOpen ? 'max-h-[500px] py-4 shadow-md' : 'max-h-0 py-0'} lg:max-h-none lg:flex lg:items-center`}>
-                    <ul className='flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-0'>
+                    <ul className='flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-0 '>
                         <li>
-                            <NavLink to="/" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'text-amber-500 px-5 py-1 border-b' : 'black px-5 py-2'}>Home</NavLink>
+                            <NavLink to="/" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? ' block text-[#0d0c22] px-5 py-2 lg:border-b border-l lg:border-l-0' : 'block black px-5 py-2'}>Home</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/events" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'text-amber-500 px-5 py-1 border-b' : 'black px-5 py-2'}>Events</NavLink>
+                            <NavLink to="/events" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? ' block text-[#0d0c22] px-5 py-2 lg:border-b border-l lg:border-l-0' : 'block black px-5 py-2'}>Events</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/colleges" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'text-amber-500 px-5 py-1 border-b' : 'black px-5 py-2'}>Colleges</NavLink>
+                            <NavLink to="/colleges" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? ' block text-[#0d0c22] px-5 py-2 lg:border-b border-l lg:border-l-0' : 'block black px-5 py-2'}>Colleges</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/myParticipations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'text-amber-500 px-5 py-1 border-b' : 'black px-5 py-2'}>My Participations</NavLink>
+                            <NavLink to="/myParticipations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? ' block text-[#0d0c22] px-5 py-2 lg:border-b border-l lg:border-l-0' : 'block black px-5 py-2'}>My Participations</NavLink>
                         </li>
                     </ul>
                     <div className='mt-8 flex flex-col items-center justify-start my-5 lg:hidden'>
@@ -75,15 +75,16 @@ function Navbar() {
                         )}
                         {!isValid ? (
                             <div className='flex justify-center items-center'>
-                                <Link to="/login" onClick={() => setMenuOpen(false)} className='inline-block mr-1` px-5 py-1 lg:px-5 lg:py-2 bg-[#0d0c22] rounded-full border text-white'>Log in</Link>
+                                <Link to="/login" onClick={() => setMenuOpen(false)} className='flex items-center mr-1` px-5 py-1 lg:px-5 lg:py-2 bg-[#0d0c22] rounded-full border text-white'><LogIn size={18} className='mr-2'/>Log in</Link>
 
                                 <Link to="/register" onClick={() => setMenuOpen(false)} className='px-5 py-1 lg:px-5 lg:py-2 rounded-full hover:bg-[#bebdbd4f] lg:hover:none'>Sign up</Link>
 
                             </div>
                         ) : (
-                            <div className='flex items-center px-5 py-2'>
-                                Welcome, <span className='text-amber-400 ml-1'>{user}</span>
-                                <Link to='/studentprofile' onClick={() => setMenuOpen(false)}>
+                            <div className=''>
+
+                                <Link to='/studentprofile' onClick={() => setMenuOpen(false)} className='hover:underline flex items-center px-5 py-2'>
+                                    Welcome, <span className='text-amber-400 ml-1'>{user}</span>
                                     <User size={28} className='ml-2 bg-amber-300 p-1 rounded-full hover:outline-amber-100 hover:outline-offset-2' />
                                 </Link>
                             </div>
@@ -93,23 +94,26 @@ function Navbar() {
                 </div>
                 <div className='hidden lg:flex items-center'>
                     {role === "organizer" && (
-                        <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)} className='px-5 py-1 text-black border rounded-full hover:bg-[#bebdbd4f] hover:border-[#bebdbd4f]'>
-                            Dashboard
+                        <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)} className='px-5 py-1 text-black border rounded-full hover:bg-[#bebdbd4f] hover:border-[#bebdbd4f] flex gap-2'>
+                           Dashboard
                         </NavLink>
                     )}
                     {!isValid ? (
                         <div className='flex justify-start items-center ml-10'>
-                            <Link to="/login" onClick={() => setMenuOpen(false)} className='inline-block mr-3 px-5 py-1 lg:px-5 lg:py-2 bg-[#0d0c22] rounded-full border text-white'>Log in</Link>
+                            <Link to="/login" className='flex items-center mr-1 px-5 py-1 lg:px-5 lg:py-2 bg-[#0d0c22] rounded-full border text-white'><LogIn size={18} className='mr-2'/>Log in</Link>
 
-                            <Link to="/register" onClick={() => setMenuOpen(false)} className='px-5 py-1 lg:px-5 lg:py-2 rounded-full hover:bg-[#bebdbd4f] lg:hover:none'>Sign up</Link>
+                            <Link to="/register" className='px-5 py-1 lg:px-5 lg:py-2 rounded-full hover:bg-[#bebdbd4f] lg:hover:none'>Sign up</Link>
 
                         </div>
                     ) : (
                         <div className='flex items-center px-5 py-2'>
                             Welcome, <span className='text-amber-400 ml-1'>{user}</span>
-                            <Link to='/studentprofile' onClick={() => setMenuOpen(false)}>
-                                <User size={28} className='ml-2 bg-amber-300 p-1 rounded-full hover:outline-amber-100 hover:outline-offset-2' />
+                            <Link to='/studentprofile'>
+                                <div className='ml-2 bg-amber-300 p-2 rounded-full hover:outline-3 hover:outline-amber-100 hover:outline-offset-2'>
+                                    <User size={20} />
+                                </div>
                             </Link>
+
                         </div>
                     )}
                 </div>
