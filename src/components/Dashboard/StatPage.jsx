@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
+import { ScaleLoader } from 'react-spinners';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
@@ -11,6 +12,7 @@ function StatPage() {
   const [chartData, setChartData] = useState([]);
   const [timeRange, setTimeRange] = useState("week");
   const [isShow, setIsShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { email, token } = useContext(UserContext);
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -63,6 +65,8 @@ function StatPage() {
       if (StoredToken && response) {
         setIsShow(true);
         fetchStats();
+      } else {
+        setLoading(false);
       }
     };
 
@@ -84,6 +88,8 @@ function StatPage() {
         updateChart(timeRange);
       } catch (err) {
         console.error('Error fetching stats:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -94,6 +100,14 @@ function StatPage() {
     updateChart(timeRange);
   }, [timeRange]);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center p-10">
+        <ScaleLoader />
+      </div>
+    );
+  }
+
   if (!token) {
     return (
       <Link to='/login' className="block p-8 text-center text-red-700 underline">
@@ -103,23 +117,17 @@ function StatPage() {
   }
 
   return (
-    <main className="flex-1 min-h-screen p-8">
+    <main className="flex-1 min-h-screen lg:p-8 p-2">
       <div className="flex items-center mb-8">
-        <h1 className="text-2xl font-bold tracking-tight">
+        <h1 className="text-2xl lg:text-2xl font-bold tracking-tight">
           <span className="text-[#FFD600]">Event</span>dekho Dashboard
         </h1>
         <div className="flex-1" />
-        <button className="border border-[#FFD600] text-[#FFD600] px-4 py-2 rounded-full font-medium mr-2 hover:bg-[#FFD600] hover:text-white transition">
-          Download Reports
-        </button>
-        <button className="border border-[#FFD600] text-white px-3 py-2 rounded-full mr-2">🌙</button>
-        <button className="border border-[#FFD600] text-white px-3 py-2 rounded-full mr-2">🔔</button>
-        <button className="border border-[#FFD600] text-white px-3 py-2 rounded-full">⚙️</button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-white p-4 flex items-center gap-4 shadow border border-gray-100">
+          <div key={stat.label} className="bg-white lg:p-4 p-2 flex items-center gap-4 shadow border border-gray-100">
             <div className="text-2xl text-[#FFD600]">📊</div>
             <div>
               <div className="text-lg font-bold">{stat.value}</div>
@@ -130,7 +138,7 @@ function StatPage() {
         ))}
       </div>
 
-      <div className="flex items-center gap-4 mb-4">
+      <div className="flex items-center gap-4 mb-4 overflow-auto">
         <h2 className="text-xl font-semibold text-gray-700">Growth Chart</h2>
         <select
           className="ml-auto border px-3 py-1 rounded"
@@ -143,19 +151,21 @@ function StatPage() {
         </select>
       </div>
 
-      <div className="bg-white p-6 rounded shadow mb-8">
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="label" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="Hosted" stroke="#FFD600" strokeWidth={3} dot={{ r: 4 }} />
-            <Line type="monotone" dataKey="Registrations" stroke="#4FD1C5" strokeWidth={3} dot={{ r: 4 }} />
-            <Line type="monotone" dataKey="Upcoming" stroke="#F56565" strokeWidth={3} dot={{ r: 4 }} />
-          </LineChart>
-        </ResponsiveContainer>
+      <div className='overflow-scroll'>
+        <div className="bg-white lg:p-6 p-4 rounded shadow mb-8 w-200">
+          <ResponsiveContainer height={300}>
+            <LineChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="label" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="Hosted" stroke="#FFD600" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="Registrations" stroke="#4FD1C5" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="Upcoming" stroke="#F56565" strokeWidth={3} dot={{ r: 4 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded-md shadow-sm">

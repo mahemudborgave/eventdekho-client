@@ -67,7 +67,7 @@ function MainSearch() {
           <br />
           <span className='text-amber-400'> best&nbsp;
             <Typewriter
-              words={['college', 'technical', 'social']}
+              words={['technical', 'non-technical', 'social']}
               loop={true}
               cursor
               cursorStyle="|"

@@ -29,7 +29,7 @@ function HomeRecent() {
     }, []);
 
     return (
-        <div className="py-10">
+        <div className="py-10 lg:py-20">
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold text-[#0d0c22]">Recently Added</h2>
                 <Link to="/events" className="px-5 py-2 bg-[#0d0c22] text-white rounded-full hover:bg-[#242238]">

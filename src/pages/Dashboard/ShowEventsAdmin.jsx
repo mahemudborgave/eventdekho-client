@@ -121,33 +121,37 @@ function ShowEventsAdmin() {
   return (
     <>
       {isShow ? (
-        <div className="h-full bg-[#F5F6FA] w-full px-[50px] pt-10">
-          <div className="mb-5 flex justify-between">
-            <h1 className="text-2xl font-bold tracking-tight">
+        <div className="h-full bg-[#F5F6FA] w-full lg:px-[50px] px-3 pt-10">
+          <div className="mb-5 flex flex-col lg:flex-row justify-between">
+            <h1 className="text-2xl font-bold tracking-tight mb-3 lg:mb-0">
               Your events
             </h1>
-            <div className="flex gap-3">
+            <div className="flex flex-col lg:flex-row gap-3">
               <div className="flex gap-3">
                 <button
                   onClick={exportToPDF}
                   className="flex gap-2 items-center bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                 >
-                  <FileText size={20}/>Export as PDF
+                  <FileText size={20} />Export as PDF
                 </button>
                 <button
                   onClick={exportToExcel}
                   className="flex gap-2 items-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                 >
-                  <FileSpreadsheet size={20}/>Export as Excel
+                  <FileSpreadsheet size={20} />Export as Excel
                 </button>
               </div>
 
-              <button className="bg-blue-500 text-white px-3 py-1 rounded mr-1 hover:bg-blue-600">
-                1 - View Details
-              </button>
-              <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
-                2 - View Registrations
-              </button>
+              <div className="flex">
+
+                <button className="bg-blue-500 text-white px-3 py-1 rounded mr-1 hover:bg-blue-600">
+                  1 - View Details
+                </button>
+                <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                  2 - View Registrations
+                </button>
+              </div>
+
             </div>
           </div>
           {events.length === 0 ? (
@@ -155,9 +159,10 @@ function ShowEventsAdmin() {
               You haven't posted any events yet.
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white shadow-md rounded-xl">
-                <colgroup>
+            <div className="w-full overflow-x-auto">
+              <div className="inline-block min-w-max">
+                <table className="table-auto bg-white shadow-md rounded-xl">
+                  {/* <colgroup>
                   <col className="w-[5%]" />
                   <col className="w-[15%]" />
                   <col className="w-[23%]" />
@@ -167,49 +172,52 @@ function ShowEventsAdmin() {
                   <col className="w-[10%]" />
                   <col className="w-[10%]" />
                   <col className="w-[5%]" />
-                </colgroup>
-                <thead>
-                  <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
-                    <th className="py-3 px-4 text-left">#</th>
-                    <th className="py-3 px-6 text-left">Event Name</th>
-                    <th className="py-3 px-6 text-left">College</th>
-                    <th className="py-3 px-6 text-left">Code</th>
-                    <th className="py-3 px-6 text-left">Date</th>
-                    <th className="py-3 px-6 text-left">Location</th>
-                    <th className="py-3 px-6 text-left">Posted On</th>
-                    <th className="py-3 px-6 text-left">Close On</th>
-                    <th className="py-3 px-6 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-700 text-sm">
-                  {events.map((event, index) => (
-                    <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                      <td className="py-3 px-4">{index + 1}</td>
-                      <td className="py-3 px-6">{event.eventName}</td>
-                      <td className="py-3 px-6">{event.collegeName}</td>
-                      <td className="py-3 px-6">{event.collegeCode}</td>
-                      <td className="py-3 px-6">{formatDate(event.eventDate)}</td>
-                      <td className="py-3 px-6">{event.eventLocation}</td>
-                      <td className="py-3 px-6">{formatDate(event.postedOn)}</td>
-                      <td className="py-3 px-6">{formatDate(event.closeOn)}</td>
-                      <td className="py-3 px-6 text-center">
-                        <Link
-                          to={`/admin/eventdetail/${event._id}`}
-                          className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
-                        >
-                          1
-                        </Link>
-                        <Link
-                          to={`/admin/eventregistrationsadmin/${event._id}`}
-                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                        >
-                          2
-                        </Link>
-                      </td>
+                </colgroup> */}
+                  <thead>
+                    <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
+                      <th className="py-3 px-4 text-left">#</th>
+                      <th className="py-3 px-6 text-left">Event Name</th>
+                      <th className="py-3 px-6 text-left">College</th>
+                      <th className="py-3 px-6 text-left">Code</th>
+                      <th className="py-3 px-6 text-left">Date</th>
+                      <th className="py-3 px-6 text-left">Location</th>
+                      <th className="py-3 px-6 text-left">Posted On</th>
+                      <th className="py-3 px-6 text-left">Close On</th>
+                      <th className="py-3 px-6 text-center">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="text-gray-700 text-sm">
+                    {events.map((event, index) => (
+                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+                        <td className="py-3 px-4">{index + 1}</td>
+                        <td className="py-3 px-6">{event.eventName}</td>
+                        <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
+                          {event.collegeName}
+                        </td>
+                        <td className="py-3 px-6">{event.collegeCode}</td>
+                        <td className="py-3 px-6">{formatDate(event.eventDate)}</td>
+                        <td className="py-3 px-6">{event.eventLocation}</td>
+                        <td className="py-3 px-6">{formatDate(event.postedOn)}</td>
+                        <td className="py-3 px-6">{formatDate(event.closeOn)}</td>
+                        <td className="py-3 px-6 text-center">
+                          <Link
+                            to={`/admin/eventdetail/${event._id}`}
+                            className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
+                          >
+                            1
+                          </Link>
+                          <Link
+                            to={`/admin/eventregistrationsadmin/${event._id}`}
+                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                          >
+                            2
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>

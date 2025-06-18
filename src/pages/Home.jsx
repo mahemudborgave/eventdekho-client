@@ -10,6 +10,7 @@ import { NavLink } from 'react-router-dom'
 import { ArrowBigRightDash } from 'lucide-react'
 import HomeRecent from '../components/HomeRecent'
 import NumbersComp from '../components/NumbersComp'
+import UserComp from '../components/UserComp'
 
 function Home() {
     return (
@@ -36,7 +37,10 @@ function Home() {
                     <MainSearch />
                 </div>
             </div>
-            <div className='py-10 lg:py-20 block'>
+            <div className=''>
+                <UserComp />
+            </div>
+            <div className='py-10 lg:py-0 block'>
                 <CompaniesCoro />
             </div>
             <div>
