@@ -134,7 +134,7 @@ function EventRegistrationsAdmin() {
                 <table className="table-auto bg-white shadow-md rounded-xl">
             <thead>
               <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
-                <th className="py-3 px-2 text-left">#</th>
+                <th className="py-3 px-2 text-left sticky left-0 z-10 bg-gray-200">#</th>
                 <th className="py-3 px-4 text-left">Name</th>
                 <th className="py-3 px-4 text-left">Email</th>
                 <th className="py-3 px-4 text-left">College</th>
@@ -148,7 +148,7 @@ function EventRegistrationsAdmin() {
             <tbody className="text-gray-700 text-sm">
               {registrations.map((reg, index) => (
                 <tr key={reg._id} className="border-b border-gray-200 hover:bg-gray-100">
-                  <td className="py-3 px-2">{index + 1}</td>
+                  <td className="py-3 px-2 sticky left-0 z-10 bg-white">{index + 1}</td>
                   <td className="py-3 px-4">{reg.studentName}</td>
                   <td className="py-3 px-4">{reg.email}</td>
                   <td className="py-3 px-4">{reg.studentCollegeName}</td>

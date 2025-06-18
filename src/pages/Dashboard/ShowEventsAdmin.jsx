@@ -175,7 +175,7 @@ function ShowEventsAdmin() {
                 </colgroup> */}
                   <thead>
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
-                      <th className="py-3 px-4 text-left">#</th>
+                      <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
                       <th className="py-3 px-6 text-left">Event Name</th>
                       <th className="py-3 px-6 text-left">College</th>
                       <th className="py-3 px-6 text-left">Code</th>
@@ -189,7 +189,7 @@ function ShowEventsAdmin() {
                   <tbody className="text-gray-700 text-sm">
                     {events.map((event, index) => (
                       <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                        <td className="py-3 px-4">{index + 1}</td>
+                        <td className="py-3 px-4 sticky left-0 z-10 bg-white">{index + 1}</td>
                         <td className="py-3 px-6">{event.eventName}</td>
                         <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
                           {event.collegeName}
