@@ -35,7 +35,7 @@ function Events() {
 
   const handleChange = (e) => {
     const value = e.target.value;
-    console.log(value);
+    // console.log(value);
     setSearchValue(value);
 
     if (value.trim() === '') {

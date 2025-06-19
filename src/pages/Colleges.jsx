@@ -5,6 +5,7 @@ import collegeList from "../college_list.json";
 import Search from "../components/Search";
 import UserContext from "../context/UserContext";
 import SearchContext from "../context/SearchContext";
+import { ArrowUpRight, GraduationCap } from 'lucide-react';
 
 function Colleges() {
   const [colleges, setColleges] = useState([]);
@@ -28,7 +29,7 @@ function Colleges() {
 
   const handleChange = (e) => {
     const value = e.target.value;
-    console.log(value);
+    // console.log(value);
     
     setSearchValue(value);
 
@@ -64,38 +65,35 @@ function Colleges() {
         <div className="lg:w-1/2 mb-10">
           <Search handleChange={handleChange} handleClick={handleClick} page="colleges"/>
         </div>
-        <div className="bg-white overflow-hidden w-full">
-          <table className="w-full text-center text-xs lg:text-base">
-            <colgroup>
-              <col className="hidden lg:table-column lg:w-[15%]" />
-              <col className="w-[65%]" />
-              <col className="w-[20%]" />
-            </colgroup>
-            <thead className="bg-gray-300 text-gray-700">
-              <tr>
-                <th className="lg:p-4 p-1 hidden lg:block">Code</th>
-                <th className="p-4">College Name</th>
-                <th className="p-4">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredColleges.length > 0 ? (
-                filteredColleges.map((college, i) => (
-                  <tr key={college.dte_code} className={`border-b border-gray-300 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-blue-50`}>
-                    <td className="lg:p-4 p-1 hidden lg:block">{college.dte_code}</td>
-                    <td className="lg:p-4 p-2">{college.college_name}</td>
-                    <td className="lg:p-4 p-1">
-                      <Link to={`/collegeDetails/${college.dte_code}`} className="inline-block px-5 py-2 bg-[#0d0c22] rounded-full text-white text-xs lg:text-sm"><span className="hidden lg:inline-block">View</span> Events</Link>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={3} className="text-center text-gray-500 py-6">No matching colleges found.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="bg-white w-full px-10 lg:px-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 h-full">
+            {filteredColleges.length > 0 ? (
+              filteredColleges.map((college, i) => (
+                <div
+                  key={college.dte_code}
+                  className="flex flex-col items-center justify-between bg-gray-100 border border-gray-300 rounded-2xl p-6 h-full w-full"
+                >
+                  {/* Lucide GraduationCap Logo */}
+                  <div className="w-40 h-32 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm">
+                    <GraduationCap size={56} className="text-[#1a093f]" />
+                  </div>
+                  {/* College Name */}
+                  <span className="font-medium text-center text-base text-gray-700 mb-4 min-h-[48px] flex items-center justify-center w-full">{college.college_name}</span>
+                  {/* Buttons */}
+                  <div className="flex w-full gap-3 justify-center mt-auto">
+                    <Link
+                      to={`/collegeDetails/${college.dte_code}`}
+                      className="flex items-center gap-2 bg-[#1a093f] text-white text-xs lg:text-sm px-5 py-2 rounded-full hover:bg-[#2d176b] transition"
+                    >
+                      View Events <ArrowUpRight size={18} />
+                    </Link>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center text-gray-500 py-6">No matching colleges found.</div>
+            )}
+          </div>
         </div>
       </div>
     </>

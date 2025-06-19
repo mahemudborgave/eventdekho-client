@@ -96,9 +96,10 @@ function EventDetail() {
               />
             )}
           </div>
+          <div className='h-20'></div>
         </>
       ) : (
-        <div className='text-center mt-10 text-gray-500'>Loading event details...</div>
+        <div className='text-center mt-10 text-gray-500 mb-100'>Loading event details...</div>
       )}
     </div>
   )

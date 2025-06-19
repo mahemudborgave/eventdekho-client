@@ -39,7 +39,7 @@ function HomeRecent() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {loading ? (
-                    <div className="flex justify-center">
+                    <div className="w-full flex justify-center border">
                         <ScaleLoader />
                     </div>
                 ) : events.map(event => (

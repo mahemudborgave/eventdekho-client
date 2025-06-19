@@ -1,15 +1,16 @@
 import React from 'react'
 import Marquee from "react-fast-marquee";
-import c1 from '../assets/images/companies/c1.png'
-import c2 from '../assets/images/companies/c2.png'
-import c3 from '../assets/images/companies/c3.png'
-import c4 from '../assets/images/companies/c4.png'
-import c5 from '../assets/images/companies/c5.png'
-import c6 from '../assets/images/companies/c6.png'
-import c7 from '../assets/images/companies/c7.png'
-import c8 from '../assets/images/companies/c8.png'
-import c9 from '../assets/images/companies/c9.png'
-import c10 from '../assets/images/companies/c10.png'
+import WCESangliLogo from '../assets/images/colleges/WCE-Sangli-Logo.webp';
+import updateLogo from '../assets/images/colleges/update-logo.png';
+import logoIIT from '../assets/images/colleges/logo-iit.png';
+import logo1 from '../assets/images/colleges/logo (1).png';
+import logo from '../assets/images/colleges/logo.png';
+import iitrLogo from '../assets/images/colleges/iitrLogo.png';
+import iitmLogo from '../assets/images/colleges/iitm_logo.png';
+import iitLogoOriginal from '../assets/images/colleges/iit_logo_original.png';
+import iitgLogo from '../assets/images/colleges/iitglogo.jpg';
+import horzLogoLong from '../assets/images/colleges/horzlogolong.png';
+import coepLogo from '../assets/images/colleges/College_of_Engineering,_Pune_logo.jpg';
 
 function CompaniesCoro() {
   return (
@@ -24,36 +25,38 @@ function CompaniesCoro() {
 
       <Marquee speed={100} gradient={false}>
         <div className='mr-20'>
-          <img src={c1} alt="" className='block h-7 ' />
+          <img src={WCESangliLogo} alt="WCE Sangli Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c2} alt="" className='block h-7 ' />
+          <img src={updateLogo} alt="Update Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c3} alt="" className='block h-7' />
+          <img src={logoIIT} alt="IIT Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c4} alt="" className='block h-7' />
+          <img src={logo1} alt="Logo 1" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c5} alt="" className='block h-7' />
+          <img src={logo} alt="Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c6} alt="" className='block h-7' />
+          <img src={iitrLogo} alt="IITR Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c7} alt="" className='block h-7' />
+          <img src={iitmLogo} alt="IITM Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c8} alt="" className='block h-7' />
+          <img src={iitLogoOriginal} alt="IIT Logo Original" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c9} alt="" className='block h-7' />
+          <img src={iitgLogo} alt="IITG Logo" className='block h-12' />
         </div>
         <div className='mr-20'>
-          <img src={c10} alt="" className='block h-7' />
+          <img src={horzLogoLong} alt="Horizontal Logo Long" className='block h-12' />
         </div>
-
+        <div className='mr-20'>
+          <img src={coepLogo} alt="COEP Logo" className='block h-12' />
+        </div>
       </Marquee>
     </div>
   )

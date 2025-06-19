@@ -9,10 +9,11 @@ import SearchContext from './context/SearchContext'
 
 function App() {
   const [user, setUser] = useState(null);
-  const [email, setEmail] = useState("default@gmail");
+  const [email, setEmail] = useState("");
   const [token, setToken] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [role, setRole] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   
   // console.log("Jethalal");
 
@@ -24,7 +25,12 @@ function App() {
     if (storedUser) setUser(storedUser);
     if (storedEmail) setEmail(storedEmail);
     if (storedToken) setToken(storedToken);
+
+    setIsLoaded(true);
   }, [token]);
+
+  if (!isLoaded) return <div>Loading...</div>;
+
   return (
     <>
       <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >

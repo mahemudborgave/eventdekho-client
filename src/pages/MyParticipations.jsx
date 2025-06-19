@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import { ScaleLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { BookmarkCheck, ShowerHead } from 'lucide-react';
 
 function MyParticipations() {
   const { user, email } = useContext(UserContext);
@@ -86,16 +87,16 @@ function MyParticipations() {
             {textMsg}
           </div>
         ) : registrations.map((reg, index) => (
-          <div key={index} className='border p-4 rounded shadow bg-white'>
-            <div className='mb-2 font-bold'>
-              <p>Event: {reg.eventName}</p>
-              <p>Event College: {reg.eventCollegeName}</p>
+          <div key={index} className='border p-4 rounded bg-white'>
+            <div className='mb-2'>
+              <p className='flex items-center gap-2 font-medium mb-1'><BookmarkCheck /> {reg.eventName}</p>
+              <p>{reg.eventCollegeName}</p>
             </div>
-            <p><span className='font-medium'>Your College:</span> {reg.studentCollegeName}</p>
+            {/* <p><span className='font-medium'>Your College:</span> {reg.studentCollegeName}</p>
             <p><span className='font-medium'>Your branch:</span> {reg.branch}</p>
             <p><span className='font-medium'>Your course:</span> {reg.course}</p>
             <p><span className='font-medium'>Your year:</span> {reg.year}</p>
-            <p><span className='font-medium'>Your mobile:</span> {reg.mobno}</p>
+            <p><span className='font-medium'>Your mobile:</span> {reg.mobno}</p> */}
 
             <div className='flex justify-start gap-3 items-center mt-3'>
               <Link className='lg:px-5 px-2 py-1 rounded-md border border-green-500 bg-green-500 text-white hover:bg-green-400'

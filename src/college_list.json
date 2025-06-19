@@ -1883,5 +1883,467 @@
     "dte_code": "6435",
     "college_name": "Zeal Education Society, Zeal Polytechnic, Narhe Tal. Haveli, Pune",
     "short_name": "ZESZPNTHP"
+  },
+  {
+    "dte_code": "IITKGP",
+    "college_name": "Indian Institute of Technology Kharagpur",
+    "short_name": "IITKGP",
+    "all_names": [
+      "Indian Institute of Technology Kharagpur",
+      "IIT Kharagpur",
+      "IITKGP",
+      "Kharagpur",
+      "IIT-Kharagpur",
+      "IIT-KGP",
+      "KGP",
+      "West Bengal"
+    ]
+  },
+  {
+    "dte_code": "IITB",
+    "college_name": "Indian Institute of Technology Bombay",
+    "short_name": "IITB",
+    "all_names": [
+      "Indian Institute of Technology Bombay",
+      "IIT Bombay",
+      "IITB",
+      "Bombay",
+      "Mumbai",
+      "IIT-Mumbai",
+      "IIT-Bombay",
+      "Maharashtra"
+    ]
+  },
+  {
+    "dte_code": "IITM",
+    "college_name": "Indian Institute of Technology Madras",
+    "short_name": "IITM",
+    "all_names": [
+      "Indian Institute of Technology Madras",
+      "IIT Madras",
+      "IITM",
+      "Madras",
+      "Chennai",
+      "IIT-Chennai",
+      "IIT-Madras",
+      "Tamil Nadu"
+    ]
+  },
+  {
+    "dte_code": "IITK",
+    "college_name": "Indian Institute of Technology Kanpur",
+    "short_name": "IITK",
+    "all_names": [
+      "Indian Institute of Technology Kanpur",
+      "IIT Kanpur",
+      "IITK",
+      "Kanpur",
+      "IIT-Kanpur",
+      "Uttar Pradesh"
+    ]
+  },
+  {
+    "dte_code": "IITD",
+    "college_name": "Indian Institute of Technology Delhi",
+    "short_name": "IITD",
+    "all_names": [
+      "Indian Institute of Technology Delhi",
+      "IIT Delhi",
+      "IITD",
+      "Delhi",
+      "IIT-Delhi"
+    ]
+  },
+  {
+    "dte_code": "IITG",
+    "college_name": "Indian Institute of Technology Guwahati",
+    "short_name": "IITG",
+    "all_names": [
+      "Indian Institute of Technology Guwahati",
+      "IIT Guwahati",
+      "IITG",
+      "Guwahati",
+      "IIT-Guwahati",
+      "Assam"
+    ]
+  },
+  {
+    "dte_code": "IITR",
+    "college_name": "Indian Institute of Technology Roorkee",
+    "short_name": "IITR",
+    "all_names": [
+      "Indian Institute of Technology Roorkee",
+      "IIT Roorkee",
+      "IITR",
+      "Roorkee",
+      "IIT-Roorkee",
+      "Uttarakhand"
+    ]
+  },
+  {
+    "dte_code": "IITRPR",
+    "college_name": "Indian Institute of Technology Ropar",
+    "short_name": "IITRPR",
+    "all_names": [
+      "Indian Institute of Technology Ropar",
+      "IIT Ropar",
+      "IITRPR",
+      "Ropar",
+      "IIT-Ropar",
+      "Punjab"
+    ]
+  },
+  {
+    "dte_code": "IITBBS",
+    "college_name": "Indian Institute of Technology Bhubaneswar",
+    "short_name": "IITBBS",
+    "all_names": [
+      "Indian Institute of Technology Bhubaneswar",
+      "IIT Bhubaneswar",
+      "IITBBS",
+      "Bhubaneswar",
+      "IIT-Bhubaneswar",
+      "Odisha"
+    ]
+  },
+  {
+    "dte_code": "IITGN",
+    "college_name": "Indian Institute of Technology Gandhinagar",
+    "short_name": "IITGN",
+    "all_names": [
+      "Indian Institute of Technology Gandhinagar",
+      "IIT Gandhinagar",
+      "IITGN",
+      "Gandhinagar",
+      "IIT-Gandhinagar",
+      "Gujarat"
+    ]
+  },
+  {
+    "dte_code": "IITH",
+    "college_name": "Indian Institute of Technology Hyderabad",
+    "short_name": "IITH",
+    "all_names": [
+      "Indian Institute of Technology Hyderabad",
+      "IIT Hyderabad",
+      "IITH",
+      "Hyderabad",
+      "IIT-Hyderabad",
+      "Telangana"
+    ]
+  },
+  {
+    "dte_code": "IITJ",
+    "college_name": "Indian Institute of Technology Jodhpur",
+    "short_name": "IITJ",
+    "all_names": [
+      "Indian Institute of Technology Jodhpur",
+      "IIT Jodhpur",
+      "IITJ",
+      "Jodhpur",
+      "IIT-Jodhpur",
+      "Rajasthan"
+    ]
+  },
+  {
+    "dte_code": "IITP",
+    "college_name": "Indian Institute of Technology Patna",
+    "short_name": "IITP",
+    "all_names": [
+      "Indian Institute of Technology Patna",
+      "IIT Patna",
+      "IITP",
+      "Patna",
+      "IIT-Patna",
+      "Bihar"
+    ]
+  },
+  {
+    "dte_code": "IITI",
+    "college_name": "Indian Institute of Technology Indore",
+    "short_name": "IITI",
+    "all_names": [
+      "Indian Institute of Technology Indore",
+      "IIT Indore",
+      "IITI",
+      "Indore",
+      "IIT-Indore",
+      "Madhya Pradesh"
+    ]
+  },
+  {
+    "dte_code": "IITMD",
+    "college_name": "Indian Institute of Technology Mandi",
+    "short_name": "IITMD",
+    "all_names": [
+      "Indian Institute of Technology Mandi",
+      "IIT Mandi",
+      "IITMD",
+      "Mandi",
+      "IIT-Mandi",
+      "Himachal Pradesh"
+    ]
+  },
+  {
+    "dte_code": "IITBHU",
+    "college_name": "Indian Institute of Technology (BHU) Varanasi",
+    "short_name": "IITBHU",
+    "all_names": [
+      "Indian Institute of Technology (BHU) Varanasi",
+      "IIT (BHU) Varanasi",
+      "IIT BHU",
+      "IITBHU",
+      "Varanasi",
+      "BHU",
+      "IIT-Varanasi",
+      "Uttar Pradesh"
+    ]
+  },
+  {
+    "dte_code": "IITPKD",
+    "college_name": "Indian Institute of Technology Palakkad",
+    "short_name": "IITPKD",
+    "all_names": [
+      "Indian Institute of Technology Palakkad",
+      "IIT Palakkad",
+      "IITPKD",
+      "Palakkad",
+      "IIT-Palakkad",
+      "Kerala"
+    ]
+  },
+  {
+    "dte_code": "IITT",
+    "college_name": "Indian Institute of Technology Tirupati",
+    "short_name": "IITT",
+    "all_names": [
+      "Indian Institute of Technology Tirupati",
+      "IIT Tirupati",
+      "IITT",
+      "Tirupati",
+      "IIT-Tirupati",
+      "Andhra Pradesh"
+    ]
+  },
+  {
+    "dte_code": "IITISM",
+    "college_name": "Indian Institute of Technology (ISM) Dhanbad",
+    "short_name": "IITISM",
+    "all_names": [
+      "Indian Institute of Technology (ISM) Dhanbad",
+      "IIT (ISM) Dhanbad",
+      "IIT ISM Dhanbad",
+      "IITISM",
+      "ISM Dhanbad",
+      "Dhanbad",
+      "IIT-Dhanbad",
+      "Jharkhand"
+    ]
+  },
+  {
+    "dte_code": "IITBH",
+    "college_name": "Indian Institute of Technology Bhilai",
+    "short_name": "IITBH",
+    "all_names": [
+      "Indian Institute of Technology Bhilai",
+      "IIT Bhilai",
+      "IITBH",
+      "Bhilai",
+      "IIT-Bhilai",
+      "Chhattisgarh"
+    ]
+  },
+  {
+    "dte_code": "IITDH",
+    "college_name": "Indian Institute of Technology Dharwad",
+    "short_name": "IITDH",
+    "all_names": [
+      "Indian Institute of Technology Dharwad",
+      "IIT Dharwad",
+      "IITDH",
+      "Dharwad",
+      "IIT-Dharwad",
+      "Karnataka"
+    ]
+  },
+  {
+    "dte_code": "IITJMU",
+    "college_name": "Indian Institute of Technology Jammu",
+    "short_name": "IITJMU",
+    "all_names": [
+      "Indian Institute of Technology Jammu",
+      "IIT Jammu",
+      "IITJMU",
+      "Jammu",
+      "IIT-Jammu",
+      "Jammu and Kashmir"
+    ]
+  },
+  {
+    "dte_code": "IITGOA",
+    "college_name": "Indian Institute of Technology Goa",
+    "short_name": "IITGOA",
+    "all_names": [
+      "Indian Institute of Technology Goa",
+      "IIT Goa",
+      "IITGOA",
+      "Goa",
+      "IIT-Goa"
+    ]
+  },
+  {
+    "dte_code": "KARNATAKA",
+    "college_name": "NIT Karnataka",
+    "short_name": "KARNATAKA"
+  },
+  {
+    "dte_code": "WARANGAL",
+    "college_name": "NIT Warangal",
+    "short_name": "WARANGAL"
+  },
+  {
+    "dte_code": "BHOPAL",
+    "college_name": "NIT Bhopal",
+    "short_name": "BHOPAL"
+  },
+  {
+    "dte_code": "NAGPUR",
+    "college_name": "NIT Nagpur",
+    "short_name": "NAGPUR"
+  },
+  {
+    "dte_code": "DURGAPUR",
+    "college_name": "NIT Durgapur",
+    "short_name": "DURGAPUR"
+  },
+  {
+    "dte_code": "JAMSHEDPUR",
+    "college_name": "NIT Jamshedpur",
+    "short_name": "JAMSHEDPUR"
+  },
+  {
+    "dte_code": "SRINAGAR",
+    "college_name": "NIT Srinagar",
+    "short_name": "SRINAGAR"
+  },
+  {
+    "dte_code": "ALLAHABAD",
+    "college_name": "NIT Allahabad",
+    "short_name": "ALLAHABAD"
+  },
+  {
+    "dte_code": "SURAT",
+    "college_name": "NIT Surat",
+    "short_name": "SURAT"
+  },
+  {
+    "dte_code": "CALICUT",
+    "college_name": "NIT Calicut",
+    "short_name": "CALICUT"
+  },
+  {
+    "dte_code": "ROURKELA",
+    "college_name": "NIT Rourkela",
+    "short_name": "ROURKELA"
+  },
+  {
+    "dte_code": "JAIPUR",
+    "college_name": "NIT Jaipur",
+    "short_name": "JAIPUR"
+  },
+  {
+    "dte_code": "KURUKSHETRA",
+    "college_name": "NIT Kurukshetra",
+    "short_name": "KURUKSHETRA"
+  },
+  {
+    "dte_code": "TIRUCHIRAPPALLI",
+    "college_name": "NIT Tiruchirappalli",
+    "short_name": "TIRUCHIRAPPALLI"
+  },
+  {
+    "dte_code": "SILCHAR",
+    "college_name": "NIT Silchar",
+    "short_name": "SILCHAR"
+  },
+  {
+    "dte_code": "HAMIRPUR",
+    "college_name": "NIT Hamirpur",
+    "short_name": "HAMIRPUR"
+  },
+  {
+    "dte_code": "JALANDHAR",
+    "college_name": "NIT Jalandhar",
+    "short_name": "JALANDHAR"
+  },
+  {
+    "dte_code": "PATNA",
+    "college_name": "NIT Patna",
+    "short_name": "PATNA"
+  },
+  {
+    "dte_code": "RAIPUR",
+    "college_name": "NIT Raipur",
+    "short_name": "RAIPUR"
+  },
+  {
+    "dte_code": "AGARTALA",
+    "college_name": "NIT Agartala",
+    "short_name": "AGARTALA"
+  },
+  {
+    "dte_code": "PRADESH",
+    "college_name": "NIT Arunachal Pradesh",
+    "short_name": "PRADESH"
+  },
+  {
+    "dte_code": "DELHI",
+    "college_name": "NIT Delhi",
+    "short_name": "DELHI"
+  },
+  {
+    "dte_code": "GOA",
+    "college_name": "NIT Goa",
+    "short_name": "GOA"
+  },
+  {
+    "dte_code": "MANIPUR",
+    "college_name": "NIT Manipur",
+    "short_name": "MANIPUR"
+  },
+  {
+    "dte_code": "MEGHALAYA",
+    "college_name": "NIT Meghalaya",
+    "short_name": "MEGHALAYA"
+  },
+  {
+    "dte_code": "MIZORAM",
+    "college_name": "NIT Mizoram",
+    "short_name": "MIZORAM"
+  },
+  {
+    "dte_code": "NAGALAND",
+    "college_name": "NIT Nagaland",
+    "short_name": "NAGALAND"
+  },
+  {
+    "dte_code": "PUDUCHERRY",
+    "college_name": "NIT Puducherry",
+    "short_name": "PUDUCHERRY"
+  },
+  {
+    "dte_code": "SIKKIM",
+    "college_name": "NIT Sikkim",
+    "short_name": "SIKKIM"
+  },
+  {
+    "dte_code": "UTTARAKHAND",
+    "college_name": "NIT Uttarakhand",
+    "short_name": "UTTARAKHAND"
+  },
+  {
+    "dte_code": " Andhra Pradesh",
+    "college_name": "NIT Andhra Pradesh",
+    "short_name": " Andhra Pradesh"
   }
 ]
