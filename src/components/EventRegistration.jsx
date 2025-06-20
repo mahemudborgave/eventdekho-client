@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import UserContext from '../context/UserContext';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }) { //here the collegeName is of event
   const { user, email } = useContext(UserContext);
@@ -101,7 +101,7 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
             await axios.put(`${baseURL}:${port}/login/user/${email}`, updateData);
             toast.info('Profile updated with new details.');
           } catch (err) {
-            toast.warn('Could not update profile with new details.');
+            console.warn('Could not update profile with new details.');
           }
         }
       }

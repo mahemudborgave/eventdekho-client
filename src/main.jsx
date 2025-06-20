@@ -20,6 +20,7 @@ import AddEvent from './pages/Dashboard/AddEvent.jsx'
 import StatPage from './components/Dashboard/StatPage.jsx'
 import ShowEventsAdmin from './pages/Dashboard/ShowEventsAdmin.jsx'
 import EventRegistrationsAdmin from './pages/Dashboard/EventRegistrationsAdmin.jsx'
+import RegisterCollege from './pages/Dashboard/RegisterCollege.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,6 +44,8 @@ const router = createBrowserRouter(
           <Route path='showeventsadmin' element={<ShowEventsAdmin />} />
           <Route path='eventdetail/:eventId' element={<EventDetail />} />
           <Route path='eventregistrationsadmin/:eventId' element={<EventRegistrationsAdmin />} />
+          <Route path='registercollege' element={<RegisterCollege />} />
+          <Route path='profile' element={<StudentProfile />} />
         </Route>
       </Route>
     </>

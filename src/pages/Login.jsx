@@ -66,6 +66,10 @@ function Login() {
         }
     }
 
+    // useEffect(() => {
+    //     toast.info("Test toast from App.jsx");
+    //   }, []);
+
     return (
         <>
             <div className='flex lg:w-[900px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:shadow-[5px_5px_20px_rgba(0,0,0,0.3)] w-full'>
@@ -103,8 +107,6 @@ function Login() {
                     <ScaleLoader color="#FF9C16" />
                 </Box>
             </Modal>
-
-            <ToastContainer />
         </>
     )
 }

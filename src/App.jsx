@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import { Outlet } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
+import { Bounce, Flip, Slide, ToastContainer } from 'react-toastify'
 import UserContext from './context/UserContext'
 import 'react-toastify/dist/ReactToastify.css';
 import SearchContext from './context/SearchContext'
@@ -36,7 +36,12 @@ function App() {
       <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >
         <SearchContext.Provider value={{ searchValue, setSearchValue }}>
             <Outlet />
-            <ToastContainer />
+            <ToastContainer
+            theme="colored"
+            transition={Flip}
+            autoClose={1000}
+            style={{ marginTop: '80px' }}
+            />
         </SearchContext.Provider>
       </UserContext.Provider>
     </>

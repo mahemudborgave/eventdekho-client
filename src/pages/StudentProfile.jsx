@@ -26,6 +26,7 @@ function StudentProfile() {
         branch: '',
         year: '',
         mobno: '',
+        role: '',
     });
     const [editMode, setEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -48,6 +49,7 @@ function StudentProfile() {
                         branch: res.data.branch || '',
                         year: res.data.year || '',
                         mobno: res.data.mobno || '',
+                        role: res.data.role || '',
                     });
                     setUser(res.data.name || '');
                 }
@@ -131,6 +133,18 @@ function StudentProfile() {
     const filledFields = profileFields.filter(val => val && val.trim() !== '').length;
     const completion = Math.round((filledFields / profileFields.length) * 100);
 
+    // Show login prompt if not logged in
+    if (!token || !email) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-amber-50">
+                <div className="bg-white shadow-lg rounded-xl px-8 py-12 text-center">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Please log in to view your profile.</h2>
+                    <Link to="/login" className="text-blue-600 underline font-medium">Go to Login</Link>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-blue-50 to-amber-50 pb-10">
             {/* Banner */}
@@ -169,7 +183,7 @@ function StudentProfile() {
                     <div className="flex flex-col items-center gap-1 mt-2">
                         <span className="text-2xl font-bold text-gray-900 flex items-center gap-2"><User size={22} />{profile.studentName || <span className="text-gray-400">Not set</span>}</span>
                         <span className="text-gray-600 flex items-center gap-2"><AtSign size={16} />{email || <span className="text-gray-400">Not set</span>}</span>
-                        <span className="text-blue-700 font-semibold text-xs uppercase tracking-wider mt-1">Student</span>
+                        <span className="text-blue-700 font-semibold text-xs uppercase tracking-wider mt-1">{profile.role}</span>
                     </div>
                     {/* Profile Completion Bar */}
                     <div className="w-full flex flex-col items-center mt-2">

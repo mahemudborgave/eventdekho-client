@@ -34,35 +34,37 @@ function Eventt({ events }) {
   }, [email, location.pathname]);
 
   return (
-    <div className="w-auto grid [lg:grid-template-columns:repeat(auto-fit,minmax(700px,1fr))] gap-7">
+    // <div className="w-auto grid [lg:grid-template-columns:repeat(auto-fit,minmax(700px,1fr))] gap-7">
+    <div className="w-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7">
       {events.map((eventt, idx) => (
         <div
-          className="flex flex-col items-start lg:flex-row p-4 lg:p-6 border border-gray-300 hover:outline-2 outline-amber-300 gap-4 rounded-xl text-sm lg:text-base"
+          className="flex flex-col items-start  p-4  border border-gray-300 hover:outline-2 outline-amber-300 gap-4 rounded-xl text-sm lg:text-base"
           key={idx}
         >
-          <div className="hidden lg:block lg:w-20 h-20 rounded-3xl p-2">
+          {/* <div className="hidden lg:block lg:w-20 h-20 rounded-3xl p-2">
             <img
               src={collegeLogo}
               alt="college logo"
               className="h-full w-full overflow-hidden object-contain"
             />
-          </div>
+          </div> */}
           <div className="lg:flex-grow">
-            <p className="text-lg lg:text-xl mb-1 lg:mb-0 text-[#0d0c22]">{eventt.eventName}</p>
+            <p className="text-lg lg:text-xl mb-1 text-[#0d0c22] font-medium">{eventt.eventName}</p>
             <p className="my-2 lg:mb-1 text-gray-500">
               {eventt.collegeCode} - {eventt.collegeName}
             </p>
-            <div className="flex flex-col lg:flex-row lg:gap-3 lg:items-center text-gray-500">
-              <span><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {new Date(eventt.eventDate).toLocaleDateString('en-GB').replace(/\//g, '-')}</span>
-              <span><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span>
+            <div className="flex flex-col text-gray-500">
+              <span className="text-yellow-500"><i className="fa-solid fa-clock mr-1.5"></i> {eventt.eventMode}</span>
+              <span className="text-blue-500"><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {new Date(eventt.eventDate).toLocaleDateString('en-GB').replace(/\//g, '-')}</span>
+              <span className="text-red-500"><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span>
             </div>
           </div>
-          <div className="flex flex-col lg:items-end text-sm">
+          <div className="flex flex-col text-sm">
             {!location.pathname.startsWith('/eventdetail') &&
               !location.pathname.startsWith('/admin/eventdetail') && (
                 <div className="flex items-center mb-2">
                   {registeredEventIds.includes(eventt._id) && (
-                    <span className="hidden lg:inline-block text-green-600 text-sm italic mr-2">Registered !</span>
+                    <span className="hidden text-green-600 text-sm italic mr-2">Registered !</span>
                   )}
                   <Link
                     className="inline-block px-7 py-2 bg-[#0d0c22] rounded-full text-white hover:bg-[#0d0c22d2]"

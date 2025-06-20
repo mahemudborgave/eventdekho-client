@@ -14,7 +14,7 @@ function App2() {
         <Outlet />
       </div>
       <FooterComp />
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </>
   )
 }

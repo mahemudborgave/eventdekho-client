@@ -5,16 +5,20 @@ import {
   LayoutDashboard,
   PlusCircle,
   CalendarDays,
+  School,
 } from 'lucide-react';
 import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import UserContext from '../../context/UserContext';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 function AdminNavbar({ onToggle }) {
-  const { user, setUser, setToken, setEmail, setRole } = useContext(UserContext);
+  const { user, setUser, setToken, setEmail, setRole, email, role } = useContext(UserContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleSidebarCollapse = () => {
@@ -77,23 +81,31 @@ function AdminNavbar({ onToggle }) {
               <LayoutDashboard size={20} />
               {!isCollapsed && 'Dashboard'}
             </NavLink>
+            {/* <NavLink to="registercollege" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+              <School size={20} />
+              {!isCollapsed && 'Register College'}
+            </NavLink> */}
             <NavLink to="addevent" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
               <PlusCircle size={20} />
-              {!isCollapsed && 'Add Events'}
+              {!isCollapsed && 'Host Events'}
             </NavLink>
             <NavLink to="showeventsadmin" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
               <CalendarDays size={20} />
               {!isCollapsed && 'Show Events'}
-            </NavLink>
+            </NavLink>    
           </nav>
         </div>
 
         <div className="flex flex-col items-center mb-6">
           <Link className="text-red-600 underline" to='/'>Client Portal</Link>
           {user && !isCollapsed && (
-            <p className="mb-3 flex items-center justify-center">
+            <button
+              className="mb-3 flex items-center justify-center text-blue-700 font-semibold hover:underline"
+              onClick={() => navigate('/admin/profile')}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
               <User style={{ marginRight: '10px' }} /> {user}
-            </p>
+            </button>
           )}
 
           {user ? (

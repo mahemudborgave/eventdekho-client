@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/ReactToastify.css'
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
@@ -150,8 +150,6 @@ function Register() {
                     <ScaleLoader color="#FF9C16" />
                 </Box>
             </Modal>
-
-            <ToastContainer />
         </>
     )
 }

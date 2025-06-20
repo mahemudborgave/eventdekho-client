@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HashLoader, ScaleLoader } from 'react-spinners';
 import UserContext from "../../context/UserContext";
 import jsPDF from 'jspdf';
@@ -17,23 +17,32 @@ function ShowEventsAdmin() {
   const [loading, setLoading] = useState(true);
   const [isShow, setIsShow] = useState(false);
   const { email } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const truncate = (str, n) => (str && str.length > n ? str.slice(0, n) + '...' : str);
 
   const exportToPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: 'landscape', format: 'a3' });
     doc.text("Your Events", 14, 16);
-    const tableColumn = ["#", "Event Name", "College", "Code", "Date", "Location", "Posted On", "Close On"];
+    const tableColumn = [
+      "#", "Event Name", "Mode", "College", "Code", "City", "Date", "Location", "Posted On", "Closing On", "Tags", "Description"
+    ];
     const tableRows = [];
 
     events.forEach((event, index) => {
       const eventData = [
         index + 1,
-        event.eventName,
-        event.collegeName,
+        truncate(event.eventName, 30),
+        event.eventMode,
+        truncate(event.collegeName, 40),
         event.collegeCode,
+        event.collegeCity,
         formatDate(event.eventDate),
-        event.eventLocation,
+        truncate(event.eventLocation, 20),
         formatDate(event.postedOn),
         formatDate(event.closeOn),
+        truncate(Array.isArray(event.eventTags) ? event.eventTags.join(", ") : event.eventTags, 25),
+        truncate(event.eventDescription, 50)
       ];
       tableRows.push(eventData);
     });
@@ -42,6 +51,23 @@ function ShowEventsAdmin() {
       head: [tableColumn],
       body: tableRows,
       startY: 20,
+      styles: { fontSize: 7 },
+      columnStyles: {
+        0: { cellWidth: 10 },
+        1: { cellWidth: 30 },
+        2: { cellWidth: 18 },
+        3: { cellWidth: 50, overflow: 'linebreak' },
+        4: { cellWidth: 16 },
+        5: { cellWidth: 18 },
+        6: { cellWidth: 20 },
+        7: { cellWidth: 28 },
+        8: { cellWidth: 22 },
+        9: { cellWidth: 22 },
+        10: { cellWidth: 30, overflow: 'linebreak' },
+        11: { cellWidth: 40, overflow: 'linebreak' },
+      },
+      margin: { left: 10, right: 10 },
+      tableWidth: 'auto'
     });
 
     doc.save("events.pdf");
@@ -51,12 +77,16 @@ function ShowEventsAdmin() {
     const worksheetData = events.map((event, index) => ({
       "#": index + 1,
       "Event Name": event.eventName,
+      "Mode": event.eventMode,
       "College": event.collegeName,
       "Code": event.collegeCode,
+      "City": event.collegeCity,
       "Date": formatDate(event.eventDate),
       "Location": event.eventLocation,
       "Posted On": formatDate(event.postedOn),
-      "Close On": formatDate(event.closeOn),
+      "Closing On": formatDate(event.closeOn),
+      "Tags": Array.isArray(event.eventTags) ? event.eventTags.join(", ") : event.eventTags,
+      "Description": event.eventDescription,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
@@ -75,6 +105,21 @@ function ShowEventsAdmin() {
       month: 'short',
       year: 'numeric'
     }).replace(/ /g, ' ');
+  };
+
+  const handleDelete = async (eventId) => {
+    if (!window.confirm("Are you sure you want to delete this event?")) return;
+    try {
+      await axios.delete(`${baseURL}:${port}/eventt/deleteevent/${eventId}`);
+      setEvents(events.filter(e => e._id !== eventId));
+      toast.success("Event deleted successfully");
+    } catch (err) {
+      toast.error("Failed to delete event");
+    }
+  };
+
+  const handleUpdate = (event) => {
+    navigate("/admin/addevent", { state: { event, isUpdate: true } });
   };
 
   useEffect(() => {
@@ -141,17 +186,6 @@ function ShowEventsAdmin() {
                   <FileSpreadsheet size={20} />Export as Excel
                 </button>
               </div>
-
-              <div className="flex">
-
-                <button className="bg-blue-500 text-white px-3 py-1 rounded mr-1 hover:bg-blue-600">
-                  1 - View Details
-                </button>
-                <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
-                  2 - View Registrations
-                </button>
-              </div>
-
             </div>
           </div>
           {events.length === 0 ? (
@@ -177,12 +211,12 @@ function ShowEventsAdmin() {
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
                       <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
                       <th className="py-3 px-6 text-left">Event Name</th>
-                      <th className="py-3 px-6 text-left">College</th>
-                      <th className="py-3 px-6 text-left">Code</th>
-                      <th className="py-3 px-6 text-left">Date</th>
+                      {/* <th className="py-3 px-6 text-left">College</th> */}
+                      <th className="py-3 px-6 text-left">Mode</th>
                       <th className="py-3 px-6 text-left">Location</th>
+                      <th className="py-3 px-6 text-left">Date</th>
                       <th className="py-3 px-6 text-left">Posted On</th>
-                      <th className="py-3 px-6 text-left">Close On</th>
+                      <th className="py-3 px-6 text-left">Closing On</th>
                       <th className="py-3 px-6 text-center">Actions</th>
                     </tr>
                   </thead>
@@ -191,12 +225,12 @@ function ShowEventsAdmin() {
                       <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                         <td className="py-3 px-4 sticky left-0 z-10 bg-white">{index + 1}</td>
                         <td className="py-3 px-6">{event.eventName}</td>
-                        <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
+                        {/* <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
                           {event.collegeName}
-                        </td>
-                        <td className="py-3 px-6">{event.collegeCode}</td>
-                        <td className="py-3 px-6">{formatDate(event.eventDate)}</td>
+                        </td> */}
+                        <td className="py-3 px-6">{event.eventMode}</td>
                         <td className="py-3 px-6">{event.eventLocation}</td>
+                        <td className="py-3 px-6">{formatDate(event.eventDate)}</td>
                         <td className="py-3 px-6">{formatDate(event.postedOn)}</td>
                         <td className="py-3 px-6">{formatDate(event.closeOn)}</td>
                         <td className="py-3 px-6 text-center">
@@ -204,14 +238,26 @@ function ShowEventsAdmin() {
                             to={`/admin/eventdetail/${event._id}`}
                             className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
                           >
-                            1
+                            Details
                           </Link>
                           <Link
                             to={`/admin/eventregistrationsadmin/${event._id}`}
                             className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                           >
-                            2
+                            Registrations
                           </Link>
+                          <button
+                            onClick={() => handleUpdate(event)}
+                            className="bg-yellow-500 text-white px-3 py-1 rounded ml-2 hover:bg-yellow-600"
+                          >
+                            Update
+                          </button>
+                          <button
+                            onClick={() => handleDelete(event._id)}
+                            className="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-600"
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
