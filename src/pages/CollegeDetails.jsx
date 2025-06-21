@@ -102,7 +102,7 @@ function CollegeDetails() {
         <div className='w-full text-[#1a093f]'>
           <div className="flex items-center gap-3 mb-10 rounded-lg p-6 bg-gradient-to-r from-amber-200 to-amber-300">
             <div>
-              <h1 className='text-2xl md:text-3xl font-bold mb-3'>{college.collegeName}</h1>
+              <h1 className='text-lg md:text-3xl font-bold mb-3'>{college.collegeName}</h1>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-1 rounded-lg border border-gray-200">
                   <span className="text-sm">Code</span>
@@ -123,7 +123,7 @@ function CollegeDetails() {
         </div>
 
         {/* Club Events Sections */}
-        <div className="px-4 md:px-6 lg:px-10 mt-8">
+        <div className="lg:px-10 mt-8">
           <div className="space-y-8">
             {/* Clubs with Events */}
             {clubEvents.map((club, index) => (
@@ -150,7 +150,7 @@ function CollegeDetails() {
                 </div>
 
                 {/* Events List */}
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <Eventt events={club.events} />
                 </div>
               </div>
