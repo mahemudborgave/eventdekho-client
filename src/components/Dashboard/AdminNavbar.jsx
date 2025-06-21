@@ -6,6 +6,8 @@ import {
   PlusCircle,
   CalendarDays,
   School,
+  Menu,
+  X,
 } from 'lucide-react';
 import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
@@ -18,6 +20,7 @@ function AdminNavbar({ onToggle }) {
   const { user, setUser, setToken, setEmail, setRole, email, role } = useContext(UserContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobileTopNavOpen, setIsMobileTopNavOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -29,6 +32,10 @@ function AdminNavbar({ onToggle }) {
 
   const toggleMobileSidebar = () => {
     setIsMobileOpen(!isMobileOpen);
+  };
+
+  const toggleMobileTopNav = () => {
+    setIsMobileTopNavOpen(!isMobileTopNavOpen);
   };
 
   const handleLogout = () => {
@@ -54,18 +61,137 @@ function AdminNavbar({ onToggle }) {
       isActive ? 'bg-[#FFD600]/40 text-black' : 'hover:bg-[#FFD600]/20'
     } ${isCollapsed ? 'justify-center' : 'px-3'}`;
 
+  const mobileTopNavLinkClasses = ({ isActive }) =>
+    `flex items-center gap-3 py-3 px-4 font-medium transition border-b border-gray-200 ${
+      isActive ? 'bg-[#FFD600]/40 text-black' : 'hover:bg-gray-50'
+    }`;
+
   return (
     <>
-      {/* Mobile toggle button */}
-      <div className="md:hidden fixed top-10 right-8 z-50"> 
-        <button onClick={toggleMobileSidebar} className="bg-gray-300 p-2 rounded">
-          <AlignRight size={22} />
-        </button>
+      {/* Mobile Top Navbar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Logo/Brand */}
+          <div className="flex items-center">
+            <h1 className="text-xl font-bold text-amber-700">EventApply</h1>
+            <span className="ml-2 text-sm text-white bg-amber-700 px-2 py-1 rounded">Admin</span>
+          </div>
+
+          {/* Right side - User info and menu button */}
+          <div className="flex items-center gap-3">
+            {/* User info */}
+            {user && (
+              <div className="hidden sm:flex items-center gap-2 text-sm text-gray-600">
+                <User size={16} />
+                <span className="truncate max-w-20">{user}</span>
+              </div>
+            )}
+
+            {/* Hamburger menu button */}
+            <button
+              onClick={toggleMobileTopNav}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileTopNavOpen ? <X size={24} color='#BB4D00'/> : <Menu size={24} color='#BB4D00'/>}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Top Navbar Dropdown Menu */}
+        {isMobileTopNavOpen && (
+          <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
+            <nav className="py-2">
+              <NavLink 
+                to="dashboard" 
+                onClick={() => setIsMobileTopNavOpen(false)} 
+                className={mobileTopNavLinkClasses}
+              >
+                <LayoutDashboard size={20} />
+                Dashboard
+              </NavLink>
+              
+              <NavLink 
+                to="addevent" 
+                onClick={() => setIsMobileTopNavOpen(false)} 
+                className={mobileTopNavLinkClasses}
+              >
+                <PlusCircle size={20} />
+                Host Events
+              </NavLink>
+              
+              <NavLink 
+                to="showeventsadmin" 
+                onClick={() => setIsMobileTopNavOpen(false)} 
+                className={mobileTopNavLinkClasses}
+              >
+                <CalendarDays size={20} />
+                Show Events
+              </NavLink>
+
+              {/* Divider */}
+              <div className="border-t border-gray-200 my-2"></div>
+
+              {/* User section */}
+              {user ? (
+                <>
+                  <div className="px-4 py-2 text-sm text-gray-500 border-b border-gray-200">
+                    Logged in as: {user}
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsMobileTopNavOpen(false);
+                      navigate('/admin/profile');
+                    }}
+                    className="w-full flex items-center gap-3 py-3 px-4 font-medium hover:bg-gray-50 transition"
+                  >
+                    <User size={20} />
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsMobileTopNavOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center gap-3 py-3 px-4 font-medium text-red-600 hover:bg-red-50 transition"
+                  >
+                    <LogOut size={20} />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setIsMobileTopNavOpen(false);
+                    handleLogin();
+                  }}
+                  className="w-full flex items-center gap-3 py-3 px-4 font-medium text-blue-600 hover:bg-blue-50 transition"
+                >
+                  <User size={20} />
+                  Login
+                </button>
+              )}
+
+              {/* Client Portal Link */}
+              <div className="border-t border-gray-200 mt-2 pt-2">
+                <Link 
+                  to="/" 
+                  onClick={() => setIsMobileTopNavOpen(false)}
+                  className="flex items-center gap-3 py-3 px-4 font-medium text-gray-600 hover:bg-gray-50 transition"
+                >
+                  <School size={20} />
+                  Client Portal
+                </Link>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
 
+      {/* Desktop Sidebar - hidden on mobile */}
       <aside
         className={`text-sm fixed top-0 left-0 z-40 bg-gray-200 border-r border-gray-200 p-4 flex flex-col justify-between h-screen transition-transform duration-300
-        ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
+        hidden md:flex
         ${isCollapsed ? 'w-20' : 'w-64'}`}
       >
         <div>

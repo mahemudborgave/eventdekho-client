@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import collegeLogo from '../assets/images/college-high-school-svgrepo-com.svg';
 import UserContext from '../context/UserContext';
+import { Users } from 'lucide-react';
 
 function Eventt({ events }) {
   const location = useLocation();
@@ -38,9 +39,17 @@ function Eventt({ events }) {
     <div className="w-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7">
       {events.map((eventt, idx) => (
         <div
-          className="flex flex-col items-start  p-4  border border-gray-300 hover:outline-2 outline-amber-300 gap-4 rounded-xl text-sm lg:text-base"
+          className="flex flex-col items-start p-4 bg-gradient-to-r from-white to-white-200 border border-gray-300 hover:outline outline-amber-300 gap-4 rounded-xl text-sm lg:text-base relative"
           key={idx}
         >
+          {/* Club Badge */}
+          {eventt.clubName && (
+            <div className="absolute -top-2 -right-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg flex items-center gap-1">
+              <Users size={12} />
+              {eventt.clubName}
+            </div>
+          )}
+          
           {/* <div className="hidden lg:block lg:w-20 h-20 rounded-3xl p-2">
             <img
               src={collegeLogo}

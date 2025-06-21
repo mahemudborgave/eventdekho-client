@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import { NavLink, Link } from 'react-router-dom';
-import eventdekhoLogo from '../assets/images/eventdekho-logo.png';
+import eventdekhoLogo from '../assets/images/eventapply-logo.png';
 
 function FooterComp() {
   return (
@@ -62,7 +62,7 @@ function FooterComp() {
 
 
       <div className="text-center text-sm bg-gray-300 py-4">
-        © {new Date().getFullYear()} EventDekho. All rights reserved. <br></br>{"{"} Designed by mahemud ❤️ {"}"}
+        © {new Date().getFullYear()} EventApply. All rights reserved. <br></br>
       </div>
     </footer>
   );

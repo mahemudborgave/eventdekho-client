@@ -1,10 +1,10 @@
-# 🎉 EventDekho
+# 🎉 EventApply
 
 > **Discover, Connect, and Participate in College Events Across India**
 
-EventDekho is a comprehensive platform that bridges the gap between colleges and students by providing a centralized hub for discovering, managing, and participating in college events. Whether you're a student looking for exciting opportunities or a college administrator managing events, EventDekho has got you covered.
+EventApply is a comprehensive platform that bridges the gap between colleges and students by providing a centralized hub for discovering, managing, and participating in college events. Whether you're a student looking for exciting opportunities or a college administrator managing events, EventApply has got you covered.
 
-![EventDekho Banner](https://img.shields.io/badge/EventDekho-Platform-blue?style=for-the-badge&logo=calendar)
+![EventApply Banner](https://img.shields.io/badge/EventApply-Platform-blue?style=for-the-badge&logo=calendar)
 ![Status](https://img.shields.io/badge/Status-Active-green?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Version-1.0.0-orange?style=for-the-badge)
 
@@ -64,6 +64,8 @@ EventDekho is a comprehensive platform that bridges the gap between colleges and
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.3-38B2AC?logo=tailwind-css)
 ![Flowbite React](https://img.shields.io/badge/Flowbite_React-0.11.7-cyan?logo=flowbite)
 
+Repo - https://github.com/mahemudborgave/eventdekho-client
+
 **Key Libraries:**
 - **UI Components**: Material-UI, Flowbite React, Lucide React Icons
 - **Routing**: React Router DOM v7
@@ -79,6 +81,9 @@ EventDekho is a comprehensive platform that bridges the gap between colleges and
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-8.14.0-green?logo=mongodb)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-orange?logo=json-web-tokens)
+
+
+Repo - https://github.com/mahemudborgave/eventdekho-server
 
 **Key Technologies:**
 - **Runtime**: Node.js with ES6 modules
@@ -99,7 +104,7 @@ EventDekho is a comprehensive platform that bridges the gap between colleges and
 ## 📁 Project Structure
 
 ```
-EventDekho/
+EventApply/
 ├── client/                 # Frontend React Application
 │   ├── src/
 │   │   ├── components/     # Reusable UI components
@@ -131,8 +136,8 @@ EventDekho/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/EventDekho.git
-   cd EventDekho
+   git clone https://github.com/yourusername/EventApply.git
+   cd EventApply
    ```
 
 2. **Install Frontend Dependencies**
@@ -248,29 +253,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support & Contact
 
-- **Email**: support@eventdekho.com
-- **Website**: https://eventdekho.com
-- **Documentation**: https://docs.eventdekho.com
-- **Issues**: [GitHub Issues](https://github.com/yourusername/EventDekho/issues)
+- **Email**: mahemudborgave@gmail.com
+- **Website**: https://EventApply1.vercel.app
+- **Issues**: [GitHub Issues](https://github.com/mahemudborgave/EventApply-client/issues)
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/EventDekho&type=Date)](https://star-history.com/#yourusername/EventDekho&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=mahemudborgave/EventApply-client&type=Date)](https://star-history.com/#mahemudborgave/EventApply-client&Date)
 
 ---
 
 <div align="center">
-  <p>Made with ❤️ by the EventDekho Team</p>
+  <p>Made with ❤️ by the EventApply Team</p>
   <p>Empowering students to discover amazing opportunities!</p>
 </div>
-
-```
-bun install
-bun run dev
-```
-
-# Backend - server 
-```
-bun install
-bun start
-```

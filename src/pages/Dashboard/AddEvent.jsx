@@ -16,6 +16,7 @@ export default function AddEvent() {
   const initialState = {
     email,
     eventName: "",
+    clubName: "",
     collegeName: "",
     collegeCode: "",
     collegeCity: "",
@@ -85,7 +86,7 @@ export default function AddEvent() {
   useEffect(() => {
     const fetchColleges = async () => {
       try {
-        const res = await axios.get(`${baseURL}:${port}/college/getcolleges`);
+        const res = await axios.get(`${baseURL}:${port}/college/getallcolleges`);
         setColleges(res.data);
       } catch (err) {
         setColleges([]);
@@ -195,8 +196,11 @@ export default function AddEvent() {
           ...form,
           eventTags: form.eventTags.split(',').map(tag => tag.trim()).filter(Boolean),
         });
+        
         setForm(initialState);
-        if (res) toast.success(`${res.data.message}`);
+        if (res.data.success) {
+          toast.success(`${res.data.message}`);
+        }
       }
     } catch (error) {
       toast.error("Error submitting event");
@@ -222,6 +226,14 @@ export default function AddEvent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InputField name="eventName" label="Event Name" value={form.eventName} onChange={handleChange} required />
+
+              <InputField 
+                name="clubName" 
+                label="Club Name (Short Form)" 
+                value={form.clubName} 
+                onChange={handleChange}  
+                placeholder="e.g., CSI, IEEE, ACM, etc."
+              />
 
               <div>
                 <label className="block font-medium mb-1">Event's College Name</label>
@@ -418,7 +430,7 @@ export default function AddEvent() {
   );
 }
 
-function InputField({ name, type = "text", label, value, onChange, required = false }) {
+function InputField({ name, type = "text", label, value, onChange, required = false, placeholder = "" }) {
   return (
     <div>
       <label className="block font-medium mb-1">{label}</label>
@@ -429,6 +441,7 @@ function InputField({ name, type = "text", label, value, onChange, required = fa
         onChange={onChange}
         minLength={name === "collegeCode" ? 4 : undefined}
         required={required}
+        placeholder={placeholder}
         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#FFD600] border-gray-300"
       />
     </div>

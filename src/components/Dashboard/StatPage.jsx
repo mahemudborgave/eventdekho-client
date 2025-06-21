@@ -120,7 +120,7 @@ function StatPage() {
     <main className="flex-1 min-h-screen lg:p-8 p-2">
       <div className="flex items-center mb-8">
         <h1 className="text-2xl lg:text-2xl font-bold tracking-tight">
-          <span className="text-[#FFD600]">Event</span>dekho Dashboard
+          Dashboard
         </h1>
         <div className="flex-1" />
       </div>
