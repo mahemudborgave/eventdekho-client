@@ -5,17 +5,18 @@ import { HashLoader, ScaleLoader } from 'react-spinners';
 import axios from 'axios';
 import Eventt from '../components/Eventt';
 import collegeList from "../college_list.json";
-import { Calendar, Users, MapPin, GraduationCap } from 'lucide-react';
+import { Calendar, Users, MapPin, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react';
 
 function CollegeDetails() {
   const { dte_code } = useParams();
-  console.log(dte_code);
+  // console.log(dte_code);
 
   const navigate = useNavigate();
   const [college, setCollege] = useState(null);
   const [collegeEvents, setCollegeEvents] = useState([]);
   const [clubEvents, setClubEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [collapsedClubs, setCollapsedClubs] = useState(new Set());
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
 
@@ -83,6 +84,18 @@ function CollegeDetails() {
     fetchCollegeEvent();
   }, []);
 
+  const toggleClubCollapse = (clubName) => {
+    setCollapsedClubs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(clubName)) {
+        newSet.delete(clubName);
+      } else {
+        newSet.add(clubName);
+      }
+      return newSet;
+    });
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center p-10">
@@ -129,7 +142,8 @@ function CollegeDetails() {
             {clubEvents.map((club, index) => (
               <div key={club.clubName} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                 {/* Club Header */}
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4 text-white">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 lg:px-6 py-3 lg:py-4 text-white relative">
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -146,13 +160,22 @@ function CollegeDetails() {
                         <span className="font-semibold">{club.eventCount} Events</span>
                       </div>
                     </div>
+                    <button
+                      onClick={() => toggleClubCollapse(club.clubName)}
+                      className="text-blue-600 hover:text-blue-600 w-6 h-6 flex items-center justify-center rounded-full bg-white transition-colors"
+                      aria-label={collapsedClubs.has(club.clubName) ? `Expand ${club.clubName} club section` : `Collapse ${club.clubName} club section`}
+                    >
+                      {collapsedClubs.has(club.clubName) ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
+                    </button>
                   </div>
                 </div>
 
                 {/* Events List */}
-                <div className="p-4 lg:p-6">
-                  <Eventt events={club.events} />
-                </div>
+                {!collapsedClubs.has(club.clubName) && (
+                  <div className="p-4 lg:p-6">
+                    <Eventt events={club.events} />
+                  </div>
+                )}
               </div>
             ))}
 

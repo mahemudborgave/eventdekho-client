@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import FooterComp from './components/FooterComp'
+import ScrollToTop from './components/ScrollToTop'
 
 function App2() {
   return (
@@ -14,6 +15,7 @@ function App2() {
         <Outlet />
       </div>
       <FooterComp />
+      <ScrollToTop />
       {/* <ToastContainer /> */}
     </>
   )

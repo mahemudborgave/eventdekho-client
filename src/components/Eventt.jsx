@@ -87,10 +87,10 @@ function Eventt({ events }) {
                 </div>
               )}
             <p className="italic text-gray-400">
-              posted on : {new Date(eventt.postedOn).toLocaleDateString('en-CA')}
+              posted on : {new Date(eventt.postedOn).toLocaleDateString('en-GB').replace(/\//g, '-')}
             </p>
             <p className="italic text-red-500">
-              closing on : {new Date(eventt.closeOn).toLocaleDateString('en-CA')}
+              closing on : {new Date(eventt.closeOn).toLocaleDateString('en-GB').replace(/\//g, '-')}
             </p>
           </div>
         </div>

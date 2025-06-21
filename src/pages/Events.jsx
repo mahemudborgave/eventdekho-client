@@ -7,6 +7,7 @@ import Eventt from '../components/Eventt';
 import Search from '../components/Search';
 import UserContext from '../context/UserContext';
 import SearchContext from '../context/SearchContext';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 
 
 function Events() {
@@ -16,6 +17,7 @@ function Events() {
   const [loading, setLoading] = useState(true);
   const { searchValue, setSearchValue } = useContext(SearchContext);
   const [originalEvents, setOriginalEvents] = useState([]);
+  const [isRecentlyCollapsed, setIsRecentlyCollapsed] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -83,7 +85,7 @@ function Events() {
     <>
       <div className='lg:px-30'>
         <div className='lg:w-1/2 mb-10'>
-          <Search handleChange={handleChange} handleClick={handleClick} page="event"/>
+          <Search handleChange={handleChange} handleClick={handleClick} page="event" />
         </div>
 
         {hot.length > 0 && (
@@ -94,9 +96,20 @@ function Events() {
         )}
 
         {recently.length > 0 && (
-          <div className="mb-10 border-2 border-blue-300 bg-blue-50 rounded-2xl p-6">
-            <h2 className="text-xl font-bold text-blue-900 mb-4">Recently Added</h2>
-            <Eventt events={recently} />
+          <div className="mb-10 border-2 border-blue-300 bg-blue-50 rounded-2xl overflow-hidden">
+            <div className="p-4 lg:p-6 relative flex-col justify-between items-center">
+              <div className={`flex justify-between items-center ${isRecentlyCollapsed ? 'mb-0' : 'mb-6'}`}>
+                <h2 className={`text-xl font-bold text-blue-900`}>Recently Added</h2>
+                <button
+                  onClick={() => setIsRecentlyCollapsed(!isRecentlyCollapsed)}
+                  className="text-blue-600 hover:text-blue-800 w-6 h-6 flex items-center justify-center rounded-full hover:bg-blue-100 transition-colors"
+                  aria-label={isRecentlyCollapsed ? "Expand recently added section" : "Collapse recently added section"}
+                >
+                  {isRecentlyCollapsed ? <ChevronDown size={25} /> : <ChevronUp size={25} />}
+                </button>
+              </div>
+              {!isRecentlyCollapsed && <Eventt events={recently} />}
+            </div>
           </div>
         )}
 

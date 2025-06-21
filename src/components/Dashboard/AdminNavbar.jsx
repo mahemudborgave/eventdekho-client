@@ -8,6 +8,7 @@ import {
   School,
   Menu,
   X,
+  AlignLeft,
 } from 'lucide-react';
 import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
@@ -129,13 +130,10 @@ function AdminNavbar({ onToggle }) {
                 Show Events
               </NavLink>
 
-              {/* Divider */}
-              <div className="border-t border-gray-200 my-2"></div>
-
               {/* User section */}
               {user ? (
                 <>
-                  <div className="px-4 py-2 text-sm text-gray-500 border-b border-gray-200">
+                  <div className="px-4 py-2 text-sm text-gray-500">
                     Logged in as: {user}
                   </div>
                   <button
@@ -195,10 +193,10 @@ function AdminNavbar({ onToggle }) {
         ${isCollapsed ? 'w-20' : 'w-64'}`}
       >
         <div>
-          <div className={`flex ${isMobileOpen ? 'justify-between' : 'justify-center'} items-center mb-8`}>
-            {!isCollapsed && <p className="font-bold px-4">ADMIN</p>}
+          <div className='w-full flex justify-between items-center mb-8 px-4'>
+            {!isCollapsed && <p className="font-bold">ADMIN</p>}
             <button onClick={toggleSidebarCollapse} className={`hidden md:block`}>
-              <AlignRight size={22} />
+              {isCollapsed ? <AlignRight size={22} /> : <X size={22} />}
             </button>
           </div>
 

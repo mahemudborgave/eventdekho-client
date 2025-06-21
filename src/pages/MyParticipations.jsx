@@ -115,7 +115,7 @@ function MyParticipations() {
           </div>
         ))}
       </div>
-      <div className='h-50'></div>
+      <div className='h-100'></div>
     </div>
   );
 }

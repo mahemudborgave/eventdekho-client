@@ -5,6 +5,7 @@ import UserContext from "../../context/UserContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ScaleLoader } from "react-spinners";
 import { Autocomplete, TextField, MenuItem, CircularProgress } from '@mui/material';
+import { Eclipse, Sparkles } from "lucide-react";
 
 export default function AddEvent() {
   const { email } = useContext(UserContext);
@@ -220,8 +221,8 @@ export default function AddEvent() {
       {isShow ? (
         <div className="h-full bg-[#F5F6FA] w-full">
           <form className="bg-white lg:p-8 p-3 h-full" onSubmit={handleSubmit}>
-            <h2 className="text-2xl font-bold mb-16 text-[#232946]">
-              <span className="text-[#FFD600]">Host</span> Event
+            <h2 className="text-2xl font-bold lg:mb-8 mb-5  flex items-center gap-2">
+              <Sparkles color="#FFD600"/><span className="text-[#FFD600]">Host </span>Event
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

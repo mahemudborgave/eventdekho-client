@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import AdminNavbar from "../../components/Dashboard/AdminNavbar";
 import { Outlet } from "react-router-dom";
+import ScrollToTop from "../../components/ScrollToTop";
 
 export default function AdminHome() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -12,6 +13,7 @@ export default function AdminHome() {
       <div className={`${isSidebarCollapsed ? 'lg:w-20' : 'lg:w-64'} transition-all duration-300 h-10 md:h-auto`}></div>
       <div className="flex-1 overflow-y-auto py-8 lg:pr-4 px-3">
         <Outlet />
+        <ScrollToTop />
       </div>
     </div>
   );

@@ -184,8 +184,8 @@ function Colleges() {
               onClick={() => setShowFilters(!showFilters)}
               className="flex items-center gap-2 px-4 py-2 bg-amber-300 rounded-full hover:bg-gray-100 transition-colors shadow-sm"
             >
-              <Filter size={18} className="text-white" />
-              <span className="hidden sm:inline text-gray-700 font-medium">Filters</span>
+              <Filter size={18} className="text-[#1a093f]" />
+              <span className="hidden sm:inline text-[#1a093f] font-medium">Filters</span>
               {activeFilters.length > 0 && (
                 <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                   {activeFilters.length}
