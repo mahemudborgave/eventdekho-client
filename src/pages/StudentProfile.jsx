@@ -163,20 +163,13 @@ function StudentProfile() {
 
                 {/* Profile Card */}
                 <div className="relative bg-white shadow-2xl rounded-2xl pt-24 pb-10 px-6 lg:px-12 mt-[-5rem] flex flex-col gap-4">
-                    {/* Edit Button (now left) */}
-                    <button
-                        onClick={editMode ? handleCancel : handleEdit}
-                        className="absolute top-6 left-6 bg-amber-400 text-white px-4 py-2 rounded-full shadow hover:bg-amber-500 z-30"
-                    >
-                        {editMode ? 'Cancel' : 'Edit Profile'}
-                    </button>
                     {/* Logout Button (now right) */}
                     {token && (
                         <button
                             onClick={handleLogout}
-                            className="absolute top-6 right-6 bg-red-600 text-white px-4 py-2 rounded-full shadow hover:bg-red-700 z-30"
+                            className="absolute top-4 right-2 bg-red-600 text-white px-4 py-2 rounded-full shadow hover:bg-red-700 z-30"
                         >
-                            <LogoutIcon className="inline mr-2" /> Log out
+                            <LogoutIcon className="inline mr-1"/> Log out
                         </button>
                     )}
                     {/* Name, Email, Role */}
@@ -289,9 +282,28 @@ function StudentProfile() {
                         {editMode && (
                             <div className="md:col-span-2 flex gap-2 mt-4 justify-center">
                                 <button type='submit' className='bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600'>Save</button>
+                                <button 
+                                    type='button' 
+                                    onClick={handleCancel} 
+                                    className='bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600'
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         )}
                     </form>
+                    
+                    {/* Edit Button (moved to bottom) */}
+                    {!editMode && (
+                        <div className="flex justify-center mt-6">
+                            <button
+                                onClick={handleEdit}
+                                className="bg-amber-400 text-white px-6 py-3 rounded-full shadow hover:bg-amber-500 transition-colors duration-200"
+                            >
+                                Edit Profile
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="max-w-2xl mx-auto mt-8 flex flex-col items-center">
