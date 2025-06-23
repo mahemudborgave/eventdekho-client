@@ -220,9 +220,9 @@ export default function AddEvent() {
     <>
       {isShow ? (
         <div className="h-full bg-[#F5F6FA] w-full">
-          <form className="bg-white lg:p-8 p-3 h-full" onSubmit={handleSubmit}>
-            <h2 className="text-2xl font-bold lg:mb-8 mb-5  flex items-center gap-2">
-              <Sparkles color="#FFD600"/><span className="text-[#FFD600]">Host </span>Event
+          <form className="bg-white lg:p-8 p-4 h-full" onSubmit={handleSubmit}>
+            <h2 className="text-2xl font-bold lg:mb-8 mb-5  flex items-center gap-2 bg-gradient-to-r from-red-100 to-red-400 p-4">
+              <Sparkles color="#BB4D00"/><span className="text-[#BB4D00]">Host </span>Event
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -367,7 +367,7 @@ export default function AddEvent() {
 
             <button
               type="submit"
-              className="mt-8 px-5 bg-[#FFD600] text-[#232946] font-bold py-3 rounded-full hover:bg-[#ffe066] transition"
+              className="mt-8 px-5 bg-[#BB4D00] text-white font-bold py-3 rounded-full hover:bg-[#ffe066] transition"
             >
               {isUpdate ? "Update Event" : "Create Event"}
             </button>

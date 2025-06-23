@@ -166,11 +166,11 @@ function ShowEventsAdmin() {
   return (
     <>
       {isShow ? (
-        <div className="h-full bg-[#F5F6FA] w-full lg:px-[50px] px-3 pt-10">
-          <div className="mb-5 flex flex-col lg:flex-row justify-between">
-            <h1 className="text-2xl font-bold tracking-tight mb-3 lg:mb-0">
-              Your events
-            </h1>
+        <div className="h-full bg-[#F5F6FA] w-full lg:px-[50px] lg:p-8 p-4">
+          <div className="mb-10 flex flex-col lg:flex-row justify-between bg-gradient-to-r from-red-100 to-red-400 p-4">
+            <h1 className="text-2xl font-bold tracking-tight mb-5 lg:mb-0 flex-1">
+              <span className="text-[#BB4D00]">Your</span> events
+            </h1> 
             <div className="flex flex-col lg:flex-row gap-3">
               <div className="flex gap-3">
                 <button
@@ -211,7 +211,7 @@ function ShowEventsAdmin() {
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
                       <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
                       <th className="py-3 px-6 text-left">Event Name</th>
-                      {/* <th className="py-3 px-6 text-left">College</th> */}
+                      <th className="py-3 px-6 text-left">College</th>
                       <th className="py-3 px-6 text-left">Mode</th>
                       <th className="py-3 px-6 text-left">Location</th>
                       <th className="py-3 px-6 text-left">Date</th>
@@ -222,12 +222,12 @@ function ShowEventsAdmin() {
                   </thead>
                   <tbody className="text-gray-700 text-sm">
                     {events.map((event, index) => (
-                      <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+                      <tr key={index} className="border-b border-gray-200 hover:bg-blue-100">
                         <td className="py-3 px-4 sticky left-0 z-10 bg-white">{index + 1}</td>
                         <td className="py-3 px-6">{event.eventName}</td>
-                        {/* <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
+                        <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
                           {event.collegeName}
-                        </td> */}
+                        </td>
                         <td className="py-3 px-6">{event.eventMode}</td>
                         <td className="py-3 px-6">{event.eventLocation}</td>
                         <td className="py-3 px-6">{formatDate(event.eventDate)}</td>

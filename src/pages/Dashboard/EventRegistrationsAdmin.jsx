@@ -91,11 +91,11 @@ function EventRegistrationsAdmin() {
   };
 
   return (
-    <div className='lg:px-[100px] px-3 py-10'>
+    <div className='p-4 lg:p-10'>
       <div className="mb-6">
-        <div className='flex flex-col lg:flex-row justify-between'>
-          <h2 className="text-xl font-semibold text-[#232946] mb-5">Event Registrations</h2>
-          <div className="flex mt-4 space-x-3">
+        <div className='flex flex-col lg:flex-row justify-between bg-gradient-to-r from-red-100 to-red-400 p-4 mb-10'>
+          <h2 className="text-2xl font-bold text-[#232946]"><span className="text-[#BB4D00]">Event</span> Registrations</h2>
+          <div className="flex gap-3 mt-5 lg:mt-0">
             <button
               onClick={exportToPDF}
               className="flex gap-2 items-center bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -112,12 +112,12 @@ function EventRegistrationsAdmin() {
         </div>
 
         {eventInfo.eventName && (
-          <p className="text-sm text-gray-700 lg:mt-2 mt-4 inline-block">
+          <p className="text-sm text-gray-700 lg:mt-2 mt-4">
             <span className="font-medium">Event:</span> {eventInfo.eventName}
           </p>
         )}
         {eventInfo.collegeName && (
-          <p className="text-sm text-gray-700 inline-block lg:ml-5">
+          <p className="text-sm text-gray-700 inline-block">
             <span className="font-medium">College:</span> {eventInfo.collegeName}
           </p>
         )}
@@ -130,37 +130,37 @@ function EventRegistrationsAdmin() {
         <div className="text-gray-500">No registrations yet.</div>
       ) : (
         <div className="w-full overflow-x-auto">
-              <div className="inline-block min-w-max">
-                <table className="table-auto bg-white shadow-md rounded-xl">
-            <thead>
-              <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
-                <th className="py-3 px-2 text-left sticky left-0 z-10 bg-gray-200">#</th>
-                <th className="py-3 px-4 text-left">Name</th>
-                <th className="py-3 px-4 text-left">Email</th>
-                <th className="py-3 px-4 text-left">College</th>
-                <th className="py-3 px-4 text-left">Branch</th>
-                <th className="py-3 px-4 text-left">Year</th>
-                <th className="py-3 px-4 text-left">Course</th>
-                <th className="py-3 px-4 text-left">Gender</th>
-                <th className="py-3 px-4 text-left">Mobile</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-700 text-sm">
-              {registrations.map((reg, index) => (
-                <tr key={reg._id} className="border-b border-gray-200 hover:bg-gray-100">
-                  <td className="py-3 px-2 sticky left-0 z-10 bg-white">{index + 1}</td>
-                  <td className="py-3 px-4">{reg.studentName}</td>
-                  <td className="py-3 px-4">{reg.email}</td>
-                  <td className="py-3 px-4">{reg.studentCollegeName}</td>
-                  <td className="py-3 px-4">{reg.branch}</td>
-                  <td className="py-3 px-4">{reg.year}</td>
-                  <td className="py-3 px-4">{reg.course}</td>
-                  <td className="py-3 px-4">{reg.gender}</td>
-                  <td className="py-3 px-4">{reg.mobno}</td>
+          <div className="inline-block min-w-max">
+            <table className="table-auto bg-white shadow-md rounded-xl">
+              <thead>
+                <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
+                  <th className="py-3 px-2 text-left sticky left-0 z-10 bg-gray-200">#</th>
+                  <th className="py-3 px-4 text-left">Name</th>
+                  <th className="py-3 px-4 text-left">Email</th>
+                  <th className="py-3 px-4 text-left">College</th>
+                  <th className="py-3 px-4 text-left">Branch</th>
+                  <th className="py-3 px-4 text-left">Year</th>
+                  <th className="py-3 px-4 text-left">Course</th>
+                  <th className="py-3 px-4 text-left">Gender</th>
+                  <th className="py-3 px-4 text-left">Mobile</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-gray-700 text-sm">
+                {registrations.map((reg, index) => (
+                  <tr key={reg._id} className="border-b border-gray-200 hover:bg-blue-100">
+                    <td className="py-3 px-2 sticky left-0 z-10 bg-white">{index + 1}</td>
+                    <td className="py-3 px-4">{reg.studentName}</td>
+                    <td className="py-3 px-4">{reg.email}</td>
+                    <td className="py-3 px-4">{reg.studentCollegeName}</td>
+                    <td className="py-3 px-4">{reg.branch}</td>
+                    <td className="py-3 px-4">{reg.year}</td>
+                    <td className="py-3 px-4">{reg.course}</td>
+                    <td className="py-3 px-4">{reg.gender}</td>
+                    <td className="py-3 px-4">{reg.mobno}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

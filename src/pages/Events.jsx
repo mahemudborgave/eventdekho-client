@@ -17,7 +17,7 @@ function Events() {
   const [loading, setLoading] = useState(true);
   const { searchValue, setSearchValue } = useContext(SearchContext);
   const [originalEvents, setOriginalEvents] = useState([]);
-  const [isRecentlyCollapsed, setIsRecentlyCollapsed] = useState(false);
+  const [isRecentlyCollapsed, setIsRecentlyCollapsed] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -71,7 +71,7 @@ function Events() {
   const recently = events.filter(e => {
     const created = new Date(e.createdAt || e.date);
     return !isNaN(created) && (now - created) / (1000 * 60 * 60 * 24) <= 7;
-  });
+  }).slice(0, 5);
   // Add 'Hot Right Now' events (top 8 by participations)
   const hot = [...events]
     .filter(e => typeof e.participations === 'number' && e.participations > 0)

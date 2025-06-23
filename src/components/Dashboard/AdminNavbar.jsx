@@ -59,7 +59,7 @@ function AdminNavbar({ onToggle }) {
 
   const linkClasses = ({ isActive }) =>
     `flex items-center gap-3 py-2 font-medium transition ${
-      isActive ? 'bg-[#FFD600]/40 text-black' : 'hover:bg-[#FFD600]/20'
+      isActive ? 'bg-[#BB4D00]/40 text-black' : 'hover:bg-[#BB4D00]/20'
     } ${isCollapsed ? 'justify-center' : 'px-3'}`;
 
   const mobileTopNavLinkClasses = ({ isActive }) =>

@@ -260,7 +260,7 @@ function Colleges() {
               <table className="w-full">
                 <thead className="bg-gradient-to-r bg-[#1a093f] text-gray-200">
                   <tr>
-                    <th className="px-4 py-4 text-left font-medium text-base">#</th>     
+                    <th className="px-4 py-4 text-center font-medium text-base">#</th>     
                     <th className="px-4 py-4 text-left font-medium text-base">College Name</th>
                     <th className="px-4 py-4 text-center font-medium text-base">Events</th>
                     <th className="px-4 py-4 text-center font-medium text-base">Type</th>
@@ -271,7 +271,7 @@ function Colleges() {
                 <tbody className="divide-y divide-gray-100">
                   {filteredColleges.map((college, index) => (
                     <tr key={college.collegeCode || college.dte_code || college.college_name} 
-                        className={`hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}>
+                        className={`hover:bg-blue-100 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}>
                       <td className="px-4 py-3 text-center">
                         <div className="text-gray-900 text-base">
                           {index + 1}

@@ -151,9 +151,9 @@ function StudentProfile() {
             <div className="w-full h-40 bg-gradient-to-r from-amber-400 to-blue-400" />
 
             {/* Card Container */}
-            <div className="max-w-2xl mx-auto relative">
+            <div className="max-w-2xl lg:mx-auto relative px-4">
                 {/* Profile Photo */}
-                <div className="absolute left-1/2 -translate-x-1/2 -top-20 z-20">
+                <div className="absolute left-1/2 -translate-x-1/2 -top-15 z-20">
                     <img
                         src={userprofile}
                         alt="Profile"
@@ -164,19 +164,20 @@ function StudentProfile() {
                 {/* Profile Card */}
                 <div className="relative bg-white shadow-2xl rounded-2xl pt-24 pb-10 px-6 lg:px-12 mt-[-5rem] flex flex-col gap-4">
                     {/* Logout Button (now right) */}
-                    {token && (
-                        <button
-                            onClick={handleLogout}
-                            className="absolute top-4 right-2 bg-red-600 text-white px-4 py-2 rounded-full shadow hover:bg-red-700 z-30"
-                        >
-                            <LogoutIcon className="inline mr-1"/> Log out
-                        </button>
-                    )}
+                    
                     {/* Name, Email, Role */}
                     <div className="flex flex-col items-center gap-1 mt-2">
                         <span className="text-2xl font-bold text-gray-900 flex items-center gap-2"><User size={22} />{profile.studentName || <span className="text-gray-400">Not set</span>}</span>
                         <span className="text-gray-600 flex items-center gap-2"><AtSign size={16} />{email || <span className="text-gray-400">Not set</span>}</span>
                         <span className="text-blue-700 font-semibold text-xs uppercase tracking-wider mt-1">{profile.role}</span>
+                        {token && (
+                        <button
+                            onClick={handleLogout}
+                            className=" bg-red-600 text-white px-5 py-2 rounded-full shadow hover:bg-red-700 z-30 mt-2"
+                        >
+                            <LogoutIcon className="mr-1" size={5}/> Log out
+                        </button>
+                    )}
                     </div>
                     {/* Profile Completion Bar */}
                     <div className="w-full flex flex-col items-center mt-2">

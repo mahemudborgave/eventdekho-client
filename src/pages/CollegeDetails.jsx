@@ -84,6 +84,13 @@ function CollegeDetails() {
     fetchCollegeEvent();
   }, []);
 
+  // Collapse all clubs by default when clubEvents is set
+  useEffect(() => {
+    if (clubEvents.length > 0) {
+      setCollapsedClubs(new Set(clubEvents.map(club => club.clubName)));
+    }
+  }, [clubEvents]);
+
   const toggleClubCollapse = (clubName) => {
     setCollapsedClubs(prev => {
       const newSet = new Set(prev);
@@ -140,7 +147,7 @@ function CollegeDetails() {
           <div className="space-y-8">
             {/* Clubs with Events */}
             {clubEvents.map((club, index) => (
-              <div key={club.clubName} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+              <div key={club.clubName} className="bg-white rounded-2xl shadow-xl shadow-blue-300 border border-gray-100 overflow-hidden">
                 {/* Club Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 lg:px-6 py-3 lg:py-4 text-white relative">
 
@@ -150,12 +157,14 @@ function CollegeDetails() {
                         <Users size={20} />
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold">{club.clubName}</h2>
+                        <h2 className="text-base lg:text-xl font-bold">{club.clubName}</h2>
                         <p className="text-blue-100 text-sm">Student Club</p>
                       </div>
                     </div>
+                    <div className='flex justify-center items-center gap-4'>
+
                     <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 text-sm">
                         <Calendar size={16} />
                         <span className="font-semibold">{club.eventCount} Events</span>
                       </div>
@@ -167,6 +176,7 @@ function CollegeDetails() {
                     >
                       {collapsedClubs.has(club.clubName) ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
                     </button>
+                    </div>
                   </div>
                 </div>
 
@@ -190,12 +200,12 @@ function CollegeDetails() {
                         <Calendar size={20} />
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold">Other Events</h2>
+                        <h2 className="text-base lg:text-xl font-bold">Other Events</h2>
                         <p className="text-gray-100 text-sm">Events without club</p>
                       </div>
                     </div>
                     <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 text-sm">
                         <Calendar size={16} />
                         <span className="font-semibold">{collegeEvents.filter(event => !event.clubName).length} Events</span>
                       </div>
