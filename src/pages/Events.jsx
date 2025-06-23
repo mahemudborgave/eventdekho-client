@@ -23,8 +23,10 @@ function Events() {
     const fetchEvents = async () => {
       try {
         const res = await axios.get(`${baseURL}:${port}/eventt/getevents`)
-        setEvents(res.data);
-        setOriginalEvents(res.data);
+        // Sort by postedOn or createdAt descending (newest first)
+        const sorted = [...res.data].sort((a, b) => new Date(b.postedOn || b.createdAt) - new Date(a.postedOn || a.createdAt));
+        setEvents(sorted);
+        setOriginalEvents(sorted);
       } catch (err) {
         console.error('Error fetching events:', err);
       } finally {
@@ -66,12 +68,15 @@ function Events() {
     )
   }
 
-  // Add 'Recently Added' events (last 7 days)
+  // Add 'Recently Added' events (last 7 days, newest first)
   const now = new Date();
-  const recently = events.filter(e => {
-    const created = new Date(e.createdAt || e.date);
-    return !isNaN(created) && (now - created) / (1000 * 60 * 60 * 24) <= 7;
-  }).slice(0, 5);
+  const recently = [...events]
+    .filter(e => {
+      const created = new Date(e.createdAt || e.postedOn || e.date);
+      return !isNaN(created) && (now - created) / (1000 * 60 * 60 * 24) <= 7;
+    })
+    .sort((a, b) => new Date(b.postedOn || b.createdAt) - new Date(a.postedOn || a.createdAt))
+    .slice(0, 5);
   // Add 'Hot Right Now' events (top 8 by participations)
   const hot = [...events]
     .filter(e => typeof e.participations === 'number' && e.participations > 0)
