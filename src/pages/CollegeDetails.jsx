@@ -184,7 +184,7 @@ function CollegeDetails() {
 
                 {/* Events List */}
                 {!collapsedClubs.has(club.clubName) && (
-                  <div className="p-4 lg:p-6">
+                  <div className="p-6">
                     <Eventt events={club.events} />
                   </div>
                 )}
