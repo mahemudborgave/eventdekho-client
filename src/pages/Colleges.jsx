@@ -196,13 +196,13 @@ function Colleges() {
             {activeFilters.length > 0 && (
               <button
                 onClick={clearAllFilters}
-                className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
+                className="hidden lg:flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <X size={16} />
                 <span className="hidden sm:inline">Clear</span>
               </button>
             )}
-          </div>
+          </div>  
         </div>
 
         {/* Filter Options */}
@@ -228,6 +228,15 @@ function Colleges() {
                 );
               })}
             </div>
+            {activeFilters.length > 0 && (
+              <button
+                onClick={clearAllFilters}
+                className="lg:hidden flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <X size={16} />
+                <span className="inline">Clear</span>
+              </button>
+            )}
           </div>
         )}
       </div>
