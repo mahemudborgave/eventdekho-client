@@ -8,8 +8,8 @@ import collegeList from "../college_list.json";
 import { Calendar, Users, MapPin, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react';
 
 function CollegeDetails() {
-  const { dte_code } = useParams();
-  // console.log(dte_code);
+  const { collegeCode } = useParams();
+  // console.log(collegeCode);
 
   const navigate = useNavigate();
   const [college, setCollege] = useState(null);
@@ -26,14 +26,16 @@ function CollegeDetails() {
 
     const fetchCollege = async () => {
       try {
-        // const res = await axios.get(`${baseURL}:${port}/eventt/getcollege/${dte_code}`);
+        const res = await axios.get(`${baseURL}:${port}/eventt/getcollege/${collegeCode}`);
+        // console.log(res);
+        
 
-        const matchedCollege = collegeList.find(college => college.dte_code === dte_code);
-        console.log(matchedCollege);
+        // const matchedCollege = collegeList.find(college => college.collegeCode === collegeCode);
+        // console.log(matchedCollege);
 
         setCollege({
-          collegeCode: matchedCollege?.dte_code,
-          collegeName: matchedCollege?.college_name,
+          collegeCode: res.data.collegeCode,
+          collegeName: res.data.collegeName,
           collegeEventCount: 0 // or fetch from backend if needed
         });
       }
@@ -47,7 +49,7 @@ function CollegeDetails() {
 
     const fetchCollegeEvent = async () => {
       try {
-        const res = await axios.get(`${baseURL}:${port}/eventt/getevents/${dte_code}`);
+        const res = await axios.get(`${baseURL}:${port}/eventt/getevents/${collegeCode}`);
         // console.log(res.data)
         setCollegeEvents(res.data);
 

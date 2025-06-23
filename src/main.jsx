@@ -31,7 +31,7 @@ const router = createBrowserRouter(
           <Route path='events' element={<Events />} />
           <Route path='colleges' element={<Colleges />} />
           <Route path='contact' element={<Contact />} />
-          <Route path='collegeDetails/:dte_code' element={<CollegeDetails />} />
+          <Route path='collegeDetails/:collegeCode' element={<CollegeDetails />} />
           <Route path='eventdetail/:eventId' element={<EventDetail />} />
           <Route path='studentprofile' element={<StudentProfile />} />
           <Route path='myparticipations' element={<MyParticipations />} />
