@@ -105,6 +105,8 @@ export default function AddEvent() {
         collegeName: namePart || "",
         collegeCode: codePart || "",
       });
+    } else if (name === "clubName") {
+      setForm({ ...form, clubName: value.toUpperCase().trim() });
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -438,12 +440,13 @@ function InputField({ name, type = "text", label, value, onChange, required = fa
       <input
         type={type}
         name={name}
-        value={value}
+        value={name === "clubName" ? value.toUpperCase() : value}
         onChange={onChange}
         minLength={name === "collegeCode" ? 4 : undefined}
         required={required}
         placeholder={placeholder}
-        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#FFD600] border-gray-300"
+        className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#FFD600] border-gray-300 ${name === "clubName" ? "uppercase" : ""}`}
+        style={name === "clubName" ? { textTransform: 'uppercase' } : {}}
       />
     </div>
   );
