@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { User, AlignRight, X, House, LogIn, LayoutDashboard } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
-import eventdekhoLogo from '../assets/images/eventapply-logo.png';
+import eventdekhoLogo from '/eventapply.png';
 import UserContext from '../context/UserContext';
 import axios from 'axios';
 

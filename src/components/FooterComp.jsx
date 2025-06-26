@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import { NavLink, Link } from 'react-router-dom';
-import eventdekhoLogo from '../assets/images/eventapply-logo.png';
+import eventdekhoLogo from '/eventapply.png';
 
 function FooterComp() {
   return (
