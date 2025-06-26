@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://eventapply.com/sitemap.xml
+Sitemap: https://eventapply.in/sitemap.xml
 
 # Disallow admin and private areas
 Disallow: /admin/
