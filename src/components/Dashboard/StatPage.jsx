@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import { ScaleLoader } from 'react-spinners';
 import {
@@ -70,6 +70,8 @@ function StatPage() {
     const data = generateTimeSeries(label, total, points);
     setChartData(data);
   };
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuthAndFetchStats = async () => {
@@ -212,7 +214,15 @@ function StatPage() {
           </div>
         </div>
         <div className="bg-white rounded-lg border border-gray-400 lg:p-8 p-4">
-          <h2 className="text-xl font-semibold text-gray-700 mb-5">Registrations Received for Events</h2>
+          <div className="flex items-center mb-4 justify-between">
+            <h2 className="text-xl font-semibold text-gray-700">Registrations Received for Events</h2>
+            <button
+              className="text-blue-600 underline text-sm font-medium hover:text-blue-800"
+              onClick={() => navigate('/admin/showeventsadmin')}
+            >
+              View All
+            </button>
+          </div>
           {topEvents.length === 0 ? (
             <div className="text-gray-400">No data</div>
           ) : (

@@ -18,6 +18,8 @@ function ShowEventsAdmin() {
   const [isShow, setIsShow] = useState(false);
   const { email } = useContext(UserContext);
   const navigate = useNavigate();
+  const [registrationCounts, setRegistrationCounts] = useState({});
+  const [queryCounts, setQueryCounts] = useState({});
 
   const truncate = (str, n) => (str && str.length > n ? str.slice(0, n) + '...' : str);
 
@@ -141,6 +143,26 @@ function ShowEventsAdmin() {
           const userEvents = res.data.filter(event => event.email === email);
           setEvents(userEvents);
 
+          // Fetch registration counts for each event
+          const regCounts = {};
+          const qCounts = {};
+          await Promise.all(userEvents.map(async (event) => {
+            try {
+              const regRes = await axios.get(`${baseURL}:${port}/eventt/registrations/count/${event._id}`);
+              regCounts[event._id] = regRes.data.count || 0;
+            } catch {
+              regCounts[event._id] = 0;
+            }
+            try {
+              const queryRes = await axios.get(`${baseURL}:${port}/query/event/${event._id}`);
+              qCounts[event._id] = Array.isArray(queryRes.data) ? queryRes.data.length : 0;
+            } catch {
+              qCounts[event._id] = 0;
+            }
+          }));
+          setRegistrationCounts(regCounts);
+          setQueryCounts(qCounts);
+
         } catch (err) {
           console.log("Error: ", err);
           toast.warn("Session expired. Please log in again.");
@@ -208,17 +230,17 @@ function ShowEventsAdmin() {
                   <col className="w-[5%]" />
                 </colgroup> */}
                   <thead>
-                    <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
+                    <tr className="bg-gray-200 text-gray-600 text-sm leading-normal uppercase">
                       <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
-                      <th className="py-3 px-6 text-left">Event Name</th>
-                      <th className="py-3 px-6 text-left">College</th>
-                      <th className="py-3 px-6 text-left">Club</th>
-                      <th className="py-3 px-6 text-left">Mode</th>
-                      <th className="py-3 px-6 text-left">Location</th>
-                      <th className="py-3 px-6 text-left">Date</th>
-                      <th className="py-3 px-6 text-left">Posted On</th>
-                      <th className="py-3 px-6 text-left">Closing On</th>
-                      <th className="py-3 px-6 text-center">Actions</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Event Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Club</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Mode</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Location</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Date</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Posted On</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Closing On</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="text-gray-700 text-sm">
@@ -244,9 +266,21 @@ function ShowEventsAdmin() {
                           </Link>
                           <Link
                             to={`/admin/eventregistrationsadmin/${event._id}`}
-                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 relative"
                           >
                             Registrations
+                            <span className="ml-2 inline-block bg-green-200 text-green-700 font-bold px-2 py-0.5 rounded-full text-xs border border-green-500">
+                              {registrationCounts[event._id] ?? '-'}
+                            </span>
+                          </Link>
+                          <Link
+                            to={`/admin/eventqueries/${event._id}`}
+                            className="bg-purple-500 text-white px-3 py-1 rounded ml-2 hover:bg-purple-600 relative"
+                          >
+                            Queries
+                            <span className="ml-2 inline-block bg-purple-200 text-purple-700 font-bold px-2 py-0.5 rounded-full text-xs border border-purple-500">
+                              {queryCounts[event._id] ?? '-'}
+                            </span>
                           </Link>
                           <button
                             onClick={() => handleUpdate(event)}

@@ -9,6 +9,7 @@ import {
   Menu,
   X,
   AlignLeft,
+  MessageCircle,
 } from 'lucide-react';
 import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
@@ -130,6 +131,15 @@ function AdminNavbar({ onToggle }) {
                 Show Events
               </NavLink>
 
+              <NavLink 
+                to="queries" 
+                onClick={() => setIsMobileTopNavOpen(false)} 
+                className={mobileTopNavLinkClasses}
+              >
+                <MessageCircle size={20} />
+                Queries
+              </NavLink>
+
               {/* User section */}
               {user ? (
                 <>
@@ -216,7 +226,11 @@ function AdminNavbar({ onToggle }) {
             <NavLink to="showeventsadmin" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
               <CalendarDays size={20} />
               {!isCollapsed && 'Show Events'}
-            </NavLink>    
+            </NavLink>
+            <NavLink to="queries" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+              <MessageCircle size={20} />
+              {!isCollapsed && 'Queries'}
+            </NavLink>
           </nav>
         </div>
 

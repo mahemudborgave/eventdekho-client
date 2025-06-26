@@ -5,14 +5,38 @@ import Eventt from '../components/Eventt';
 import EventRegistration from '../components/EventRegistration';
 import { ToastContainer, toast } from 'react-toastify';
 import UserContext from '../context/UserContext'; // add this
+import QueryComp from '../components/QueryComp';
+import { Loader2 } from 'lucide-react';
+
+// Simple Modal component
+function Modal({ open, onClose, children }) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 bg-opacity-40">
+      <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+        <button
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
+          onClick={onClose}
+        >
+          &times;
+        </button>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function EventDetail() {
   const { eventId } = useParams();
-  const { email } = useContext(UserContext); // fetch email from context
+  const { email, user } = useContext(UserContext); // fetch email and user from context
 
   const [event, setEvent] = useState(null);
   const [isShow, setIsShow] = useState(false);
   const [hasRegistered, setHasRegistered] = useState(false); // NEW
+  const [showQuery, setShowQuery] = useState(false);
+  const [userQueries, setUserQueries] = useState([]);
+  const [showUserQueries, setShowUserQueries] = useState(false);
+  const [loadingQueries, setLoadingQueries] = useState(false);
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
 
@@ -40,6 +64,20 @@ function EventDetail() {
       toast.warn("Please Log in to continue");
     }
   }
+
+  const fetchUserQueries = async () => {
+    setLoadingQueries(true);
+    try {
+      const res = await axios.get(`${baseURL}:${port}/query/event/${eventId}`);
+      // Filter queries for this user
+      const filtered = res.data.filter(q => q.userEmail === email);
+      setUserQueries(filtered);
+    } catch (err) {
+      setUserQueries([]);
+    } finally {
+      setLoadingQueries(false);
+    }
+  };
 
   useEffect(() => {
     const getEventDetails = async () => {
@@ -84,9 +122,27 @@ function EventDetail() {
               } text-white py-2 px-5 rounded-md inline-block`}
               to=''
               onClick={!hasRegistered ? handleClick : (e) => e.preventDefault()}
-            >
+            > 
               {hasRegistered ? 'Registered' : isShow ? 'Close' : 'Participate'}
             </Link>
+            {/* Query Button */}
+            <button
+              className="bg-red-600 text-white py-2 px-5 rounded-md inline-block ml-4 mt-4 lg:mt-0"
+              onClick={() => setShowQuery((prev) => !prev)}
+              type="button"
+            >
+              {showQuery ? 'Close Query Box' : 'Raise a Query'}
+            </button>
+            <button
+              className="bg-blue-600 text-white py-2 px-5 rounded-md inline-block ml-4 mt-4 lg:mt-0"
+              onClick={() => {
+                setShowUserQueries((prev) => !prev);
+                if (!showUserQueries) fetchUserQueries();
+              }}
+              type="button"
+            >
+              {showUserQueries ? 'Hide Queries' : 'Show Queries'}
+            </button>
             {!hasRegistered && isShow && (
               <EventRegistration
                 eventId={eventId}
@@ -95,6 +151,45 @@ function EventDetail() {
                 setHasRegistered={setHasRegistered}
               />
             )}
+            {/* Query Section */}
+            {showQuery && (
+              <div className='my-10'>
+                <QueryComp
+                  eventId={event?._id || eventId}
+                  eventName={event?.eventName || ''}
+                  userEmail={email || ''}
+                  userName={user || ''}
+                  onSuccess={() => setShowQuery(false)}
+                />
+              </div>
+            )}
+            {/* User Queries Modal */}
+            <Modal open={showUserQueries} onClose={() => setShowUserQueries(false)}>
+              <h3 className='text-lg font-bold mb-4 text-blue-800'>Your Queries for this Event</h3>
+              {loadingQueries ? (
+                <div className='flex items-center gap-2 text-blue-600'><Loader2 className='animate-spin' /> Loading...</div>
+              ) : userQueries.length === 0 ? (
+                <div className='text-gray-600'>You have not raised any queries for this event.</div>
+              ) : (
+                <div className='space-y-4 max-h-[60vh] overflow-y-auto'>
+                  {userQueries.map((q) => (
+                    <div key={q._id} className='bg-blue-50 border border-blue-200 rounded p-4'>
+                      <div className='font-semibold text-gray-800 mb-1'>Query:</div>
+                      <div className='mb-2 text-gray-700'>{q.message}</div>
+                      {q.resolution ? (
+                        <div className='bg-green-100 border border-green-300 rounded p-2 mt-2'>
+                          <div className='font-semibold text-green-800 mb-1'>Admin Response:</div>
+                          <div className='text-green-900'>{q.resolution}</div>
+                        </div>
+                      ) : (
+                        <div className='text-yellow-700 italic'>No response yet.</div>
+                      )}
+                      <div className='text-xs text-gray-400 mt-2'>Asked on: {new Date(q.createdAt).toLocaleString()}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Modal>
           </div>
           <div className='h-20'></div>
         </>

@@ -135,14 +135,14 @@ function EventRegistrationsAdmin() {
               <thead>
                 <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
                   <th className="py-3 px-2 text-left sticky left-0 z-10 bg-gray-200">#</th>
-                  <th className="py-3 px-4 text-left">Name</th>
-                  <th className="py-3 px-4 text-left">Email</th>
-                  <th className="py-3 px-4 text-left">College</th>
-                  <th className="py-3 px-4 text-left">Branch</th>
-                  <th className="py-3 px-4 text-left">Year</th>
-                  <th className="py-3 px-4 text-left">Course</th>
-                  <th className="py-3 px-4 text-left">Gender</th>
-                  <th className="py-3 px-4 text-left">Mobile</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Name</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Email</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Branch</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Year</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Course</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Gender</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Mobile</th>
                 </tr>
               </thead>
               <tbody className="text-gray-700 text-sm">
