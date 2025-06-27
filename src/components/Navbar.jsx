@@ -163,7 +163,8 @@ function Navbar() {
                                             <div key={q._id} className="p-4 border-b last:border-b-0 relative">
                                                 <button
                                                     className="absolute top-2 right-2 text-gray-400 hover:text-red-600 text-lg font-bold"
-                                                    onClick={() => handleMarkAsRead(q._id)}
+                                                    onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
+                                                    onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     title="Mark as read"
                                                 >
                                                     &times;
@@ -279,7 +280,8 @@ function Navbar() {
                                                 <div key={q._id} className="p-4 border-b last:border-b-0 relative">
                                                     <button
                                                         className="absolute top-2 right-2 text-gray-400 hover:text-red-600 text-lg font-bold"
-                                                        onClick={() => handleMarkAsRead(q._id)}
+                                                        onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
+                                                        onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                         title="Mark as read"
                                                     >
                                                         &times;

@@ -79,6 +79,23 @@ function EventDetail() {
     }
   };
 
+  const handleQueryClick = () => {
+    if (!email) {
+      toast.warn('Please Log in to continue');
+      return;
+    }
+    setShowQuery((prev) => !prev);
+  };
+
+  const handleShowUserQueries = () => {
+    if (!email) {
+      toast.warn('Please Log in to continue');
+      return;
+    }
+    setShowUserQueries((prev) => !prev);
+    if (!showUserQueries) fetchUserQueries();
+  };
+
   useEffect(() => {
     const getEventDetails = async () => {
       try {
@@ -119,7 +136,7 @@ function EventDetail() {
             <Link
               className={`${
                 hasRegistered ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-700 hover:outline-5 hover:outline-green-300 hover:outline-offset-0'
-              } text-white py-2 px-5 rounded-md inline-block`}
+              } text-white lg:py-2 text-sm lg:text-base lg:px-5 px-3 py-2 rounded-md inline-block`}
               to=''
               onClick={!hasRegistered ? handleClick : (e) => e.preventDefault()}
             > 
@@ -127,18 +144,15 @@ function EventDetail() {
             </Link>
             {/* Query Button */}
             <button
-              className="bg-red-600 text-white py-2 px-5 rounded-md inline-block ml-4 mt-4 lg:mt-0"
-              onClick={() => setShowQuery((prev) => !prev)}
+              className="bg-red-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-2 lg:ml-4 mt-4 lg:mt-0"
+              onClick={handleQueryClick}
               type="button"
             >
               {showQuery ? 'Close Query Box' : 'Raise a Query'}
             </button>
             <button
-              className="bg-blue-600 text-white py-2 px-5 rounded-md inline-block ml-4 mt-4 lg:mt-0"
-              onClick={() => {
-                setShowUserQueries((prev) => !prev);
-                if (!showUserQueries) fetchUserQueries();
-              }}
+              className="bg-blue-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-0 lg:ml-4 mt-4 lg:mt-0"
+              onClick={handleShowUserQueries}
               type="button"
             >
               {showUserQueries ? 'Hide Queries' : 'Show Queries'}

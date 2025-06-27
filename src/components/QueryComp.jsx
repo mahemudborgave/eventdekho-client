@@ -17,6 +17,7 @@ function QueryComp({ eventId, eventName, userEmail, userName, onSuccess }) {
     try {
       const baseURL = import.meta.env.VITE_BASE_URL;
       const port = import.meta.env.VITE_PORT;
+      console.log({ eventId, eventName, userEmail, userName, message });
       await axios.post(`${baseURL}:${port}/query`, {
         eventId,
         eventName,
