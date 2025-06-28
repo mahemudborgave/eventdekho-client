@@ -1,7 +1,7 @@
 // Utility functions for navigation and page tracking
 
 // Pages that should not be considered as "last visited" for redirects
-const EXCLUDED_PAGES = ['/login', '/register'];
+const EXCLUDED_PAGES = ['/login', '/register', '/signup'];
 
 // Store the last visited page
 export const setLastVisitedPage = (pathname) => {
@@ -26,9 +26,9 @@ export const clearLastVisitedPage = () => {
 
 // Smart redirect based on user role and last page
 export const getSmartRedirectPath = (userRole, lastPage = null) => {
-  // If user is organizer, prioritize dashboard
+  // If user is organizer, redirect to profile page to complete details
   if (userRole === 'organizer') {
-    return '/admin/dashboard';
+    return '/admin/profile';
   }
   
   // For students, use last page or home

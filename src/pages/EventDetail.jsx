@@ -4,7 +4,7 @@ import axios from 'axios';
 import Eventt from '../components/Eventt';
 import EventRegistration from '../components/EventRegistration';
 import { ToastContainer, toast } from 'react-toastify';
-import UserContext from '../context/UserContext'; // add this
+import UserContext from '../context/UserContext';
 import QueryComp from '../components/QueryComp';
 import { Loader2 } from 'lucide-react';
 
@@ -28,11 +28,11 @@ function Modal({ open, onClose, children }) {
 
 function EventDetail() {
   const { eventId } = useParams();
-  const { email, user } = useContext(UserContext); // fetch email and user from context
+  const { email, user, token, role } = useContext(UserContext); // fetch email, user, token, and role from context
 
   const [event, setEvent] = useState(null);
   const [isShow, setIsShow] = useState(false);
-  const [hasRegistered, setHasRegistered] = useState(false); // NEW
+  const [hasRegistered, setHasRegistered] = useState(false);
   const [showQuery, setShowQuery] = useState(false);
   const [userQueries, setUserQueries] = useState([]);
   const [showUserQueries, setShowUserQueries] = useState(false);
@@ -41,38 +41,46 @@ function EventDetail() {
   const port = import.meta.env.VITE_PORT;
 
   const handleClick = async () => {
-    const StoredToken = localStorage.getItem("token");
-    let response;
-
-    if (StoredToken) {
-      try {
-        response = await axios.post(`${baseURL}:${port}/userauth/verifytoken`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${StoredToken}`
-            }
-          });
-      } catch (e) {
-        console.log("Error ", e);
-      }
+    if (!token) {
+      toast.warn("Please Log in to continue");
+      return;
     }
 
-    if (StoredToken && response) {
-      setIsShow((prev) => !prev);
-    } else {
+    try {
+      // Verify token using the new auth system
+      const response = await axios.post(`${baseURL}:${port}/auth/verify`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response?.data?.valid) {
+        setIsShow((prev) => !prev);
+      } else {
+        toast.warn("Please Log in to continue");
+      }
+    } catch (e) {
+      console.log("Token verification error:", e);
       toast.warn("Please Log in to continue");
     }
   }
 
   const fetchUserQueries = async () => {
+    if (!token || !email) return;
+    
     setLoadingQueries(true);
     try {
-      const res = await axios.get(`${baseURL}:${port}/query/event/${eventId}`);
+      const res = await axios.get(`${baseURL}:${port}/query/event/${eventId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       // Filter queries for this user
       const filtered = res.data.filter(q => q.userEmail === email);
       setUserQueries(filtered);
     } catch (err) {
+      console.error('Error fetching queries:', err);
       setUserQueries([]);
     } finally {
       setLoadingQueries(false);
@@ -80,7 +88,7 @@ function EventDetail() {
   };
 
   const handleQueryClick = () => {
-    if (!email) {
+    if (!token || !email) {
       toast.warn('Please Log in to continue');
       return;
     }
@@ -88,7 +96,7 @@ function EventDetail() {
   };
 
   const handleShowUserQueries = () => {
-    if (!email) {
+    if (!token || !email) {
       toast.warn('Please Log in to continue');
       return;
     }
@@ -107,11 +115,13 @@ function EventDetail() {
     };
 
     const checkRegistration = async () => {
-      if (!email) return;
+      if (!token || !email) return;
       try {
         const res = await axios.post(`${baseURL}:${port}/eventt/checkregistered`, {
           eventId,
           email
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data?.registered) {
           setHasRegistered(true);
@@ -123,7 +133,7 @@ function EventDetail() {
 
     getEventDetails();
     checkRegistration();
-  }, [email, eventId]);
+  }, [token, email, eventId]);
 
   return (
     <div>
@@ -133,15 +143,21 @@ function EventDetail() {
           <div className='p-5 lg:p-10 pb-20 bg-green-200 my-8 rounded-xl'>
             <p className='text-xl text-green-700 mb-5'>Details -</p>
             <p className='text-sm lg:text-base mb-10 whitespace-pre-line'>{event.eventDescription}</p>
-            <Link
-              className={`${
-                hasRegistered ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-700 hover:outline-5 hover:outline-green-300 hover:outline-offset-0'
-              } text-white lg:py-2 text-sm lg:text-base lg:px-5 px-3 py-2 rounded-md inline-block`}
-              to=''
-              onClick={!hasRegistered ? handleClick : (e) => e.preventDefault()}
-            > 
-              {hasRegistered ? 'Registered' : isShow ? 'Close' : 'Participate'}
-            </Link>
+            
+            {/* Only show participate button for students */}
+            {/*{role === 'student' && (
+             
+            )}*/}
+             <Link
+                className={`${
+                  hasRegistered ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-700 hover:outline-5 hover:outline-green-300 hover:outline-offset-0'
+                } text-white lg:py-2 text-sm lg:text-base lg:px-5 px-3 py-2 rounded-md inline-block`}
+                to=''
+                onClick={!hasRegistered ? handleClick : (e) => e.preventDefault()}
+              > 
+                {hasRegistered ? 'Registered' : isShow ? 'Close' : 'Participate'}
+              </Link>
+            
             {/* Query Button */}
             <button
               className="bg-red-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-2 lg:ml-4 mt-4 lg:mt-0"
@@ -157,14 +173,17 @@ function EventDetail() {
             >
               {showUserQueries ? 'Hide Queries' : 'Show Queries'}
             </button>
+            
+            {/* Registration Form - Only for students */}
             {!hasRegistered && isShow && (
               <EventRegistration
                 eventId={eventId}
                 eventName={event.eventName}
-                collegeName={event.collegeName}
+                organizationName={event.organizationName}
                 setHasRegistered={setHasRegistered}
               />
             )}
+            
             {/* Query Section */}
             {showQuery && (
               <div className='my-10'>
@@ -177,6 +196,7 @@ function EventDetail() {
                 />
               </div>
             )}
+            
             {/* User Queries Modal */}
             <Modal open={showUserQueries} onClose={() => setShowUserQueries(false)}>
               <h3 className='text-lg font-bold mb-4 text-blue-800'>Your Queries for this Event</h3>

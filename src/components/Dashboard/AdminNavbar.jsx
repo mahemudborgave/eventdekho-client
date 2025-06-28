@@ -43,14 +43,15 @@ function AdminNavbar({ onToggle }) {
   const handleLogout = () => {
     if (confirm("Are you sure you want to logout?")) {
       localStorage.removeItem("token");
-      localStorage.removeItem("username");
+      localStorage.removeItem("user");
       localStorage.removeItem("email");
+      localStorage.removeItem("role");
       setToken(null);
       setUser(null);
       setEmail(null);
       setRole(null);
       toast.success("Logged Out!", { autoClose: 2000 });
-      navigate('/admin/dashboard');
+      navigate('/');
     }
   };
 
@@ -101,7 +102,7 @@ function AdminNavbar({ onToggle }) {
         </div>
 
         {/* Mobile Top Navbar Dropdown Menu */}
-        {isMobileTopNavOpen && (
+        {isMobileTopNavOpen && role === 'organizer' && (
           <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
             <nav className="py-2">
               <NavLink 
@@ -186,6 +187,7 @@ function AdminNavbar({ onToggle }) {
                   to="/" 
                   onClick={() => setIsMobileTopNavOpen(false)}
                   className="flex items-center gap-3 py-3 px-4 font-medium text-gray-600 hover:bg-gray-50 transition"
+                  target="_blank"
                 >
                   <School size={20} />
                   Client Portal
@@ -197,78 +199,80 @@ function AdminNavbar({ onToggle }) {
       </div>
 
       {/* Desktop Sidebar - hidden on mobile */}
-      <aside
-        className={`text-sm fixed top-0 left-0 z-40 bg-gray-200 border-r border-gray-200 p-4 flex flex-col justify-between h-screen transition-transform duration-300
-        hidden md:flex
-        ${isCollapsed ? 'w-20' : 'w-64'}`}
-      >
-        <div>
-          <div className='w-full flex justify-between items-center mb-8 px-4'>
-            {!isCollapsed && <p className="font-bold">ADMIN</p>}
-            <button onClick={toggleSidebarCollapse} className={`hidden md:block`}>
-              {isCollapsed ? <AlignRight size={22} /> : <X size={22} />}
-            </button>
+      {role === 'organizer' && (
+        <aside
+          className={`text-sm fixed top-0 left-0 z-40 bg-gray-200 border-r border-gray-200 p-4 flex flex-col justify-between h-screen transition-transform duration-300
+          hidden md:flex
+          ${isCollapsed ? 'w-20' : 'w-64'}`}
+        >
+          <div>
+            <div className='w-full flex justify-between items-center mb-8 px-4'>
+              {!isCollapsed && <p className="font-bold">ADMIN</p>}
+              <button onClick={toggleSidebarCollapse} className={`hidden md:block`}>
+                {isCollapsed ? <AlignRight size={22} /> : <X size={22} />}
+              </button>
+            </div>
+
+            <nav className="flex flex-col gap-2">
+              <NavLink to="dashboard" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+                <LayoutDashboard size={20} />
+                {!isCollapsed && 'Dashboard'}
+              </NavLink>
+              {/* <NavLink to="registercollege" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+                <School size={20} />
+                {!isCollapsed && 'Register College'}
+              </NavLink> */}
+              <NavLink to="addevent" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+                <PlusCircle size={20} />
+                {!isCollapsed && 'Host Events'}
+              </NavLink>
+              <NavLink to="showeventsadmin" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+                <CalendarDays size={20} />
+                {!isCollapsed && 'Show Events'}
+              </NavLink>
+              <NavLink to="queries" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
+                <MessageCircle size={20} />
+                {!isCollapsed && 'Queries'}
+              </NavLink>
+            </nav>
           </div>
 
-          <nav className="flex flex-col gap-2">
-            <NavLink to="dashboard" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
-              <LayoutDashboard size={20} />
-              {!isCollapsed && 'Dashboard'}
-            </NavLink>
-            {/* <NavLink to="registercollege" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
-              <School size={20} />
-              {!isCollapsed && 'Register College'}
-            </NavLink> */}
-            <NavLink to="addevent" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
-              <PlusCircle size={20} />
-              {!isCollapsed && 'Host Events'}
-            </NavLink>
-            <NavLink to="showeventsadmin" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
-              <CalendarDays size={20} />
-              {!isCollapsed && 'Show Events'}
-            </NavLink>
-            <NavLink to="queries" onClick={() => setIsMobileOpen(false)} className={linkClasses}>
-              <MessageCircle size={20} />
-              {!isCollapsed && 'Queries'}
-            </NavLink>
-          </nav>
-        </div>
+          <div className="flex flex-col items-center mb-6">
+            <Link className="text-red-600 underline" to='/' target="_blank">Client Portal</Link>
+            {user && !isCollapsed && (
+              <button
+                className="mb-3 flex items-center justify-center text-blue-700 font-semibold hover:underline"
+                onClick={() => navigate('/admin/profile')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              >
+                <User style={{ marginRight: '10px' }} /> {user}
+              </button>
+            )}
 
-        <div className="flex flex-col items-center mb-6">
-          <Link className="text-red-600 underline" to='/'>Client Portal</Link>
-          {user && !isCollapsed && (
-            <button
-              className="mb-3 flex items-center justify-center text-blue-700 font-semibold hover:underline"
-              onClick={() => navigate('/admin/profile')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-            >
-              <User style={{ marginRight: '10px' }} /> {user}
-            </button>
-          )}
-
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className={`flex gap-2 items-center justify-center w-full text-white bg-red-600 px-3 py-2 font-medium hover:bg-[#FFD600]/20 transition ${
-                isCollapsed ? 'justify-center' : ''
-              }`}
-            >
-              <LogOut size={20} />
-              {!isCollapsed && 'Logout'}
-            </button>
-          ) : (
-            <button
-              onClick={handleLogin}
-              className={`flex gap-2 items-center justify-center w-full text-white bg-blue-600 px-3 py-2 font-medium hover:bg-blue-500 transition ${
-                isCollapsed ? 'justify-center' : ''
-              }`}
-            >
-              <User size={20} />
-              {!isCollapsed && 'Login'}
-            </button>
-          )}
-        </div>
-      </aside>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className={`flex gap-2 items-center justify-center w-full text-white bg-red-600 px-3 py-2 font-medium hover:bg-[#FFD600]/20 transition ${
+                  isCollapsed ? 'justify-center' : ''
+                }`}
+              >
+                <LogOut size={20} />
+                {!isCollapsed && 'Logout'}
+              </button>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className={`flex gap-2 items-center justify-center w-full text-white bg-blue-600 px-3 py-2 font-medium hover:bg-blue-500 transition ${
+                  isCollapsed ? 'justify-center' : ''
+                }`}
+              >
+                <User size={20} />
+                {!isCollapsed && 'Login'}
+              </button>
+            )}
+          </div>
+        </aside>
+      )}
     </>
   );
 }

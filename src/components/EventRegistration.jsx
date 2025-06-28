@@ -3,8 +3,8 @@ import UserContext from '../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }) { //here the collegeName is of event
-  const { user, email } = useContext(UserContext);
+function EventRegistration({ eventId, eventName, organizationName, setHasRegistered }) {
+  const { user, email, token, role } = useContext(UserContext);
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
@@ -12,7 +12,7 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
   const [formData, setFormData] = useState({
     eventId,
     eventName,
-    eventCollegeName: collegeName,
+    organizationName: organizationName,
     email,
     studentName: user || '',
     gender: '',
@@ -28,24 +28,29 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
   // Fetch user profile details on mount
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (!email) return;
+      if (!token || !email) return;
       setLoading(true);
       setError('');
       try {
-        const res = await axios.get(`${baseURL}:${port}/login/user/${email}`);
-        if (res.data) {
+        // Use the new auth profile endpoint
+        const res = await axios.get(`${baseURL}:${port}/auth/profile`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.data && res.data.user) {
+          const userData = res.data.user;
           setFormData(prev => ({
             ...prev,
-            studentName: res.data.studentName || res.data.name || '',
-            gender: res.data.gender || '',
-            studentCollegeName: res.data.studentCollegeName || '',
-            branch: res.data.branch || '',
-            course: res.data.course || '',
-            year: res.data.year || '',
-            mobno: res.data.mobno || '',
+            studentName: userData.name || '',
+            gender: userData.gender || '',
+            studentCollegeName: userData.collegeName || '',
+            branch: userData.branch || '',
+            course: userData.course || '',
+            year: userData.year || '',
+            mobno: userData.mobileNumber || '',
           }));
         }
       } catch (err) {
+        console.error('Failed to fetch user details:', err);
         setError('Failed to fetch user details.');
       } finally {
         setLoading(false);
@@ -53,61 +58,89 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
     };
     fetchUserProfile();
     // eslint-disable-next-line
-  }, [email]);
+  }, [token, email]);
 
   const handleChange = e => {
-    const { id, name, value } = e.target;
+    const { id, name, value, type } = e.target;
+    // For radio buttons, use the name attribute
+    const fieldName = type === 'radio' ? name : (id || name);
     setFormData(prev => ({
       ...prev,
-      [id || name]: value
+      [fieldName]: value
     }));
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
 
+    if (!token) {
+      toast.error('Please log in to register for events.');
+      return;
+    }
+
     try {
-      const res = await axios.post(`${baseURL}:${port}/eventt/registerevent`, formData);
+      setLoading(true);
+      const res = await axios.post(`${baseURL}:${port}/eventt/registerevent`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       toast.success('Registration successful!');
       console.log('Response:', res.data);
       setHasRegistered(true);
 
       // After registration, update user profile if any field is new or changed
-      if (email) {
-        // Fetch current user profile
-        let currentProfile = {};
+      if (token && email && role === 'student') {
         try {
-          const userRes = await axios.get(`${baseURL}:${port}/login/user/${email}`);
-          currentProfile = userRes.data || {};
+          // Get current profile
+          const profileRes = await axios.get(`${baseURL}:${port}/auth/profile`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          
+          if (profileRes.data && profileRes.data.user) {
+            const currentProfile = profileRes.data.user;
+            
+            // Prepare fields to update
+            const profileFields = [
+              { formField: 'studentName', profileField: 'name' },
+              { formField: 'gender', profileField: 'gender' },
+              { formField: 'studentCollegeName', profileField: 'collegeName' },
+              { formField: 'branch', profileField: 'branch' },
+              { formField: 'course', profileField: 'course' },
+              { formField: 'year', profileField: 'year' },
+              { formField: 'mobno', profileField: 'mobileNumber' }
+            ];
+            
+            let shouldUpdate = false;
+            const updateData = {};
+            
+            profileFields.forEach(({ formField, profileField }) => {
+              const formVal = formData[formField] || '';
+              const profileVal = currentProfile[profileField] || '';
+              if (formVal && formVal !== profileVal) {
+                updateData[profileField] = formVal;
+                shouldUpdate = true;
+              }
+            });
+            
+            if (shouldUpdate) {
+              await axios.put(`${baseURL}:${port}/auth/profile`, updateData, {
+                headers: { Authorization: `Bearer ${token}` }
+              });
+              toast.info('Profile updated with new details.');
+            }
+          }
         } catch (err) {
-          // If can't fetch, just proceed to update
-        }
-        // Prepare fields to update
-        const profileFields = [
-          'studentName', 'gender', 'studentCollegeName', 'branch', 'course', 'year', 'mobno'
-        ];
-        let shouldUpdate = false;
-        const updateData = {};
-        profileFields.forEach(field => {
-          const formVal = formData[field] || '';
-          const profileVal = currentProfile[field] || '';
-          if (formVal && formVal !== profileVal) {
-            updateData[field] = formVal;
-            shouldUpdate = true;
-          }
-        });
-        if (shouldUpdate) {
-          try {
-            await axios.put(`${baseURL}:${port}/login/user/${email}`, updateData);
-            toast.info('Profile updated with new details.');
-          } catch (err) {
-            console.warn('Could not update profile with new details.');
-          }
+          console.warn('Could not update profile with new details:', err);
         }
       }
     } catch (err) {
       console.error('Registration error:', err);
-      alert('Something went wrong.');
+      if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error('Something went wrong during registration.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,7 +162,7 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
       {allProfileFieldsFilled ? (
         <div className="mb-4 text-green-700 bg-green-100 rounded px-3 py-2 text-sm">Details are taken from your profile. You can edit if needed.</div>
       ) : (
-        <div className="mb-4 text-yellow-800 bg-yellow-100 rounded px-3 py-2 text-sm">Some details are missing. Please <a href="/studentprofile" className="underline text-yellow-900">update your profile</a> for autofill next time.</div>
+        <div className="mb-4 text-yellow-800 bg-yellow-100 rounded px-3 py-2 text-sm">Some details are missing. Please <a href={role === "organizer" ? "/adminprofile" : "/studentprofile"} className="underline text-yellow-900">update your profile</a> for autofill next time.</div>
       )}
       <form onSubmit={handleSubmit}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm lg:text-base'>
@@ -153,7 +186,7 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
                 <input
                   type="radio"
                   name="gender"
-                  id="gender"
+                  id="gender-male"
                   value="Male"
                   checked={formData.gender === 'Male'}
                   onChange={handleChange}
@@ -168,7 +201,7 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
                 <input
                   type="radio"
                   name="gender"
-                  id="gender"
+                  id="gender-female"
                   value="Female"
                   checked={formData.gender === 'Female'}
                   onChange={handleChange}
@@ -179,7 +212,6 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
               </div>
             </div>
           </div>
-
 
           <div>
             <label htmlFor="studentCollegeName" className='block mb-1'>College/University Name</label>
@@ -229,7 +261,6 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
             </select>
           </div>
 
-
           <div>
             <label htmlFor="year" className='block mb-1'>Course Current Year</label>
             <select
@@ -264,9 +295,10 @@ function EventRegistration({ eventId, eventName, collegeName, setHasRegistered }
           <div className='lg:[grid-column:span_2] flex justify-center'>
             <button
               type='submit'
-              className='cursor-pointer bg-amber-300 py-2 px-4 rounded-md hover:outline-5 hover:outline-amber-100 hover:outline-offset-2'
+              disabled={loading}
+              className='cursor-pointer bg-amber-300 py-2 px-4 rounded-md hover:outline-5 hover:outline-amber-100 hover:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              Submit
+              {loading ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </div>

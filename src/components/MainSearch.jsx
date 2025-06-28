@@ -5,7 +5,7 @@ import { HashLoader, ScaleLoader } from 'react-spinners';
 import Eventt from './Eventt';
 import { Typewriter } from 'react-simple-typewriter'
 import Search from './Search';
-import { ArrowBigRightDash } from 'lucide-react';
+import { ArrowBigRightDash, ArrowUpRight, Building, Landmark, MoveUpRight } from 'lucide-react';
 
 function MainSearch() {
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -84,21 +84,21 @@ function MainSearch() {
           <br />ready to inspire and engage your next experience</p>
 
         <div className='my-5 md:my-10 lg:my-0'>
-          <div className='px-2 py-2 lg:py-3 lg:px-4 bg-gray-200 m-auto rounded-full flex items-center justify-center text-sm text-center'>
+          <div className='px-2 py-2 lg:py-3 lg:px-4 bg-gradient-to-r from-amber-200 to-blue-300 m-auto rounded-full flex items-center justify-center text-sm text-center'>
 
             <p className='shiny-button grow px-3 py-2 lg:py-3 bg-[#0d0c22] ml-2 text-gray-100 rounded-full flex items-center justify-center'>
               Explore <ArrowBigRightDash className='ml-1' size={20} />
             </p>
 
-            <NavLink to="/events" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full'>Events</NavLink>
-            <NavLink to="/colleges" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full'>Colleges</NavLink>
+            <NavLink to="/events" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full flex justify-center items-center gap-2'>Events <ArrowUpRight className='size-5' /></NavLink>
+            <NavLink to="/organizations" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full flex justify-center items-center gap-2'>Organizations <ArrowUpRight className='size-5' /></NavLink>
           </div>
         </div>
 
-        <div className='hidden lg:flex items-center lg:flex-row justify-center gap-2 my-3 text-sm text-[#535353]'>
-          <p className='py-1 px-6 bg-[#e7e7e7ad] rounded-full border'>Technical</p>
-          <p className='py-1 px-6 bg-[#e7e7e7ad] rounded-full'>Nontechnical</p>
-          <p className='py-1 px-6 bg-[#e7e7e7ad] rounded-full'>social</p>
+        <div className='hidden lg:flex items-center lg:flex-row justify-center gap-2 my-3 text-sm text-gray-900'>
+          <p className='py-1 px-6 border border-[#0d0c22] rounded-full border'>Technical</p>
+          <p className='py-1 px-6 border border-[#0d0c22] rounded-full'>Nontechnical</p>
+          <p className='py-1 px-6 border border-[#0d0c22] rounded-full'>social</p>
         </div>
 
         {loading && (

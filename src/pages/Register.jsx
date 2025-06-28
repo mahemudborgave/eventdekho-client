@@ -52,7 +52,7 @@ function Register() {
 
         try {
             setLoading(true);
-            const res = await axios.post(`${baseURL}:${port}/login/register`, { name, email: userEmail, password, role: userRole });
+            const res = await axios.post(`${baseURL}:${port}/auth/register`, { name, email: userEmail, password, role: userRole });
             if (res.data) {
                 // Store user data and token for automatic login
                 localStorage.setItem('token', res.data.token);

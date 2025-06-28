@@ -27,7 +27,7 @@ function MyParticipations() {
         }
 
         const verifyResponse = await axios.post(
-          `${baseURL}:${port}/userauth/verifytoken`,
+          `${baseURL}:${port}/auth/verify`,
           {},
           { headers: { Authorization: `Bearer ${StoredToken}` } }
         );
@@ -90,7 +90,7 @@ function MyParticipations() {
           <div key={index} className='border p-4 rounded bg-white'>
             <div className='mb-2'>
               <p className='flex items-center gap-2 font-medium mb-1'><BookmarkCheck /> {reg.eventName}</p>
-              <p>{reg.eventCollegeName}</p>
+              <p>{reg.eventOrganizationName}</p>
             </div>
             {/* <p><span className='font-medium'>Your College:</span> {reg.studentCollegeName}</p>
             <p><span className='font-medium'>Your branch:</span> {reg.branch}</p>

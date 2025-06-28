@@ -42,20 +42,25 @@ function EventRegistrationsAdmin() {
     doc.text(`Event: ${eventInfo.eventName}`, 14, 16);
     doc.text(`College: ${eventInfo.collegeName}`, 14, 24);
 
-    const tableColumn = ["#", "Name", "Email", "College", "Branch", "Year", "Course", "Gender", "Mobile"];
+    const tableColumn = [
+      "#", "Registration ID", "Name", "Email", "College", "Branch", "Year", "Course", "Gender", "Mobile", "Created At", "Updated At"
+    ];
     const tableRows = [];
 
     registrations.forEach((reg, index) => {
       const rowData = [
         index + 1,
-        reg.studentName,
-        reg.email,
-        reg.studentCollegeName,
-        reg.branch,
-        reg.year,
-        reg.course,
-        reg.gender,
-        reg.mobno
+        reg._id || '',
+        reg.studentName || '',
+        reg.email || '',
+        reg.studentCollegeName || '',
+        reg.branch || '',
+        reg.year || '',
+        reg.course || '',
+        reg.gender || '',
+        reg.mobno || '',
+        reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
+        reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
       ];
       tableRows.push(rowData);
     });
@@ -66,20 +71,23 @@ function EventRegistrationsAdmin() {
       startY: 30,
     });
 
-    doc.save("event_registrations.pdf");
+    doc.save("event_registrations_all_details.pdf");
   };
 
   const exportToExcel = () => {
     const worksheetData = registrations.map((reg, index) => ({
       "#": index + 1,
-      Name: reg.studentName,
-      Email: reg.email,
-      College: reg.studentCollegeName,
-      Branch: reg.branch,
-      Year: reg.year,
-      Course: reg.course,
-      Gender: reg.gender,
-      Mobile: reg.mobno
+      "Registration ID": reg._id || '',
+      "Name": reg.studentName || '',
+      "Email": reg.email || '',
+      "College": reg.studentCollegeName || '',
+      "Branch": reg.branch || '',
+      "Year": reg.year || '',
+      "Course": reg.course || '',
+      "Gender": reg.gender || '',
+      "Mobile": reg.mobno || '',
+      "Created At": reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
+      "Updated At": reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
@@ -87,7 +95,7 @@ function EventRegistrationsAdmin() {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Registrations");
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, "event_registrations.xlsx");
+    saveAs(blob, "event_registrations_all_details.xlsx");
   };
 
   return (

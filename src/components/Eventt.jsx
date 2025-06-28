@@ -60,7 +60,7 @@ function Eventt({ events }) {
           <div className="lg:flex-grow">
             <p className="text-lg lg:text-xl mb-1 text-[#0d0c22] font-medium">{eventt.eventName}</p>
             <p className="my-2 lg:mb-1 text-gray-500">
-              {eventt.collegeCode} - {eventt.collegeName}
+              {eventt.organizationCode} - {eventt.organizationName}
             </p>
             <div className="flex flex-col text-gray-500">
               <span className="text-yellow-500"><i className="fa-solid fa-clock mr-1.5"></i> {eventt.eventMode}</span>
@@ -72,9 +72,9 @@ function Eventt({ events }) {
             {!location.pathname.startsWith('/eventdetail') &&
               !location.pathname.startsWith('/admin/eventdetail') && (
                 <div className="flex items-center mb-2">
-                  {registeredEventIds.includes(eventt._id) && (
-                    <span className="hidden text-green-600 text-sm italic mr-2">Registered !</span>
-                  )}
+                  {/* {registeredEventIds.includes(eventt._id) && (
+                    <span className="hidden lg:inline-block text-green-600 text-sm italic mr-2">Registered !</span>
+                  )} */}
                   <Link
                     className="inline-block px-7 py-2 bg-[#0d0c22] rounded-full text-white hover:bg-[#0d0c22d2]"
                     to={`/eventdetail/${eventt._id}`}
@@ -82,7 +82,7 @@ function Eventt({ events }) {
                     Get Detail
                   </Link>
                   {registeredEventIds.includes(eventt._id) && (
-                    <span className="inline-block lg:hidden text-green-600 text-sm italic ml-2">Registered !</span>
+                    <span className="inline-block text-green-600 text-sm italic ml-2">Registered !</span>
                   )}
                 </div>
               )}

@@ -45,7 +45,7 @@ function HomeRecent() {
                 ) : events.map(event => (
                     <div key={event._id} className="bg-gray-100 p-7 hover:shadow-lg transition-all border border-gray-300">
                         <h3 className="text-xl font-semibold text-[#0d0c22] mb-2">{event.eventName}</h3>
-                        <p className="text-gray-600 mb-2">College: {event.collegeName}</p>
+                        <p className="text-gray-600 mb-2">Organization: {event.organizationName}</p>
                         <p className="text-gray-600 mb-1 flex gap-2 items-center">
                             <CalendarDays size={18} /> {new Date(event.eventDate).toLocaleDateString('en-GB').replace(/\//g, '-')}
                         </p>

@@ -29,8 +29,8 @@ function FooterComp() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/colleges" className="hover:underline">
-                Colleges
+              <NavLink to="/organizations" className="hover:underline">
+                Organizations
               </NavLink>
             </li>
             <li>
@@ -62,7 +62,7 @@ function FooterComp() {
 
 
       <div className="text-center text-sm bg-gray-300 py-4">
-        © {new Date().getFullYear()} EventApply. All rights reserved. <br></br>
+        © {new Date().getFullYear()} EventApply. All rights reserved.
       </div>
     </footer>
   );

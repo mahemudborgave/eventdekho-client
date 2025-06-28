@@ -25,26 +25,37 @@ function ShowEventsAdmin() {
 
   const exportToPDF = () => {
     const doc = new jsPDF({ orientation: 'landscape', format: 'a3' });
-    doc.text("Your Events", 14, 16);
+    doc.text("Your Events (All Details)", 14, 16);
     const tableColumn = [
-      "#", "Event Name", "Mode", "College", "Code", "City", "Date", "Location", "Posted On", "Closing On", "Tags", "Description"
+      "#", "Event ID", "Event Name", "Mode", "Club Name", "College Name", "College Code", "City", "Org. Type", "Website", "Contact Person", "Phone", "Email", "Event Date", "Location", "Posted On", "Closing On", "Tags", "Description", "Registrations", "Queries", "Created At", "Updated At"
     ];
     const tableRows = [];
 
     events.forEach((event, index) => {
       const eventData = [
         index + 1,
-        truncate(event.eventName, 30),
-        event.eventMode,
-        truncate(event.collegeName, 40),
-        event.collegeCode,
-        event.collegeCity,
+        event._id || '',
+        event.eventName || '',
+        event.eventMode || '',
+        event.clubName || '',
+        event.organizationName || '',
+        event.collegeCode || '',
+        event.collegeCity || '',
+        event.organizationType || '',
+        event.website || '',
+        event.contactPerson || '',
+        event.phone || '',
+        event.email || '',
         formatDate(event.eventDate),
-        truncate(event.eventLocation, 20),
+        event.eventLocation || '',
         formatDate(event.postedOn),
         formatDate(event.closeOn),
-        truncate(Array.isArray(event.eventTags) ? event.eventTags.join(", ") : event.eventTags, 25),
-        truncate(event.eventDescription, 50)
+        Array.isArray(event.eventTags) ? event.eventTags.join(", ") : (event.eventTags || ''),
+        event.eventDescription || '',
+        registrationCounts[event._id] ?? '',
+        queryCounts[event._id] ?? '',
+        event.createdAt ? formatDate(event.createdAt) : '',
+        event.updatedAt ? formatDate(event.updatedAt) : ''
       ];
       tableRows.push(eventData);
     });
@@ -54,50 +65,46 @@ function ShowEventsAdmin() {
       body: tableRows,
       startY: 20,
       styles: { fontSize: 7 },
-      columnStyles: {
-        0: { cellWidth: 10 },
-        1: { cellWidth: 30 },
-        2: { cellWidth: 18 },
-        3: { cellWidth: 50, overflow: 'linebreak' },
-        4: { cellWidth: 16 },
-        5: { cellWidth: 18 },
-        6: { cellWidth: 20 },
-        7: { cellWidth: 28 },
-        8: { cellWidth: 22 },
-        9: { cellWidth: 22 },
-        10: { cellWidth: 30, overflow: 'linebreak' },
-        11: { cellWidth: 40, overflow: 'linebreak' },
-      },
       margin: { left: 10, right: 10 },
       tableWidth: 'auto'
     });
 
-    doc.save("events.pdf");
+    doc.save("events_all_details.pdf");
   };
 
   const exportToExcel = () => {
     const worksheetData = events.map((event, index) => ({
       "#": index + 1,
-      "Event Name": event.eventName,
-      "Mode": event.eventMode,
-      "College": event.collegeName,
-      "Code": event.collegeCode,
-      "City": event.collegeCity,
-      "Date": formatDate(event.eventDate),
-      "Location": event.eventLocation,
+      "Event ID": event._id || '',
+      "Event Name": event.eventName || '',
+      "Mode": event.eventMode || '',
+      "Club Name": event.clubName || '',
+      "College Name": event.collegeName || '',
+      "College Code": event.collegeCode || '',
+      "City": event.collegeCity || '',
+      "Org. Type": event.organizationType || '',
+      "Website": event.website || '',
+      "Contact Person": event.contactPerson || '',
+      "Phone": event.phone || '',
+      "Email": event.email || '',
+      "Event Date": formatDate(event.eventDate),
+      "Location": event.eventLocation || '',
       "Posted On": formatDate(event.postedOn),
       "Closing On": formatDate(event.closeOn),
-      "Tags": Array.isArray(event.eventTags) ? event.eventTags.join(", ") : event.eventTags,
-      "Description": event.eventDescription,
+      "Tags": Array.isArray(event.eventTags) ? event.eventTags.join(", ") : (event.eventTags || ''),
+      "Description": event.eventDescription || '',
+      "Registrations": registrationCounts[event._id] ?? '',
+      "Queries": queryCounts[event._id] ?? '',
+      "Created At": event.createdAt ? formatDate(event.createdAt) : '',
+      "Updated At": event.updatedAt ? formatDate(event.updatedAt) : ''
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Events");
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(blob, "events.xlsx");
+    saveAs(blob, "events_all_details.xlsx");
   };
 
   const formatDate = (dateStr) => {
@@ -131,7 +138,7 @@ function ShowEventsAdmin() {
 
       if (storedToken) {
         try {
-          response = await axios.post(`${baseURL}:${port}/userauth/verifytoken`, {}, {
+          response = await axios.post(`${baseURL}:${port}/auth/verify`, {}, {
             headers: {
               Authorization: `Bearer ${storedToken}`
             }
@@ -233,8 +240,8 @@ function ShowEventsAdmin() {
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal uppercase">
                       <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Event Name</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Club</th>
+                      {/* <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Club</th> */}
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Mode</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Location</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Date</th>
@@ -248,10 +255,10 @@ function ShowEventsAdmin() {
                       <tr key={index} className="border-b border-gray-200 hover:bg-blue-100">
                         <td className="py-3 px-4 sticky left-0 z-10 bg-white">{index + 1}</td>
                         <td className="py-3 px-6">{event.eventName}</td>
-                        <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
+                        {/* <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
                           {event.collegeName}
-                        </td>
-                        <td className="py-3 px-6">{event.clubName}</td>
+                        </td> */}
+                        {/* <td className="py-3 px-6">{event.clubName}</td> */}
                         <td className="py-3 px-6">{event.eventMode}</td>
                         <td className="py-3 px-6">{event.eventLocation}</td>
                         <td className="py-3 px-6">{formatDate(event.eventDate)}</td>

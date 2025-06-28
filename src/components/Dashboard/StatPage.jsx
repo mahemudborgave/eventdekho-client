@@ -80,7 +80,7 @@ function StatPage() {
 
       if (StoredToken) {
         try {
-          response = await axios.post(`${baseURL}:${port}/userauth/verifytoken`, {}, {
+          response = await axios.post(`${baseURL}:${port}/auth/verify`, {}, {
             headers: { Authorization: `Bearer ${StoredToken}` }
           });
         } catch (e) {
@@ -110,7 +110,7 @@ function StatPage() {
           { label: "Events Hosted", value: total.events, change: "+14%" },
           { label: "Total Registrations", value: total.registrations, change: "+21%" },
           { label: "Upcoming Events", value: total.upcoming, change: "+8%" },
-          { label: "Total Colleges", value: res.data.totalColleges, change: "+2%" },
+          { label: "Total Organizations", value: res.data.totalOrganizations, change: "+2%" },
         ]);
 
         setTopEvents(res.data.topEvents || []);

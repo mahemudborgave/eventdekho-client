@@ -18,13 +18,15 @@ function App() {
   // console.log("Jethalal");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("username");
+    const storedUser = localStorage.getItem("user");
     const storedEmail = localStorage.getItem("email");
     const storedToken = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("role");
 
     if (storedUser) setUser(storedUser);
     if (storedEmail) setEmail(storedEmail);
     if (storedToken) setToken(storedToken);
+    if (storedRole) setRole(storedRole);
 
     setIsLoaded(true);
   }, [token]);

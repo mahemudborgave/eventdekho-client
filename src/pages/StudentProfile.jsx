@@ -6,6 +6,7 @@ import UserContext from '../context/UserContext';
 import { Link, useParams } from 'react-router-dom'
 import userprofile from '../assets/images/userprofile.jpg'
 import axios from 'axios';
+import { Autocomplete, TextField } from '@mui/material';
 
 function StudentProfile() {
     const { token, setToken } = useContext(UserContext);
@@ -19,9 +20,9 @@ function StudentProfile() {
 
     // Profile state
     const [profile, setProfile] = useState({
-        studentName: user || '',
+        studentName: '',
         gender: '',
-        studentCollegeName: '',
+        studentOrganizationName: '',
         course: '',
         branch: '',
         year: '',
@@ -31,43 +32,77 @@ function StudentProfile() {
     const [editMode, setEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [organizations, setOrganizations] = useState([]);
+    const [organizationSearch, setOrganizationSearch] = useState('');
+    const [selectedOrganization, setSelectedOrganization] = useState(null);
 
     // Fetch user details on mount or when email changes
     useEffect(() => {
         const fetchProfile = async () => {
-            if (!email) return;
+            if (!token) return;
             setLoading(true);
             setError('');
             try {
-                const res = await axios.get(`${baseURL}:${port}/login/user/${email}`);
-                if (res.data) {
+                const res = await axios.get(`${baseURL}:${port}/auth/profile`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.data && res.data.user) {
+                    const userData = res.data.user;
                     setProfile({
-                        studentName: res.data.studentName || res.data.name || '',
-                        gender: res.data.gender || '',
-                        studentCollegeName: res.data.studentCollegeName || '',
-                        course: res.data.course || '',
-                        branch: res.data.branch || '',
-                        year: res.data.year || '',
-                        mobno: res.data.mobno || '',
-                        role: res.data.role || '',
+                        studentName: userData.name || '',
+                        gender: userData.gender || '',
+                        studentOrganizationName: userData.organizationName || '',
+                        course: userData.course || '',
+                        branch: userData.branch || '',
+                        year: userData.year || '',
+                        mobno: userData.mobileNumber || '',
+                        role: userData.role || '',
                     });
-                    setUser(res.data.name || '');
                 }
             } catch (err) {
                 setError('Failed to fetch profile.');
+                console.error('Profile fetch error:', err);
             } finally {
                 setLoading(false);
             }
         };
         fetchProfile();
         // eslint-disable-next-line
-    }, [email]);
+    }, [token]);
+
+    // Fetch organizations
+    useEffect(() => {
+        const fetchOrganizations = async () => {
+            try {
+                const res = await axios.get(`${baseURL}:${port}/organization/getallorganizations`);
+                setOrganizations(res.data);
+            } catch (err) {
+                console.error('Failed to fetch organizations:', err);
+                setOrganizations([]);
+            }
+        };
+        fetchOrganizations();
+    }, []);
+
+    // Sync organization search state when organizations are loaded and profile has organization name
+    useEffect(() => {
+        if (organizations.length > 0 && profile.studentOrganizationName) {
+            const foundOrganization = organizations.find(c => c.organizationName && c.organizationName.toLowerCase() === profile.studentOrganizationName.toLowerCase());
+            if (foundOrganization) {
+                setSelectedOrganization(foundOrganization);
+                setOrganizationSearch(foundOrganization.organizationName);
+            } else {
+                setOrganizationSearch(profile.studentOrganizationName);
+            }
+        }
+    }, [organizations, profile.studentOrganizationName]);
 
     const handleLogout = () => {
         if (confirm("Are u sure, want to logout ?")) {
             localStorage.removeItem("token");
-            localStorage.removeItem("username");
+            localStorage.removeItem("user");
             localStorage.removeItem("email");
+            localStorage.removeItem("role");
             setToken(null)
             setUser(null)
             setEmail(null)
@@ -80,10 +115,32 @@ function StudentProfile() {
     };
 
     const handleChange = (e) => {
-        const { id, name, value } = e.target;
+        const { id, name, value, type } = e.target;
+        
+        // For radio buttons, use the name attribute
+        const fieldName = type === 'radio' ? name : (id || name);
+        
+        console.log('handleChange called:', { id, name, value, type, fieldName });
+        
+        // Don't handle organization name here as it's managed by Autocomplete
+        if (fieldName !== 'studentOrganizationName') {
+            setProfile(prev => {
+                const newProfile = {
+                    ...prev,
+                    [fieldName]: value
+                };
+                console.log('Updated profile:', newProfile);
+                return newProfile;
+            });
+        }
+    };
+
+    const handleGenderChange = (e) => {
+        const { value } = e.target;
+        console.log('Gender changed to:', value);
         setProfile(prev => ({
             ...prev,
-            [id || name]: value
+            gender: value
         }));
     };
 
@@ -94,26 +151,50 @@ function StudentProfile() {
         setLoading(true);
         setError('');
         try {
-            if (email == "") {
-                return <div>Please log in to view your profile.</div>;
+            if (!token) {
+                setError('Please log in to update your profile.');
+                return;
             }
-            const res = await axios.put(`${baseURL}:${port}/login/user/${email}`, profile);
-            if (res.data) {
+
+            // Prepare the data for the new API
+            const updateData = {
+                name: profile.studentName,
+                gender: profile.gender,
+                organizationName: profile.studentOrganizationName,
+                course: profile.course,
+                branch: profile.branch,
+                year: profile.year,
+                mobileNumber: profile.mobno,
+            };
+
+            console.log('Sending update data:', updateData);
+            console.log('Token:', token);
+
+            const res = await axios.put(`${baseURL}:${port}/auth/profile`, updateData, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            console.log('Response:', res.data);
+            
+            if (res.data && res.data.user) {
+                const userData = res.data.user;
                 setProfile({
-                    studentName: res.data.studentName || res.data.name || '',
-                    gender: res.data.gender || '',
-                    studentCollegeName: res.data.studentCollegeName || '',
-                    course: res.data.course || '',
-                    branch: res.data.branch || '',
-                    year: res.data.year || '',
-                    mobno: res.data.mobno || '',
+                    studentName: userData.name || '',
+                    gender: userData.gender || '',
+                    studentOrganizationName: userData.organizationName || '',
+                    course: userData.course || '',
+                    branch: userData.branch || '',
+                    year: userData.year || '',
+                    mobno: userData.mobileNumber || '',
+                    role: userData.role || '',
                 });
-                setUser(res.data.name || '');
-                toast.success('Profile updated!');
+                toast.success('Profile updated successfully!');
             }
             setEditMode(false);
         } catch (err) {
+            console.error('Profile update error details:', err.response?.data || err.message);
             setError('Failed to update profile.');
+            console.error('Profile update error:', err);
         } finally {
             setLoading(false);
         }
@@ -129,7 +210,7 @@ function StudentProfile() {
     // }, [token, user])
 
     // Helper for profile completion (optional, simple version)
-    const profileFields = [profile.studentName, profile.gender, profile.studentCollegeName, profile.course, profile.branch, profile.year, profile.mobno];
+    const profileFields = [profile.studentName || user, profile.gender, profile.studentOrganizationName, profile.course, profile.branch, profile.year, profile.mobno];
     const filledFields = profileFields.filter(val => val && val.trim() !== '').length;
     const completion = Math.round((filledFields / profileFields.length) * 100);
 
@@ -167,7 +248,10 @@ function StudentProfile() {
                     
                     {/* Name, Email, Role */}
                     <div className="flex flex-col items-center gap-1 mt-2">
-                        <span className="text-2xl font-bold text-gray-900 flex items-center gap-2"><User size={22} />{profile.studentName || <span className="text-gray-400">Not set</span>}</span>
+                        <span className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                            <User size={22} />
+                            {profile.studentName || user || <span className="text-gray-400">Not set</span>}
+                        </span>
                         <span className="text-gray-600 flex items-center gap-2"><AtSign size={16} />{email || <span className="text-gray-400">Not set</span>}</span>
                         <span className="text-blue-700 font-semibold text-xs uppercase tracking-wider mt-1">{profile.role}</span>
                         {token && (
@@ -186,6 +270,21 @@ function StudentProfile() {
                         </div>
                         <span className="text-xs text-gray-500 mt-1">Profile Completion: {completion}%</span>
                     </div>
+                    
+                    {/* Error Display */}
+                    {error && (
+                        <div className="w-full bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            <strong>Error:</strong> {error}
+                        </div>
+                    )}
+                    
+                    {/* Loading Display */}
+                    {loading && (
+                        <div className="w-full bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
+                            Updating profile...
+                        </div>
+                    )}
+                    
                     {/* Details */}
                     <form onSubmit={handleSave} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Personal Info */}
@@ -194,9 +293,16 @@ function StudentProfile() {
                             <div className="flex items-center gap-2">
                                 <User size={18} className="text-amber-400" />
                                 {editMode ? (
-                                    <input type="text" id="studentName" className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200" value={profile.studentName} onChange={handleChange} required />
+                                    <input 
+                                        type="text" 
+                                        id="studentName" 
+                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200" 
+                                        value={profile.studentName || user || ''} 
+                                        onChange={handleChange} 
+                                        required 
+                                    />
                                 ) : (
-                                    <span className="font-medium">{profile.studentName || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium">{profile.studentName || user || <span className="text-gray-400">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
@@ -204,11 +310,13 @@ function StudentProfile() {
                                 {editMode ? (
                                     <div className="flex gap-4">
                                         <label className="flex items-center gap-1">
-                                            <input type="radio" name="gender" id="gender" value="Male" checked={profile.gender === 'Male'} onChange={handleChange} required /> Male
+                                            <input type="radio" name="gender" id="gender-male" value="Male" checked={profile.gender === 'Male'} onChange={handleGenderChange} required /> Male
                                         </label>
                                         <label className="flex items-center gap-1">
-                                            <input type="radio" name="gender" id="gender" value="Female" checked={profile.gender === 'Female'} onChange={handleChange} /> Female
+                                            <input type="radio" name="gender" id="gender-female" value="Female" checked={profile.gender === 'Female'} onChange={handleGenderChange} /> Female
                                         </label>
+                                        {/* Debug display */}
+                                        <span className="text-xs text-gray-500">Current: {profile.gender || 'None'}</span>
                                     </div>
                                 ) : (
                                     <span className="font-medium">{profile.gender || <span className="text-gray-400">Not set</span>}</span>
@@ -229,9 +337,67 @@ function StudentProfile() {
                             <div className="flex items-center gap-2">
                                 <University size={18} className="text-blue-400" />
                                 {editMode ? (
-                                    <input type="text" id="studentCollegeName" className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200" value={profile.studentCollegeName} onChange={handleChange} required />
+                                    <div className="w-full">
+                                        <Autocomplete
+                                            freeSolo
+                                            options={organizations}
+                                            getOptionLabel={option => typeof option === 'string' ? option : (option.organizationName || '')}
+                                            value={selectedOrganization || organizationSearch}
+                                            filterOptions={(options, params) => {
+                                                const input = params.inputValue.toLowerCase();
+                                                const filtered = options.filter(option =>
+                                                    (option.organizationName && option.organizationName.toLowerCase().includes(input)) ||
+                                                    (option.shortName && option.shortName.toLowerCase().includes(input)) ||
+                                                    (option.city && option.city.toLowerCase().includes(input))
+                                                );
+                                                return filtered;
+                                            }}
+                                            onChange={(event, newValue) => {
+                                                if (typeof newValue === 'string') {
+                                                    setOrganizationSearch(newValue);
+                                                    setSelectedOrganization(null);
+                                                    setProfile({ ...profile, studentOrganizationName: newValue });
+                                                } else if (newValue && newValue.organizationName) {
+                                                    setSelectedOrganization(newValue);
+                                                    setOrganizationSearch(newValue.organizationName);
+                                                    setProfile({ ...profile, studentOrganizationName: newValue.organizationName });
+                                                } else {
+                                                    setSelectedOrganization(null);
+                                                    setProfile({ ...profile, studentOrganizationName: '' });
+                                                }
+                                            }}
+                                            onInputChange={(event, value) => {
+                                                setOrganizationSearch(value);
+                                                const found = organizations.find(c => c.organizationName && c.organizationName.toLowerCase() === value.toLowerCase());
+                                                setSelectedOrganization(found || null);
+                                                setProfile({ ...profile, studentOrganizationName: value });
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField 
+                                                    {...params} 
+                                                    variant="outlined" 
+                                                    fullWidth
+                                                    size="small"
+                                                    className="text-gray-700"
+                                                    sx={{
+                                                        '& .MuiOutlinedInput-root': {
+                                                            '& fieldset': {
+                                                                borderColor: '#d1d5db',
+                                                            },
+                                                            '&:hover fieldset': {
+                                                                borderColor: '#f59e0b',
+                                                            },
+                                                            '&.Mui-focused fieldset': {
+                                                                borderColor: '#f59e0b',
+                                                            },
+                                                        },
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    </div>
                                 ) : (
-                                    <span className="font-medium">{profile.studentCollegeName || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium">{profile.studentOrganizationName || <span className="text-gray-400">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
