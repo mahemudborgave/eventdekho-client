@@ -151,7 +151,7 @@ function EventDetail() {
               {showQuery ? 'Close Query Box' : 'Raise a Query'}
             </button>
             <button
-              className="bg-blue-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-0 lg:ml-4 mt-4 lg:mt-0"
+              className="bg-blue-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-2 lg:ml-4 mt-4 lg:mt-0"
               onClick={handleShowUserQueries}
               type="button"
             >

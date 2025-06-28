@@ -101,6 +101,8 @@ function StatPage() {
         const res = await axios.post(`${baseURL}:${port}/eventt/stats`, { email });
 
         total.events = res.data.totalEvents;
+        console.log(total.events);
+        
         total.registrations = res.data.totalRegistrations;
         total.upcoming = res.data.upcomingEvents;
 

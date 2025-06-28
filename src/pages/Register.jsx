@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/ReactToastify.css'
@@ -11,24 +11,27 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ScaleLoader } from 'react-spinners';  // Using same loader as Login
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import UserContext from '../context/UserContext';
+import { getLastVisitedPage, clearLastVisitedPage, getSmartRedirectPath } from '../utils/navigationUtils';
 
 function Register() {
 
     const baseURL = import.meta.env.VITE_BASE_URL;
     const port = import.meta.env.VITE_PORT;
     const navigate = useNavigate();
+    const { setUser, setToken, setRole, setEmail } = useContext(UserContext);
 
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rpassword, setRPassword] = useState('');
-    const [role, setRole] = useState(null);
+    const [userRole, setUserRole] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'name') setName(value);
-        else if (name === 'email') setEmail(value);
+        else if (name === 'email') setUserEmail(value);
         else if (name === 'password') setPassword(value);
         else if (name === 'rpassword') setRPassword(value);
     }
@@ -37,7 +40,7 @@ function Register() {
         e.preventDefault();
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(userEmail)) {
             toast.warn("Please enter a valid email address.");
             return;
         }
@@ -49,11 +52,28 @@ function Register() {
 
         try {
             setLoading(true);
-            const res = await axios.post(`${baseURL}:${port}/login/register`, { name, email, password, role });
-            if (res) {
-                toast.success("Sign Up successful", { autoClose: 1000 });
+            const res = await axios.post(`${baseURL}:${port}/login/register`, { name, email: userEmail, password, role: userRole });
+            if (res.data) {
+                // Store user data and token for automatic login
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('user', res.data.user.name);
+                localStorage.setItem('email', res.data.user.email);
+                localStorage.setItem('role', res.data.user.role);
+                
+                // Update context
+                setToken(res.data.token);
+                setUser(res.data.user.name);
+                setEmail(res.data.user.email);
+                setRole(res.data.user.role);
+                
+                // Get last visited page and determine redirect path
+                const lastPage = getLastVisitedPage();
+                const redirectPath = getSmartRedirectPath(res.data.user.role, lastPage);
+                
+                toast.success("Sign Up successful and logged in!", { autoClose: 1000 });
                 setTimeout(() => {
-                    navigate('/login');
+                    clearLastVisitedPage(); // Clear after successful redirect
+                    navigate(redirectPath);
                 }, 1000);
             }
         }
@@ -97,7 +117,7 @@ function Register() {
                         <div className='flex justify mb-4'>
                             <label
                                 htmlFor="student"
-                                className={`p-2 text-sm mr-2 flex items-center grow ${role === 'student' ? 'bg-gray-300 border border-gray-400' : 'bg-gray-100'}`}>
+                                className={`p-2 text-sm mr-2 flex items-center grow ${userRole === 'student' ? 'bg-gray-300 border border-gray-400' : 'bg-gray-100'}`}>
                                 <input
                                     type="radio"
                                     name="role"
@@ -105,25 +125,25 @@ function Register() {
                                     value="student"
                                     required
                                     className='appearance-none'
-                                    checked={role === "student"}
-                                    onChange={(e) => setRole(e.target.value)}
+                                    checked={userRole === "student"}
+                                    onChange={(e) => setUserRole(e.target.value)}
                                 />
-                                {role === 'student' ? <CheckCircleIcon className='mr-2' sx={{ fontSize: 20 }} /> : null}
+                                {userRole === 'student' ? <CheckCircleIcon className='mr-2' sx={{ fontSize: 20 }} /> : null}
                                 Student
                             </label>
                             <label
                                 htmlFor="organizer"
-                                className={`p-2 text-sm flex items-center grow ${role === "organizer" ? 'bg-gray-300 border border-gray-400' : 'bg-gray-100'}`}>
+                                className={`p-2 text-sm flex items-center grow ${userRole === "organizer" ? 'bg-gray-300 border border-gray-400' : 'bg-gray-100'}`}>
                                 <input
                                     type="radio"
                                     name="role"
                                     id="organizer"
                                     value="organizer"
                                     className='appearance-none'
-                                    checked={role === "organizer"}
-                                    onChange={(e) => setRole(e.target.value)}
+                                    checked={userRole === "organizer"}
+                                    onChange={(e) => setUserRole(e.target.value)}
                                 />
-                                {role === 'organizer' ? <CheckCircleIcon className='mr-2' sx={{ fontSize: 20 }} /> : null}
+                                {userRole === 'organizer' ? <CheckCircleIcon className='mr-2' sx={{ fontSize: 20 }} /> : null}
                                 Organizer
                             </label>
                         </div>

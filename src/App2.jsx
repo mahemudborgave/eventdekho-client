@@ -5,8 +5,12 @@ import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import FooterComp from './components/FooterComp'
 import ScrollToTop from './components/ScrollToTop'
+import { usePageTracking } from './hooks/usePageTracking'
 
 function App2() {
+  // Track page visits for smart redirects
+  usePageTracking();
+
   return (
     <>
       <Navbar />

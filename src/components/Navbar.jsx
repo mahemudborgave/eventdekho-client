@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef, useCallback, useMemo } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { User, AlignRight, X, House, LogIn, LayoutDashboard, ChevronDown, Bell } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
@@ -53,10 +53,14 @@ function Navbar() {
         const fetchNotifications = async () => {
             if (!email) return;
             try {
+                // console.log('Fetching notifications for:', email);
                 const res = await axios.get(`${baseURL}:${port}/query/notifications/${email}`);
+                // console.log('Fetched notifications:', res.data.length);
                 setResolvedQueries(res.data);
                 setNotifCount(res.data.length);
-            } catch {}
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
         };
         fetchNotifications();
     }, [email]);
@@ -68,57 +72,90 @@ function Navbar() {
             setMenuOpen(false);
         };
         window.addEventListener('scroll', handleScroll);
-        // Hide on click outside
-        const handleClickOutside = (e) => {
-            if (notifRef.current && !notifRef.current.contains(e.target)) {
-                setNotifOpen(false);
-            }
-            if (menuRef.current && !menuRef.current.contains(e.target)) {
-                setMenuOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
+        
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
     useEffect(() => {
         // Only connect socket if user is logged in
         if (email) {
-            const s = socketIOClient(baseURL + ':' + port, { transports: ['websocket'] });
+            // console.log('Attempting to connect to WebSocket at:', baseURL + ':' + port);
+            const s = socketIOClient(baseURL + ':' + port, { 
+                transports: ['websocket'],
+                timeout: 5000,
+                reconnection: true,
+                reconnectionAttempts: 5,
+                reconnectionDelay: 1000
+            });
+            
             socketRef.current = s;
-            s.emit('join', email);
+            
+            s.on('connect', () => {
+                // console.log('WebSocket connected successfully');
+                s.emit('join', email);
+            });
+            
+            s.on('connect_error', (error) => {
+                console.error('WebSocket connection error:', error);
+            });
+            
+            s.on('disconnect', (reason) => {
+                console.log('WebSocket disconnected:', reason);
+            });
+            
             s.on('notification', (notif) => {
+                console.log('Received notification:', notif);
                 setResolvedQueries((prev) => [notif, ...prev]);
                 setNotifCount((prev) => prev + 1);
             });
+            
             return () => {
+                // console.log('Cleaning up WebSocket connection');
                 s.disconnect();
             };
         }
-    }, [email]);
+    }, [email, baseURL, port]);
 
-    const handleNotifClick = () => {
+    const handleNotifClick = useCallback(() => {
         setNotifOpen((prev) => !prev);
-    };
+    }, []);
 
-    const handleMarkAsRead = async (notifId) => {
+    const handleMarkAsRead = useCallback(async (notifId) => {
         try {
-            await axios.delete(`${baseURL}:${port}/query/notifications/${notifId}`);
-            setResolvedQueries((prev) => prev.filter(n => n._id !== notifId));
-            setNotifCount((prev) => prev - 1);
-        } catch {}
-    };
+            console.log('Marking notification as read:', notifId);
+            const response = await axios.delete(`${baseURL}:${port}/query/notifications/${notifId}`);
+            console.log('Delete response:', response.data);
+            
+            // Update both states in a single batch to prevent visual glitches
+            setResolvedQueries((prev) => {
+                const filtered = prev.filter(n => n._id !== notifId);
+                console.log('Previous notifications:', prev.length, 'After filtering:', filtered.length);
+                
+                // Update count immediately to keep them in sync
+                setNotifCount(filtered.length);
+                
+                return filtered;
+            });
+            
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+            // Don't update state if the API call failed
+        }
+    }, [baseURL, port]);
 
-    const handleMarkAllAsRead = async () => {
+    const handleMarkAllAsRead = useCallback(async () => {
         try {
+            console.log('Marking all notifications as read');
             await Promise.all(resolvedQueries.map(n => axios.delete(`${baseURL}:${port}/query/notifications/${n._id}`)));
+            console.log('All notifications marked as read');
             setResolvedQueries([]);
             setNotifCount(0);
-        } catch {}
-    };
+        } catch (error) {
+            console.error('Error marking all notifications as read:', error);
+        }
+    }, [resolvedQueries, baseURL, port]);
 
     return (
         <>
@@ -143,38 +180,69 @@ function Navbar() {
                             )}
                         </button>
                         {notifOpen && (
-                            <div className="absolute top-10 right-0 mt-2 w-80 bg-white border rounded shadow-lg z-50">
-                                <div className="p-4 border-b font-semibold text-gray-700 flex justify-between items-center">
-                                    <span>Notifications</span>
-                                    {resolvedQueries.length > 0 && (
-                                        <button
-                                            className="text-xs text-blue-600 hover:underline"
-                                            onClick={handleMarkAllAsRead}
-                                        >
-                                            Mark all as read
-                                        </button>
-                                    )}
+                            <div className="absolute top-10 right-0 mt-2 w-80 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl shadow-2xl z-50 transform transition-all duration-300 ease-out">
+                                <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
+                                    <div className="flex justify-between items-center">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                                            <span className="font-semibold text-gray-800 text-sm">Notifications</span>
+                                        </div>
+                                        {resolvedQueries.length > 0 && (
+                                            <button
+                                                className="text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-100 px-2 py-1 rounded-full transition-all duration-200 font-medium"
+                                                onClick={handleMarkAllAsRead}
+                                            >
+                                                Mark all as read
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="max-h-60 overflow-y-auto">
+                                <div className="max-h-60 overflow-y-auto bg-white">
                                     {resolvedQueries.length === 0 ? (
-                                        <div className="p-4 text-gray-500">No new notifications.</div>
+                                        <div className="p-6 text-center">
+                                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                <Bell size={20} className="text-gray-400" />
+                                            </div>
+                                            <div className="text-gray-500 text-sm font-medium">No new notifications</div>
+                                            <div className="text-gray-400 text-xs mt-1">We'll notify you when there's something new</div>
+                                        </div>
                                     ) : (
-                                        resolvedQueries.map((q) => (
-                                            <div key={q._id} className="p-4 border-b last:border-b-0 relative">
+                                        resolvedQueries.map((q, index) => (
+                                            <div key={q._id} className={`p-4 relative transition-all duration-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 ${index !== resolvedQueries.length - 1 ? 'border-b border-gray-100' : ''}`}>
                                                 <button
-                                                    className="absolute top-2 right-2 text-gray-400 hover:text-red-600 text-lg font-bold"
+                                                    className="absolute top-3 right-3 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
                                                     onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     title="Mark as read"
                                                 >
-                                                    &times;
+                                                    ×
                                                 </button>
-                                                <div className="font-medium text-green-700">Your query for <span className="font-bold">{q.eventName}</span> has been resolved!</div>
-                                                <div className="text-gray-700 mt-1">{q.resolution}</div>
-                                                <div className="text-xs text-gray-400 mt-1">{new Date(q.updatedAt).toLocaleString()}</div>
+                                                <div className="flex items-start gap-3">
+                                                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="font-medium text-green-700 text-sm leading-tight">
+                                                            Your query for <span className="font-bold text-green-800">{q.eventName}</span> has been resolved!
+                                                        </div>
+                                                        <div className="text-gray-600 mt-2 text-sm leading-relaxed bg-gray-50 p-3 rounded-lg border-l-4 border-green-200">
+                                                            {q.resolution}
+                                                        </div>
+                                                        <div className="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                                                            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                                                            {new Date(q.updatedAt).toLocaleString()}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         ))
                                     )}
+                                </div>
+                                <div className="p-3 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+                                    <button
+                                        className="w-full text-center text-gray-600 hover:text-gray-800 hover:bg-gray-100 py-2 px-4 rounded-lg transition-all duration-200 font-medium text-sm"
+                                        onClick={handleNotifClick}
+                                    >
+                                        Close
+                                    </button>
                                 </div>
                             </div>
                         )}
@@ -260,38 +328,69 @@ function Navbar() {
                                 )}
                             </button>
                             {notifOpen && (
-                                <div className="absolute top-10 right-0 mt-2 w-80 bg-white border rounded shadow-lg z-50">
-                                    <div className="p-4 border-b font-semibold text-gray-700 flex justify-between items-center">
-                                        <span>Notifications</span>
-                                        {resolvedQueries.length > 0 && (
-                                            <button
-                                                className="text-xs text-blue-600 hover:underline"
-                                                onClick={handleMarkAllAsRead}
-                                            >
-                                                Mark all as read
-                                            </button>
-                                        )}
+                                <div className="absolute top-10 right-0 mt-2 w-80 bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl shadow-2xl z-50 transform transition-all duration-300 ease-out">
+                                    <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl">
+                                        <div className="flex justify-between items-center">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                                                <span className="font-semibold text-gray-800 text-sm">Notifications</span>
+                                            </div>
+                                            {resolvedQueries.length > 0 && (
+                                                <button
+                                                    className="text-xs text-blue-600 hover:text-blue-800 hover:bg-blue-100 px-2 py-1 rounded-full transition-all duration-200 font-medium"
+                                                    onClick={handleMarkAllAsRead}
+                                                >
+                                                    Mark all as read
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="max-h-60 overflow-y-auto">
+                                    <div className="max-h-60 overflow-y-auto bg-white">
                                         {resolvedQueries.length === 0 ? (
-                                            <div className="p-4 text-gray-500">No new notifications.</div>
+                                            <div className="p-6 text-center">
+                                                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                    <Bell size={20} className="text-gray-400" />
+                                                </div>
+                                                <div className="text-gray-500 text-sm font-medium">No new notifications</div>
+                                                <div className="text-gray-400 text-xs mt-1">We'll notify you when there's something new</div>
+                                            </div>
                                         ) : (
-                                            resolvedQueries.map((q) => (
-                                                <div key={q._id} className="p-4 border-b last:border-b-0 relative">
+                                            resolvedQueries.map((q, index) => (
+                                                <div key={q._id} className={`p-4 relative transition-all duration-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 ${index !== resolvedQueries.length - 1 ? 'border-b border-gray-100' : ''}`}>
                                                     <button
-                                                        className="absolute top-2 right-2 text-gray-400 hover:text-red-600 text-lg font-bold"
+                                                        className="absolute top-3 right-3 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
                                                         onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                         onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                         title="Mark as read"
                                                     >
-                                                        &times;
+                                                        ×
                                                     </button>
-                                                    <div className="font-medium text-green-700">Your query for <span className="font-bold">{q.eventName}</span> has been resolved!</div>
-                                                    <div className="text-gray-700 mt-1">{q.resolution}</div>
-                                                    <div className="text-xs text-gray-400 mt-1">{new Date(q.updatedAt).toLocaleString()}</div>
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <div className="font-medium text-green-700 text-sm leading-tight">
+                                                                Your query for <span className="font-bold text-green-800">{q.eventName}</span> has been resolved!
+                                                            </div>
+                                                            <div className="text-gray-600 mt-2 text-sm leading-relaxed bg-gray-50 p-3 rounded-lg border-l-4 border-green-200">
+                                                                {q.resolution}
+                                                            </div>
+                                                            <div className="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                                                                <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                                                                {new Date(q.updatedAt).toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))
                                         )}
+                                    </div>
+                                    <div className="p-3 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+                                        <button
+                                            className="w-full text-center text-gray-600 hover:text-gray-800 hover:bg-gray-100 py-2 px-4 rounded-lg transition-all duration-200 font-medium text-sm"
+                                            onClick={handleNotifClick}
+                                        >
+                                            Close
+                                        </button>
                                     </div>
                                 </div>
                             )}

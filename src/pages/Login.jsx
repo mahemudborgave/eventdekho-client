@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import PasswordIcon from '@mui/icons-material/Password';
 import MailIcon from '@mui/icons-material/Mail';
@@ -9,17 +9,28 @@ import UserContext from '../context/UserContext';
 import { ScaleLoader } from 'react-spinners';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { getLastVisitedPage, clearLastVisitedPage, getSmartRedirectPath } from '../utils/navigationUtils';
 
 function Login() {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const port = import.meta.env.VITE_PORT;
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { user, setUser } = useContext(UserContext);
     const { email, setEmail } = useContext(UserContext);
     const { token, setToken } = useContext(UserContext);
+    const { role, setRole } = useContext(UserContext);
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false); // loader state
+
+    // Track page visits for smart redirects
+    useEffect(() => {
+        // Don't track login page itself
+        if (location.pathname !== '/login') {
+            // This will be handled by the main App component
+        }
+    }, [location.pathname]);
 
     const handleChange = (e) => {
         if (e.target.name === 'email') {
@@ -40,11 +51,20 @@ function Login() {
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('username', res.data.user.name);
                 localStorage.setItem('email', res.data.user.email);
+                localStorage.setItem('role', res.data.user.role);
+                
                 setUser(res.data.user.name);
                 setToken(res.data.token);
+                setRole(res.data.user.role);
+                
+                // Get last visited page and determine redirect path
+                const lastPage = getLastVisitedPage();
+                const redirectPath = getSmartRedirectPath(res.data.user.role, lastPage);
+                
                 toast.success("Logged In!", { autoClose: 1000 });
                 setTimeout(() => {
-                    navigate('/');
+                    clearLastVisitedPage(); // Clear after successful redirect
+                    navigate(redirectPath);
                 }, 1000);
             } else {
                 toast.error("Login failed: No username received", { autoClose: 1000 });
