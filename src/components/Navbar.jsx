@@ -277,9 +277,9 @@ function Navbar() {
                                 More <ChevronDown size={16} className={`transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
                             </button>
                             {moreOpen && (
-                                <ul className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl min-w-[160px] z-[60] py-2">
+                                <ul className="absolute left-22 top-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl min-w-[160px] z-[60] py-2">
                                     <li>
-                                        <NavLink to="/about" onClick={() => { setMenuOpen(false); setMoreOpen(false); }} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 bg-blue-50' : 'block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-5 py-2 transition-all duration-200'}>About hereee</NavLink>
+                                        <NavLink to="/about" onClick={() => { setMenuOpen(false); setMoreOpen(false); }} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 bg-blue-50' : 'block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-5 py-2 transition-all duration-200'}>About Us</NavLink>
                                     </li>
                                     <li>
                                         <NavLink to="/contactus" onClick={() => { setMenuOpen(false); setMoreOpen(false); }} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 bg-blue-50' : 'block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-5 py-2 transition-all duration-200'}>Contact Us</NavLink>
@@ -312,6 +312,8 @@ function Navbar() {
                         )}
                     </div>
                 </div>
+
+
                 <div className='hidden lg:flex items-center gap-4'>
                     {/* Desktop More Dropdown */}
                     <div className="relative">
@@ -325,7 +327,7 @@ function Navbar() {
                         {moreOpen && (
                             <ul className="absolute right-0 top-12 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl min-w-[160px] z-[60] py-2">
                                 <li>
-                                    <NavLink to="/about" onClick={() => setMoreOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 bg-blue-50' : 'block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-5 py-2 transition-all duration-200'}>About</NavLink>
+                                    <NavLink to="/about" onClick={() => setMoreOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 bg-blue-50' : 'block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-5 py-2 transition-all duration-200'}>About Us</NavLink>
                                 </li>
                                 <li>
                                     <NavLink to="/contactus" onClick={() => setMoreOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 bg-blue-50' : 'block text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-5 py-2 transition-all duration-200'}>Contact Us</NavLink>
@@ -430,14 +432,14 @@ function Navbar() {
                             <Link to="/signup" className='px-5 py-2 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium'>Sign up</Link>
                         </div>
                     ) : (
-                        <div className='flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
-                            Welcome, <span className='font-semibold ml-1'>{user ? user.slice(0,10) + '...' : 'User'}</span>
-                            <Link to={role === "organizer" ? '/adminprofile' : '/studentprofile'}>
-                                <div className='ml-2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-all duration-200'>
-                                    <User size={20} />
-                                </div>
-                            </Link>
-                        </div>
+                        <Link to={role === "organizer" ? '/adminprofile' : '/studentprofile'}>
+                            <div className='flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
+                                Welcome, <span className='font-semibold ml-1'>{user ? user.slice(0,10) + '...' : 'User'}</span>
+                                    <div className='ml-2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-all duration-200'>
+                                        <User size={20} />
+                                    </div>
+                            </div>
+                        </Link>
                     )}
                 </div>
             </div>

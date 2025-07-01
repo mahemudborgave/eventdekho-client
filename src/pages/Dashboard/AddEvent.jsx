@@ -37,6 +37,7 @@ export default function AddEvent() {
     contactPerson: '',
     phone: '',
     city: '',
+    parentOrganization: '',
   });
   const [isShow, setIsShow] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,7 @@ export default function AddEvent() {
             contactPerson: userData.contactPerson || '',
             phone: userData.phone || '',
             city: userData.city || '',
+            parentOrganization: userData.parentOrganization || '',
           });
         }
       } catch (err) {
@@ -141,6 +143,7 @@ export default function AddEvent() {
         organizationName: organizerProfile.organizationName, // Use organization name from profile
         organizationId: organizerProfile._id, // Use _id as organizationId
         organizationCity: organizerProfile.city, // Use city from profile
+        parentOrganization: organizerProfile.parentOrganization, // Use parent organization name from profile
         eventTags: form.eventTags.split(',').map(tag => tag.trim()).filter(Boolean),
       };
 

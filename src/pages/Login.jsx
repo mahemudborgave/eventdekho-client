@@ -49,14 +49,14 @@ function Login() {
 
             if (res.data.token) {
                 // Get the correct user name based on role
-                const userName = res.data.user.role === 'student' ? res.data.user.name : res.data.user.organizationName;
+                // const userName = res.data.user.role === 'student' ? res.data.user.name : res.data.user.organizationName;
                 
                 localStorage.setItem('token', res.data.token);
-                localStorage.setItem('user', userName);
+                localStorage.setItem('user', res.data.user.name);
                 localStorage.setItem('email', res.data.user.email);
                 localStorage.setItem('role', res.data.user.role);
                 
-                setUser(userName);
+                setUser(res.data.user.name);
                 setToken(res.data.token);
                 setRole(res.data.user.role);
                 
@@ -64,7 +64,7 @@ function Login() {
                 setTimeout(() => {
                     // Redirect based on role
                     if (res.data.user.role === 'organizer') {
-                        navigate('/adminprofile');
+                        navigate('/admin/profile');
                     } else {
                         navigate('/studentprofile');
                     }

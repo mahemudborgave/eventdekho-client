@@ -116,12 +116,15 @@ function OrganizationDetails() {
         <div className='w-full text-[#1a093f]'>
           <div className="flex items-center gap-3 mb-10 rounded-lg p-6 bg-gradient-to-r from-amber-200 to-amber-300">
             <div>
-              <h1 className='text-lg md:text-3xl font-bold mb-3'>{organization.organizationName}</h1>
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-1 rounded-lg border border-gray-200">
+              <h1 className='text-lg md:text-3xl font-bold'>{organization.organizationName}</h1>
+              {
+                organization.parentOrganization && <h2 className='text-lg md:text-3xl mb-5'>{organization.parentOrganization}</h2>
+              }
+              <div className="flex flex-wrap gap-4">  
+                {/* <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-1 rounded-lg border border-gray-200">
                   <span className="text-sm">Code</span>
                   <p className="font-semibold">{organization._id}</p>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-2 bg-green-400 backdrop-blur-sm px-4 py-1 rounded-lg">
                   <span className="text-sm">Total Events</span>
                   <p className="font-semibold">{organizationEvents.length}</p>

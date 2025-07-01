@@ -33,7 +33,7 @@ function Home() {
 
                     </Carousel>
                 </div>
-                <div className='pt-10 lg:px-10'>
+                <div className='lg:px-10'>
                     <MainSearch />
                 </div>
             </div>

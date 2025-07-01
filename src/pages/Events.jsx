@@ -117,7 +117,7 @@ function Events() {
   return (
     <>
       {/* Page Header */}
-      <div className="mb-4 lg:hidden sm:mb-8">
+      <div className="mb-4 hidden sm:mb-8">
         <div className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 rounded-2xl p-3 sm:p-6 lg:p-8 text-white shadow-xl">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-3 sm:mb-6 lg:mb-0">
@@ -136,7 +136,7 @@ function Events() {
       </div>
 
       {/* state card */}
-      <div className="grid lg:hidden grid-cols-3 md:grid-cols-3 gap-2 sm:gap-6 mb-4 sm:mb-8">
+      <div className="grid hidden grid-cols-3 md:grid-cols-3 gap-2 sm:gap-6 mb-4 sm:mb-8">
         <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-2 sm:p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
@@ -188,19 +188,34 @@ function Events() {
 
         {recently.length > 0 && (
           <div className="mb-10 border-2 border-blue-300 bg-blue-50 rounded-2xl overflow-hidden">
-            <div className="p-4 lg:p-6 relative flex-col justify-between items-center">
-              <div className={`flex justify-between items-center ${isRecentlyCollapsed ? 'mb-0' : 'mb-6'}`}>
-                <h2 className={`text-xl font-bold text-blue-900`}>Recently Added</h2>
-                <button
-                  onClick={() => setIsRecentlyCollapsed(!isRecentlyCollapsed)}
-                  className="text-blue-600 hover:text-blue-800 w-6 h-6 flex items-center justify-center rounded-full hover:bg-blue-100 transition-colors"
-                  aria-label={isRecentlyCollapsed ? "Expand recently added section" : "Collapse recently added section"}
-                >
-                  {isRecentlyCollapsed ? <ChevronDown size={25} /> : <ChevronUp size={25} />}
-                </button>
-              </div>
-              {!isRecentlyCollapsed && <Eventt events={recently} />}
+            {/* Recently Added Bar (Header) */}
+            <div
+              className={`p-4 lg:p-6 relative flex justify-between items-center cursor-pointer select-none ${isRecentlyCollapsed ? '' : 'mb-0'}`}
+              onClick={() => setIsRecentlyCollapsed(!isRecentlyCollapsed)}
+            >
+              <h2 className="text-xl font-bold text-blue-900">Recently Added</h2>
+              <button
+                onClick={e => { e.stopPropagation(); setIsRecentlyCollapsed(!isRecentlyCollapsed); }}
+                className="recently-toggle-btn text-blue-600 hover:text-blue-800 w-6 h-6 flex items-center justify-center rounded-full hover:bg-blue-100 transition-colors"
+                aria-label={isRecentlyCollapsed ? "Expand recently added section" : "Collapse recently added section"}
+              >
+                {isRecentlyCollapsed ? <ChevronDown size={25} /> : <ChevronUp size={25} />}
+              </button>
             </div>
+            {/* Events and Close Button (only when expanded) */}
+            {!isRecentlyCollapsed && (
+              <div className="px-4 lg:px-6 pb-4">
+                <Eventt events={recently} />
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={() => setIsRecentlyCollapsed(true)}
+                    className="px-4 py-2 bg-blue-200 text-blue-800 rounded-full hover:bg-blue-300 transition-colors font-medium"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -209,10 +224,10 @@ function Events() {
             No matching events found.
           </div>
         ) : (
-          <>
+          <div className='p-4 lg:p-6'>
             <h2 className="text-xl font-bold text-[#1a093f] mb-4">All Events</h2>
             <Eventt events={events} />
-          </>
+          </div>
         )}
       </div>
     </>

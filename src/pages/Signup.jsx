@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import UserContext from '../context/UserContext';
 import { getLastVisitedPage, clearLastVisitedPage, getSmartRedirectPath } from '../utils/navigationUtils';
 import { Phone, Smartphone } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Signup() {
     const baseURL = import.meta.env.VITE_BASE_URL;
@@ -302,277 +303,311 @@ function Signup() {
 
     return (
         <>
-            <div className='flex lg:w-[1000px] w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:shadow-[5px_5px_20px_rgba(0,0,0,0.3)]'>
-                <div className='w-[50%] hidden lg:flex justify-center items-center text-white font-bold'
-                    style={{
-                        background: 'linear-gradient(90deg, hsla(34, 100%, 54%, 1) 2%, hsla(39, 100%, 58%, 1) 53%, hsla(43, 100%, 60%, 1) 87%)'
-                    }}>
-                    <p className='text-3xl'>Join EventDekho!</p>
-                </div>
-                <div className='lg:p-20 lg:w-1/2 w-[300px] mx-auto border-3 border-amber-500 p-8'>
-                    <p className='text-amber-300 font-bold text-3xl mb-4'>Sign Up</p>
-                    <p className='mb-6'>Choose your account type and create your profile</p>
-                    
-                    {/* Tab Navigation */}
-                    <div className='flex mb-6 bg-gray-100 rounded-lg p-1'>
-                        <button
-                            className={`flex-1 py-2 px-4 rounded-md transition-all duration-200 flex items-center justify-center gap-2 ${
-                                activeTab === 'student' 
-                                    ? 'bg-white shadow-md text-amber-600' 
-                                    : 'text-gray-600 hover:text-amber-600'
-                            }`}
-                            onClick={() => setActiveTab('student')}
-                        >
-                            <SchoolIcon size={20} />
-                            Student
-                        </button>
-                        <button
-                            className={`flex-1 py-2 px-4 rounded-md transition-all duration-200 flex items-center justify-center gap-2 ${
-                                activeTab === 'organization' 
-                                    ? 'bg-white shadow-md text-amber-600' 
-                                    : 'text-gray-600 hover:text-amber-600'
-                            }`}
-                            onClick={() => setActiveTab('organization')}
-                        >
-                            <BusinessIcon size={20} />
-                            Organization
-                        </button>
+            
+            <div className='w-screen min-h-screen flex items-center justify-center lg:px-12 sm:px-6 px-2 py-10 bg-white'>
+                <div className='flex lg:max-w-5xl w-full lg:shadow-[5px_5px_20px_rgba(0,0,0,0.3)]'>
+                    <div className='w-[50%] hidden lg:flex justify-center items-center text-white font-bold'
+                        style={{
+                            background: 'linear-gradient(90deg, hsla(34, 100%, 54%, 1) 2%, hsla(39, 100%, 58%, 1) 53%, hsla(43, 100%, 60%, 1) 87%)'
+                        }}>
+                        <p className='text-3xl'>Join EventDekho!</p>
                     </div>
-
-                    {/* Student Form */}
-                    {activeTab === 'student' && (
-                        <form onSubmit={handleStudentSubmit}>
-                            <div className='text-xs text-gray-600 bg-blue-50 p-2 rounded-lg mb-4'>
-                                <strong>Quick Registration:</strong> Get started with just your basic details. You can complete your academic profile later from your dashboard.
-                            </div>
-                            <div className='space-y-4'>
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <Face6Icon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="text" 
-                                        name="name" 
-                                        placeholder='Enter your full name' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={studentData.name}
-                                        onChange={handleStudentChange}
-                                        required 
-                                    />
-                                </div>
-                                
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="email" 
-                                        name="email" 
-                                        placeholder='Enter your email address' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={studentData.email}
-                                        onChange={handleStudentChange}
-                                        required 
-                                    />
-                                </div>
-
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                <Smartphone sx={{ fontSize: 10 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="tel" 
-                                        name="mobileNumber" 
-                                        placeholder='Enter your mobile number' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={studentData.mobileNumber}
-                                        onChange={handleStudentChange}
-                                        required 
-                                    />
-                                </div>
-
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        placeholder='Create a strong password (min 6 characters)' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={studentData.password}
-                                        onChange={handleStudentChange}
-                                        required 
-                                    />
-                                </div>
-
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="password" 
-                                        name="confirmPassword" 
-                                        placeholder='Confirm your password' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={studentData.confirmPassword}
-                                        onChange={handleStudentChange}
-                                        required 
-                                    />
-                                </div>
-                            </div>
-
-                            <Button 
-                                type="submit"
-                                variant="contained"
-                                sx={{ backgroundColor: '#FF9C16', mt: 4, display: 'block', fontWeight: 'bold', color: '#fff', width: '100%' }}
+                    <div className='lg:p-20 lg:w-1/2 w-full mx-auto border-3 border-amber-500 p-8'>
+                        <p className='text-amber-300 font-bold text-3xl mb-4'>Sign Up</p>
+                        <p className='mb-6'>Choose your account type and create your profile</p>
+                        
+                        {/* Tab Navigation */}
+                        <div className='flex mb-3 bg-gray-100 rounded-lg p-0.5 w-full'>
+                            <button
+                                className={`flex-1 min-w-0 py-1.5 px-1 sm:px-3 rounded-md transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base ${
+                                    activeTab === 'student' 
+                                        ? 'bg-white shadow-md text-amber-600' 
+                                        : 'text-gray-600 hover:text-amber-600'
+                                }`}
+                                onClick={() => setActiveTab('student')}
                             >
-                                Create Student Account
-                            </Button>
-                        </form>
-                    )}
+                                <SchoolIcon size={20} />
+                                <span>Student</span>
+                            </button>
+                            <button
+                                className={`flex-1 min-w-0 py-1.5 px-1 sm:px-3 rounded-md transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base ${
+                                    activeTab === 'organization' 
+                                        ? 'bg-white shadow-md text-amber-600' 
+                                        : 'text-gray-600 hover:text-amber-600'
+                                }`}
+                                onClick={() => setActiveTab('organization')}
+                            >
+                                <BusinessIcon size={20} />
+                                <span>Organization</span>
+                            </button>
+                        </div>
 
-                    {/* Organization Form */}
-                    {activeTab === 'organization' && (
-                        <form onSubmit={handleOrgSubmit}>
-                            <div className='text-xs text-gray-600 bg-blue-50 p-2 rounded-lg mb-4'>
-                                <strong>Organization Registration:</strong> Create your organization account to start hosting events and managing registrations.
-                            </div>
-                            <div className='space-y-4'>
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <BusinessIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="text" 
-                                        name="organizationName" 
-                                        placeholder='Enter organization name' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={orgData.organizationName}
-                                        onChange={handleOrgChange}
-                                        required 
+                        {/* Student Form */}
+                        {activeTab === 'student' && (
+                            <>
+                                <div className="flex flex-col items-center my-4 gap-2">
+                                    <GoogleLogin
+                                        onSuccess={async credentialResponse => {
+                                            try {
+                                                const res = await axios.post(
+                                                    `${baseURL}:${port}/auth/google`,
+                                                    { token: credentialResponse.credential }
+                                                );
+                                                // Store user data and token for automatic login
+                                                localStorage.setItem('token', res.data.token);
+                                                localStorage.setItem('user', res.data.user.name);
+                                                localStorage.setItem('email', res.data.user.email);
+                                                localStorage.setItem('role', res.data.user.role);
+                                                setToken(res.data.token);
+                                                setUser(res.data.user.name);
+                                                setEmail(res.data.user.email);
+                                                setRole(res.data.user.role);
+                                                toast.success('Logged in with Google!');
+                                                navigate('/studentprofile');
+                                            } catch (err) {
+                                                toast.error('Google login failed');
+                                            }
+                                        }}
+                                        onError={() => {
+                                            toast.error('Google Login Failed');
+                                        }}
                                     />
+                                    <span className="text-xs text-gray-400">or</span>
                                 </div>
+                                <form onSubmit={handleStudentSubmit}>
+                                    <div className='text-xs text-gray-600 bg-blue-50 p-2 rounded-lg mb-4'>
+                                        <strong>Quick Registration:</strong> Get started with just your basic details. You can complete your academic profile later from your dashboard.
+                                    </div>
+                                    <div className='space-y-4'>
+                                        <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                            <Face6Icon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                            <input 
+                                                type="text" 
+                                                name="name" 
+                                                placeholder='Enter your full name' 
+                                                className='block focus:outline-0 text-sm flex-1' 
+                                                value={studentData.name}
+                                                onChange={handleStudentChange}
+                                                required 
+                                            />
+                                        </div>
+                                        
+                                        <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                            <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                            <input 
+                                                type="email" 
+                                                name="email" 
+                                                placeholder='Enter your email address' 
+                                                className='block focus:outline-0 text-sm flex-1' 
+                                                value={studentData.email}
+                                                onChange={handleStudentChange}
+                                                required 
+                                            />
+                                        </div>
 
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="email" 
-                                        name="email" 
-                                        placeholder='Enter organization email address' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={orgData.email}
-                                        onChange={handleOrgChange}
-                                        required 
-                                    />
-                                </div>
+                                        <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                        <Smartphone sx={{ fontSize: 10 }} className='mr-2 text-[#7c7c7c]' />
+                                            <input 
+                                                type="tel" 
+                                                name="mobileNumber" 
+                                                placeholder='Enter your mobile number' 
+                                                className='block focus:outline-0 text-sm flex-1' 
+                                                value={studentData.mobileNumber}
+                                                onChange={handleStudentChange}
+                                                required 
+                                            />
+                                        </div>
 
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <select 
-                                        name="organizationType" 
-                                        className='block focus:outline-0 text-sm flex-1 bg-transparent' 
-                                        value={orgData.organizationType}
-                                        onChange={handleOrgChange}
-                                        required
+                                        <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                            <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                            <input 
+                                                type="password" 
+                                                name="password" 
+                                                placeholder='Create a strong password (min 6 characters)' 
+                                                className='block focus:outline-0 text-sm flex-1' 
+                                                value={studentData.password}
+                                                onChange={handleStudentChange}
+                                                required 
+                                            />
+                                        </div>
+
+                                        <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                            <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                            <input 
+                                                type="password" 
+                                                name="confirmPassword" 
+                                                placeholder='Confirm your password' 
+                                                className='block focus:outline-0 text-sm flex-1' 
+                                                value={studentData.confirmPassword}
+                                                onChange={handleStudentChange}
+                                                required 
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <Button 
+                                        type="submit"
+                                        variant="contained"
+                                        sx={{ backgroundColor: '#FF9C16', mt: 4, display: 'block', fontWeight: 'bold', color: '#fff', width: '100%' }}
                                     >
-                                        <option value="">Select organization type</option>
-                                        <option value="college">College</option>
-                                        <option value="college_club">College Club</option>
-                                        <option value="ngo">NGO</option>
-                                        <option value="limited_company">Limited Company</option>
-                                    </select>
-                                </div>
+                                        Create Student Account
+                                    </Button>
+                                </form>
+                            </>
+                        )}
 
-                                <div className='relative'>
+                        {/* Organization Form */}
+                        {activeTab === 'organization' && (
+                            <form onSubmit={handleOrgSubmit}>
+                                <div className='text-xs text-gray-600 bg-blue-50 p-2 rounded-lg mb-4'>
+                                    <strong>Organization Registration:</strong> Create your organization account to start hosting events and managing registrations.
+                                </div>
+                                <div className='space-y-4'>
                                     <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                        <BusinessIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
                                         <input 
                                             type="text" 
-                                            name="parentOrganization" 
-                                            placeholder='Search for parent organization (optional)' 
+                                            name="organizationName" 
+                                            placeholder='Enter organization name' 
                                             className='block focus:outline-0 text-sm flex-1' 
-                                            value={orgData.parentOrganization}
-                                            onChange={(e) => {
-                                                setOrgData(prev => ({ ...prev, parentOrganization: e.target.value }));
-                                            }}
-                                            onFocus={() => setShowOrganizationSuggestions(true)}
-                                            onBlur={() => {
-                                                // Delay hiding suggestions to allow clicking on them
-                                                setTimeout(() => setShowOrganizationSuggestions(false), 200);
-                                            }}
+                                            value={orgData.organizationName}
+                                            onChange={handleOrgChange}
+                                            required 
                                         />
                                     </div>
-                                    
-                                    {/* Organization Suggestions Dropdown */}
-                                    {showOrganizationSuggestions && orgData.parentOrganization && (
-                                        <div className='absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto'>
-                                            {organizations
-                                                .filter(organization => 
-                                                    organization.organizationName.toLowerCase().includes(orgData.parentOrganization.toLowerCase()) ||
-                                                    organization.city.toLowerCase().includes(orgData.parentOrganization.toLowerCase())
-                                                )
-                                                .slice(0, 10) // Limit to 10 suggestions
-                                                .map((organization, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className='px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0'
-                                                        onClick={() => {
-                                                            setOrgData(prev => ({ 
-                                                                ...prev, 
-                                                                parentOrganization: organization.organizationName 
-                                                            }));
-                                                            setShowOrganizationSuggestions(false);
-                                                        }}
-                                                    >
-                                                        <div className='font-medium text-sm'>{organization.organizationName}</div>
-                                                        <div className='text-xs text-gray-500'>{organization.city}</div>
-                                                    </div>
-                                                ))
-                                            }
-                                            
-                                            {/* "Not found" option */}
-                                            <div
-                                                className='px-4 py-2 hover:bg-blue-50 cursor-pointer border-t border-gray-200 bg-blue-50'
-                                                onClick={() => {
-                                                    setShowOrganizationPopup(true);
-                                                    setShowOrganizationSuggestions(false);
+
+                                    <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                        <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                        <input 
+                                            type="email" 
+                                            name="email" 
+                                            placeholder='Enter organization email address' 
+                                            className='block focus:outline-0 text-sm flex-1' 
+                                            value={orgData.email}
+                                            onChange={handleOrgChange}
+                                            required 
+                                        />
+                                    </div>
+
+                                    <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                        <select 
+                                            name="organizationType" 
+                                            className='block focus:outline-0 text-sm flex-1 bg-transparent' 
+                                            value={orgData.organizationType}
+                                            onChange={handleOrgChange}
+                                            required
+                                        >
+                                            <option value="">Select organization type</option>
+                                            <option value="college">College</option>
+                                            <option value="college_club">College Club</option>
+                                            <option value="ngo">NGO</option>
+                                            <option value="limited_company">Limited Company</option>
+                                        </select>
+                                    </div>
+
+                                    <div className='relative'>
+                                        <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                            <input 
+                                                type="text" 
+                                                name="parentOrganization" 
+                                                placeholder='Search for parent organization (optional)' 
+                                                className='block focus:outline-0 text-sm flex-1' 
+                                                value={orgData.parentOrganization}
+                                                onChange={(e) => {
+                                                    setOrgData(prev => ({ ...prev, parentOrganization: e.target.value }));
                                                 }}
-                                            >
-                                                <div className='font-medium text-sm text-blue-600'>
-                                                    Not found? Register your organization
+                                                onFocus={() => setShowOrganizationSuggestions(true)}
+                                                onBlur={() => {
+                                                    // Delay hiding suggestions to allow clicking on them
+                                                    setTimeout(() => setShowOrganizationSuggestions(false), 200);
+                                                }}
+                                            />
+                                        </div>
+                                        
+                                        {/* Organization Suggestions Dropdown */}
+                                        {showOrganizationSuggestions && orgData.parentOrganization && (
+                                            <div className='absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto'>
+                                                {organizations
+                                                    .filter(organization => 
+                                                        organization.organizationName.toLowerCase().includes(orgData.parentOrganization.toLowerCase()) ||
+                                                        organization.city.toLowerCase().includes(orgData.parentOrganization.toLowerCase())
+                                                    )
+                                                    .slice(0, 10) // Limit to 10 suggestions
+                                                    .map((organization, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className='px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0'
+                                                            onClick={() => {
+                                                                setOrgData(prev => ({ 
+                                                                    ...prev, 
+                                                                    parentOrganization: organization.organizationName 
+                                                                }));
+                                                                setShowOrganizationSuggestions(false);
+                                                            }}
+                                                        >
+                                                            <div className='font-medium text-sm'>{organization.organizationName}</div>
+                                                            <div className='text-xs text-gray-500'>{organization.city}</div>
+                                                        </div>
+                                                    ))
+                                                }
+                                                
+                                                {/* "Not found" option */}
+                                                <div
+                                                    className='px-4 py-2 hover:bg-blue-50 cursor-pointer border-t border-gray-200 bg-blue-50'
+                                                    onClick={() => {
+                                                        setShowOrganizationPopup(true);
+                                                        setShowOrganizationSuggestions(false);
+                                                    }}
+                                                >
+                                                    <div className='font-medium text-sm text-blue-600'>
+                                                        Not found? Register your organization
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
+
+                                    <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                        <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                        <input 
+                                            type="password" 
+                                            name="password" 
+                                            placeholder='Create a strong password (min 6 characters)' 
+                                            className='block focus:outline-0 text-sm flex-1' 
+                                            value={orgData.password}
+                                            onChange={handleOrgChange}
+                                            required 
+                                        />
+                                    </div>
+
+                                    <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                        <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
+                                        <input 
+                                            type="password" 
+                                            name="confirmPassword" 
+                                            placeholder='Confirm your password' 
+                                            className='block focus:outline-0 text-sm flex-1' 
+                                            value={orgData.confirmPassword}
+                                            onChange={handleOrgChange}
+                                            required 
+                                        />
+                                    </div>
                                 </div>
 
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        placeholder='Create a strong password (min 6 characters)' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={orgData.password}
-                                        onChange={handleOrgChange}
-                                        required 
-                                    />
-                                </div>
+                                <Button 
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{ backgroundColor: '#FF9C16', mt: 4, display: 'block', fontWeight: 'bold', color: '#fff', width: '100%' }}
+                                >
+                                    Register Organization
+                                </Button>
+                            </form>
+                        )}
 
-                                <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
-                                    <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                                    <input 
-                                        type="password" 
-                                        name="confirmPassword" 
-                                        placeholder='Confirm your password' 
-                                        className='block focus:outline-0 text-sm flex-1' 
-                                        value={orgData.confirmPassword}
-                                        onChange={handleOrgChange}
-                                        required 
-                                    />
-                                </div>
-                            </div>
-
-                            <Button 
-                                type="submit"
-                                variant="contained"
-                                sx={{ backgroundColor: '#FF9C16', mt: 4, display: 'block', fontWeight: 'bold', color: '#fff', width: '100%' }}
-                            >
-                                Register Organization
-                            </Button>
-                        </form>
-                    )}
-
-                    <Link to='/login' className='text-[#8d8d8d] group text-sm mt-4 block text-center'>
-                        Have account ? <span className='group-hover:text-amber-500'>Login Here</span>
-                    </Link>
+                        <Link to='/login' className='text-[#8d8d8d] group text-sm mt-4 block text-center'>
+                            Have account ? <span className='group-hover:text-amber-500'>Login Here</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
 

@@ -22,7 +22,7 @@ function StudentProfile() {
     const [profile, setProfile] = useState({
         studentName: '',
         gender: '',
-        studentOrganizationName: '',
+        collegeName: '',
         course: '',
         branch: '',
         year: '',
@@ -51,7 +51,7 @@ function StudentProfile() {
                     setProfile({
                         studentName: userData.name || '',
                         gender: userData.gender || '',
-                        studentOrganizationName: userData.organizationName || '',
+                        collegeName: userData.collegeName || '',
                         course: userData.course || '',
                         branch: userData.branch || '',
                         year: userData.year || '',
@@ -86,16 +86,16 @@ function StudentProfile() {
 
     // Sync organization search state when organizations are loaded and profile has organization name
     useEffect(() => {
-        if (organizations.length > 0 && profile.studentOrganizationName) {
-            const foundOrganization = organizations.find(c => c.organizationName && c.organizationName.toLowerCase() === profile.studentOrganizationName.toLowerCase());
+        if (organizations.length > 0 && profile.collegeName) {
+            const foundOrganization = organizations.find(c => c.collegeName && c.collegeName.toLowerCase() === profile.collegeName.toLowerCase());
             if (foundOrganization) {
                 setSelectedOrganization(foundOrganization);
-                setOrganizationSearch(foundOrganization.organizationName);
+                setOrganizationSearch(foundOrganization.collegeName);
             } else {
-                setOrganizationSearch(profile.studentOrganizationName);
+                setOrganizationSearch(profile.collegeName);
             }
         }
-    }, [organizations, profile.studentOrganizationName]);
+    }, [organizations, profile.collegeName]);
 
     const handleLogout = () => {
         if (confirm("Are u sure, want to logout ?")) {
@@ -123,16 +123,14 @@ function StudentProfile() {
         console.log('handleChange called:', { id, name, value, type, fieldName });
         
         // Don't handle organization name here as it's managed by Autocomplete
-        if (fieldName !== 'studentOrganizationName') {
-            setProfile(prev => {
-                const newProfile = {
-                    ...prev,
-                    [fieldName]: value
-                };
-                console.log('Updated profile:', newProfile);
-                return newProfile;
-            });
-        }
+        setProfile(prev => {
+            const newProfile = {
+                ...prev,
+                [fieldName]: value
+            };
+            console.log('Updated profile:', newProfile);
+            return newProfile;
+        });
     };
 
     const handleGenderChange = (e) => {
@@ -160,7 +158,7 @@ function StudentProfile() {
             const updateData = {
                 name: profile.studentName,
                 gender: profile.gender,
-                organizationName: profile.studentOrganizationName,
+                collegeName: profile.collegeName,
                 course: profile.course,
                 branch: profile.branch,
                 year: profile.year,
@@ -181,7 +179,7 @@ function StudentProfile() {
                 setProfile({
                     studentName: userData.name || '',
                     gender: userData.gender || '',
-                    studentOrganizationName: userData.organizationName || '',
+                    collegeName: userData.collegeName || '',
                     course: userData.course || '',
                     branch: userData.branch || '',
                     year: userData.year || '',
@@ -210,7 +208,7 @@ function StudentProfile() {
     // }, [token, user])
 
     // Helper for profile completion (optional, simple version)
-    const profileFields = [profile.studentName || user, profile.gender, profile.studentOrganizationName, profile.course, profile.branch, profile.year, profile.mobno];
+    const profileFields = [profile.studentName || user, profile.gender, profile.collegeName, profile.course, profile.branch, profile.year, profile.mobno];
     const filledFields = profileFields.filter(val => val && val.trim() !== '').length;
     const completion = Math.round((filledFields / profileFields.length) * 100);
 
@@ -337,67 +335,16 @@ function StudentProfile() {
                             <div className="flex items-center gap-2">
                                 <University size={18} className="text-blue-400" />
                                 {editMode ? (
-                                    <div className="w-full">
-                                        <Autocomplete
-                                            freeSolo
-                                            options={organizations}
-                                            getOptionLabel={option => typeof option === 'string' ? option : (option.organizationName || '')}
-                                            value={selectedOrganization || organizationSearch}
-                                            filterOptions={(options, params) => {
-                                                const input = params.inputValue.toLowerCase();
-                                                const filtered = options.filter(option =>
-                                                    (option.organizationName && option.organizationName.toLowerCase().includes(input)) ||
-                                                    (option.shortName && option.shortName.toLowerCase().includes(input)) ||
-                                                    (option.city && option.city.toLowerCase().includes(input))
-                                                );
-                                                return filtered;
-                                            }}
-                                            onChange={(event, newValue) => {
-                                                if (typeof newValue === 'string') {
-                                                    setOrganizationSearch(newValue);
-                                                    setSelectedOrganization(null);
-                                                    setProfile({ ...profile, studentOrganizationName: newValue });
-                                                } else if (newValue && newValue.organizationName) {
-                                                    setSelectedOrganization(newValue);
-                                                    setOrganizationSearch(newValue.organizationName);
-                                                    setProfile({ ...profile, studentOrganizationName: newValue.organizationName });
-                                                } else {
-                                                    setSelectedOrganization(null);
-                                                    setProfile({ ...profile, studentOrganizationName: '' });
-                                                }
-                                            }}
-                                            onInputChange={(event, value) => {
-                                                setOrganizationSearch(value);
-                                                const found = organizations.find(c => c.organizationName && c.organizationName.toLowerCase() === value.toLowerCase());
-                                                setSelectedOrganization(found || null);
-                                                setProfile({ ...profile, studentOrganizationName: value });
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField 
-                                                    {...params} 
-                                                    variant="outlined" 
-                                                    fullWidth
-                                                    size="small"
-                                                    className="text-gray-700"
-                                                    sx={{
-                                                        '& .MuiOutlinedInput-root': {
-                                                            '& fieldset': {
-                                                                borderColor: '#d1d5db',
-                                                            },
-                                                            '&:hover fieldset': {
-                                                                borderColor: '#f59e0b',
-                                                            },
-                                                            '&.Mui-focused fieldset': {
-                                                                borderColor: '#f59e0b',
-                                                            },
-                                                        },
-                                                    }}
-                                                />
-                                            )}
-                                        />
-                                    </div>
+                                    <input
+                                        type="text"
+                                        id="collegeName"
+                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                        value={profile.collegeName}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                 ) : (
-                                    <span className="font-medium">{profile.studentOrganizationName || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium">{profile.collegeName || <span className="text-gray-400">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">

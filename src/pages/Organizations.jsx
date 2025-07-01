@@ -80,6 +80,7 @@ function Organizations() {
     if (searchTerm.trim() !== '') {
       filtered = filtered.filter(organization => {
         const match =
+          (organization.parentOrganization && organization.parentOrganization.toLowerCase().includes(searchTerm.toLowerCase())) ||
           (organization.organizationName && organization.organizationName.toLowerCase().includes(searchTerm.toLowerCase())) ||
           (organization.shortName && organization.shortName.toLowerCase().includes(searchTerm.toLowerCase())) ||
           (organization.city && organization.city.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -167,7 +168,7 @@ function Organizations() {
   return (
     <div className="py-6">
       {/* Page Header */}
-      <div className="mb-4 lg:hidden sm:mb-8">
+      <div className="mb-4 hidden sm:mb-8">
         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 rounded-2xl p-3 sm:p-8 text-white shadow-xl">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-3 sm:mb-6 lg:mb-0">
@@ -186,7 +187,7 @@ function Organizations() {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid lg:hidden grid-cols-3 md:grid-cols-3 gap-2 sm:gap-6 mb-4 sm:mb-8">
+      <div className="grid hidden grid-cols-3 md:grid-cols-3 gap-2 sm:gap-6 mb-4 sm:mb-8">
         <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-2 sm:p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
@@ -247,7 +248,7 @@ function Organizations() {
               )}
             </button>
             
-            {activeFilters.length > 0 && (
+            {activeFilters.length > 0 && (  
               <button
                 onClick={clearAllFilters}
                 className="hidden lg:flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
@@ -316,132 +317,12 @@ function Organizations() {
 
       {/* Organizations Table */}
       {filteredOrganizations.length > 0 ? (
-        <div className="bg-white lg:shadow-sm lg:border lg:border-gray-200 overflow-hidden mb-100">
-          {/* Desktop Table */}
-          <div className="hidden lg:block">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gradient-to-r bg-[#1a093f] text-gray-200">
-                  <tr>
-                    <th className="px-4 py-4 text-center font-medium text-base">#</th>     
-                    <th className="px-4 py-4 text-left font-medium text-base">Organization Name</th>
-                    <th className="px-4 py-4 text-center font-medium text-base">Events</th>
-                    <th className="px-4 py-4 text-center font-medium text-base">Type</th>
-                    <th className="px-4 py-4 text-center font-medium text-base">Location</th>
-                    <th className="px-4 py-4 text-center font-medium text-base">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {filteredOrganizations.map((organization, index) => (
-                    <tr key={organization._id} 
-                        className={`hover:bg-blue-100 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}>
-                      <td className="px-4 py-3 text-center">
-                        <div className="text-gray-900 text-base">
-                          {index + 1}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div>
-                            <div className="text-gray-900 text-base">
-                              {organization.organizationName}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {organization.shortName}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex items-center justify-center gap-1 text-blue-600 bg-blue-50 px-2 py-1 rounded-full w-fit mx-auto">
-                          <Calendar size={14} />
-                          <span className="font-medium text-base">{organization.eventsHosted || 0}</span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className="text-xs text-gray-600">
-                          {organization.organizationType || 'N/A'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className="text-xs text-gray-600">
-                          {organization.city || 'N/A'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <Link
-                          to={`/organizationDetails/${organization._id}`}
-                          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1.5 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium text-sm"
-                        >
-                          <Eye size={14} />
-                          <span>View</span>
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Tablet Table */}
-          <div className="hidden md:block lg:hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                  <tr>
-                    <th className="px-3 py-2.5 text-left font-medium text-sm">Organization</th>
-                    <th className="px-3 py-2.5 text-center font-medium text-sm">Events</th>
-                    <th className="px-3 py-2.5 text-center font-medium text-sm">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {filteredOrganizations.map((organization, index) => (
-                    <tr key={organization._id} 
-                        className="hover:bg-gray-50 transition-colors">
-                      <td className="px-3 py-2.5">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                            <GraduationCap size={14} className="text-blue-600" />
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-900 text-sm">
-                              {organization.organizationName}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {organization.shortName}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-3 py-2.5 text-center">
-                        <div className="flex items-center justify-center gap-1 text-blue-600 bg-blue-50 px-2 py-1 rounded-full w-fit mx-auto">
-                          <Calendar size={12} />
-                          <span className="font-medium text-xs">{organization.eventsHosted || 0}</span>
-                        </div>
-                      </td>
-                      <td className="px-3 py-2.5 text-center">
-                        <Link
-                          to={`/organizationDetails/${organization._id}`}
-                          className="inline-flex items-center gap-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2.5 py-1.5 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium text-xs"
-                        >
-                          <Eye size={12} />
-                          <span>View</span>
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Mobile Cards */}
-          <div className="md:hidden ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white overflow-hidden mb-100">
+          {/* Only show mobile card design for all devices */}
+          <div>
             {filteredOrganizations.map((organization, index) => (
               <div key={organization._id} 
                    className="bg-gradient-to-r from-blue-200 to-blue-400 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200">
-                
                 {/* Header with Organization Info */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -450,10 +331,10 @@ function Organizations() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-bold text-gray-900 text-base leading-tight mb-1">
-                        {organization.organizationName}
+                        {organization.parentOrganization || organization.organizationName}
                       </div>
                       <div className="text-sm text-gray-600 mb-1">
-                        {organization.shortName}
+                        {organization.shortName} - {organization.organizationName}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-600">
                         <span className="flex items-center gap-1">
@@ -465,7 +346,6 @@ function Organizations() {
                       </div>
                     </div>
                   </div>
-                  
                   {/* Events Badge */}
                   <div className="flex flex-col items-center gap-1">
                     <div className="text-xs text-gray-500 font-medium">#{index + 1}</div>
@@ -476,7 +356,6 @@ function Organizations() {
                     </div>
                   </div>
                 </div>
-                
                 {/* Action Button */}
                 <Link
                   to={`/organizationDetails/${organization._id}`}

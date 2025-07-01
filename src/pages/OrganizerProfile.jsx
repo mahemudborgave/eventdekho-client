@@ -25,6 +25,7 @@ function OrganizerProfile() {
         contactPerson: '',
         phone: '',
         city: '',
+        parentOrganization: '',
     });
     const [editMode, setEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ function OrganizerProfile() {
                         contactPerson: userData.contactPerson || '',
                         phone: userData.phone || '',
                         city: userData.city || '',
+                        parentOrganization: userData.parentOrganization || '',
                     });
                 }
             } catch (err) {
@@ -108,6 +110,7 @@ function OrganizerProfile() {
             const updateData = {
                 organizationName: profile.organizationName,
                 shortName: profile.shortName,
+                parentOrganization: profile.parentOrganization,
                 website: profile.website,
                 description: profile.description,
                 contactPerson: profile.contactPerson,
@@ -128,6 +131,7 @@ function OrganizerProfile() {
                     contactPerson: userData.contactPerson || '',
                     phone: userData.phone || '',
                     city: userData.city || '',
+                    parentOrganization: userData.parentOrganization || '',
                 });
                 toast.success('Profile updated successfully!');
             }
@@ -149,6 +153,7 @@ function OrganizerProfile() {
         { field: profile.description, weight: 1 }, // Description is useful
         { field: profile.shortName, weight: 0.5 }, // Short name is optional
         { field: profile.website, weight: 0.5 }, // Website is optional
+        { field: profile.parentOrganization, weight: 0.5 }, // Parent organization is optional
     ];
     
     const totalWeight = profileFields.reduce((sum, item) => sum + item.weight, 0);
@@ -201,6 +206,11 @@ function OrganizerProfile() {
                         </h2>
                         {profile.shortName && (
                             <div className="text-sm text-amber-600 font-medium mb-1">({profile.shortName})</div>
+                        )}
+                        {console.log(profile.parentOrganization)}   
+                        
+                        {profile.parentOrganization && (
+                            <div className="text-sm text-amber-600 font-medium mb-1">({profile.parentOrganization})</div>
                         )}
                         <div className="text-sm text-blue-700 font-semibold mb-1 uppercase tracking-wider">{profile.organizationType || 'Type'}</div>
                         <div className="text-gray-600 flex items-center justify-center gap-1 mb-1">
@@ -377,6 +387,14 @@ function OrganizerProfile() {
                                     />
                                 ) : (
                                     <span className="font-medium">{profile.website || <span className="text-gray-400">Not set</span>}</span>
+                                )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Building2 size={18} className="text-blue-400" />
+                                {editMode ? (
+                                    <input type="text" id="parentOrganization" className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200" value={profile.parentOrganization} onChange={handleChange} placeholder="Parent organization" />
+                                ) : (
+                                    <span className="font-medium">{profile.parentOrganization || <span className="text-gray-400">Not set</span>}</span>
                                 )}
                             </div>
                         </div>

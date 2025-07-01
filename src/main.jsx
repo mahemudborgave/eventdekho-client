@@ -34,11 +34,14 @@ import RootEvents from './pages/RootDashboard/RootEvents.jsx'
 import RootUsers from './pages/RootDashboard/RootUsers.jsx'
 import RootUsersEnhanced from './pages/RootDashboard/RootUsersEnhanced.jsx'
 import RootRegistrations from './pages/RootDashboard/RootRegistrations.jsx'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path='/' element={<App />}>
+      <Route path='/' element={<GoogleOAuthProvider clientId="1003672145264-datm5nj7uabjeaj07ehfpcbau1lhr1ck.apps.googleusercontent.com">
+        <App />
+      </GoogleOAuthProvider>}>
         <Route path='' element={<App2 />}>
           <Route path='' element={<Home />} />
           <Route path='events' element={<Events />} />

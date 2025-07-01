@@ -59,10 +59,15 @@ function Eventt({ events }) {
           </div> */}
           <div className="lg:flex-grow">
             <p className="text-lg lg:text-xl mb-1 text-[#0d0c22] font-medium">{eventt.eventName}</p>
-            <p className="my-2 lg:mb-1 text-gray-500">
-              {eventt.organizationCode} - {eventt.organizationName}
+            <p className="mt-2 text-gray-500 italic">
+              {eventt.organizationName}
             </p>
-            <div className="flex flex-col text-gray-500">
+            {eventt.parentOrganization && (
+              <p className="text-gray-500">
+                {eventt.parentOrganization}
+              </p>
+            )}
+            <div className="flex flex-col text-gray-500 lg:mt-2">
               <span className="text-yellow-500"><i className="fa-solid fa-clock mr-1.5"></i> {eventt.eventMode}</span>
               <span className="text-blue-500"><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {new Date(eventt.eventDate).toLocaleDateString('en-GB').replace(/\//g, '-')}</span>
               <span className="text-red-500"><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span>

@@ -6,6 +6,7 @@ import { Bounce, Flip, Slide, ToastContainer } from 'react-toastify'
 import UserContext from './context/UserContext'
 import 'react-toastify/dist/ReactToastify.css';
 import SearchContext from './context/SearchContext'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -37,6 +38,7 @@ function App() {
     <>
       <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >
         <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+            <ScrollToTop />
             <Outlet />
             <ToastContainer
             theme="colored"
