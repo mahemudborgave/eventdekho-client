@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Eventt from '../components/Eventt';
@@ -6,7 +6,7 @@ import EventRegistration from '../components/EventRegistration';
 import { ToastContainer, toast } from 'react-toastify';
 import UserContext from '../context/UserContext';
 import QueryComp from '../components/QueryComp';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Calendar, MapPin, Clock, Users, Trophy, Award, BookOpen, MessageCircle, Play, CheckCircle, AlertCircle, Star, Zap, Target, Users2, Gift, Shield, Info } from 'lucide-react';
 
 // Simple Modal component
 function Modal({ open, onClose, children }) {
@@ -28,7 +28,7 @@ function Modal({ open, onClose, children }) {
 
 function EventDetail() {
   const { eventId } = useParams();
-  const { email, user, token, role } = useContext(UserContext); // fetch email, user, token, and role from context
+  const { email, user, token, role } = useContext(UserContext);
 
   const [event, setEvent] = useState(null);
   const [isShow, setIsShow] = useState(false);
@@ -37,8 +37,49 @@ function EventDetail() {
   const [userQueries, setUserQueries] = useState([]);
   const [showUserQueries, setShowUserQueries] = useState(false);
   const [loadingQueries, setLoadingQueries] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
+
+  const sectionIds = ['overview', 'stages', 'prizes', 'rules', 'timeline'];
+  const [currentSection, setCurrentSection] = useState('overview');
+  const sectionRefs = useRef({});
+
+  // Assign refs to each section
+  sectionIds.forEach(id => {
+    if (!sectionRefs.current[id]) {
+      sectionRefs.current[id] = React.createRef();
+    }
+  });
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-120px 0px 0px 0px', // Offset for navbar height
+      threshold: 0.1,
+    };
+    const observer = new window.IntersectionObserver((entries) => {
+      const visibleSections = entries.filter(entry => entry.isIntersecting);
+      if (visibleSections.length > 0) {
+        // Pick the first visible section (closest to top)
+        setCurrentSection(visibleSections[0].target.id);
+      }
+    }, observerOptions);
+    sectionIds.forEach(id => {
+      const ref = sectionRefs.current[id];
+      if (ref && ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+    return () => {
+      sectionIds.forEach(id => {
+        const ref = sectionRefs.current[id];
+        if (ref && ref.current) {
+          observer.unobserve(ref.current);
+        }
+      });
+    };
+  }, []);
 
   const handleClick = async () => {
     if (!token) {
@@ -47,7 +88,6 @@ function EventDetail() {
     }
 
     try {
-      // Verify token using the new auth system
       const response = await axios.post(`${baseURL}:${port}/auth/verify`,
         {},
         {
@@ -76,7 +116,6 @@ function EventDetail() {
       const res = await axios.get(`${baseURL}:${port}/query/event/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // Filter queries for this user
       const filtered = res.data.filter(q => q.userEmail === email);
       setUserQueries(filtered);
     } catch (err) {
@@ -135,103 +174,543 @@ function EventDetail() {
     checkRegistration();
   }, [token, email, eventId]);
 
+  const getEventStatus = (event) => {
+    if (!event) return { label: 'Loading', color: 'bg-gray-500', live: false };
+    const now = new Date();
+    const close = new Date(event.closeOn);
+    const start = new Date(event.eventDate);
+    if (now > close) return { label: 'Closed', color: 'bg-red-500', live: false };
+    if (now >= start && now <= close) return { label: 'Live', color: 'bg-green-500', live: true };
+    return { label: 'Upcoming', color: 'bg-blue-500', live: false };
+  };
+
+  const status = event ? getEventStatus(event) : { label: 'Loading', color: 'bg-gray-500', live: false };
+
+  if (!event) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="animate-spin w-8 h-8 mx-auto text-blue-600 mb-4" />
+          <p className="text-gray-600">Loading event details...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {event ? (
-        <>
-          <Eventt events={[event]} />
-          <div className='p-5 lg:p-10 pb-20 bg-green-200 my-8 rounded-xl'>
-            <p className='text-xl text-green-700 mb-5'>Details -</p>
-            <p className='text-sm lg:text-base mb-10 whitespace-pre-line'>{event.eventDescription}</p>
-            
-            {/* Only show participate button for students */}
-            {/*{role === 'student' && (
-             
-            )}*/}
-             <Link
-                className={`${
-                  hasRegistered ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-700 hover:outline-5 hover:outline-green-300 hover:outline-offset-0'
-                } text-white lg:py-2 text-sm lg:text-base lg:px-5 px-3 py-2 rounded-md inline-block`}
-                to=''
-                onClick={!hasRegistered ? handleClick : (e) => e.preventDefault()}
-              > 
-                {hasRegistered ? 'Registered' : isShow ? 'Close' : 'Participate'}
-              </Link>
-            
-            {/* Query Button */}
-            <button
-              className="bg-red-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-2 lg:ml-4 mt-4 lg:mt-0"
-              onClick={handleQueryClick}
-              type="button"
-            >
-              {showQuery ? 'Close Query Box' : 'Raise a Query'}
-            </button>
-            <button
-              className="bg-blue-600 text-white text-sm lg:text-base lg:py-2 lg:px-5 px-3 py-2 rounded-md inline-block ml-2 lg:ml-4 mt-4 lg:mt-0"
-              onClick={handleShowUserQueries}
-              type="button"
-            >
-              {showUserQueries ? 'Hide Queries' : 'Show Queries'}
-            </button>
-            
-            {/* Registration Form - Only for students */}
-            {!hasRegistered && isShow && (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className={`px-2 py-1 rounded-full text-xs font-semibold ${status.color} text-white`}>
+                  {status.live && <span className="inline-block w-1.5 h-1.5 rounded-full bg-white mr-1 animate-pulse"></span>}
+                  {status.label}
+                </div>
+                <div className="text-xs opacity-90">by {event.organizationName}</div>
+              </div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight">{event.eventName}</h1>
+              
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                <div className="text-center">
+                  <Calendar className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <div className="text-xs opacity-75">Event Date</div>
+                  <div className="text-sm font-semibold">{new Date(event.eventDate).toLocaleDateString()}</div>
+                </div>
+                <div className="text-center">
+                  <MapPin className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <div className="text-xs opacity-75">Location</div>
+                  <div className="text-sm font-semibold">{event.eventLocation}</div>
+                </div>
+                <div className="text-center">
+                  <Clock className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <div className="text-xs opacity-75">Mode</div>
+                  <div className="text-sm font-semibold">{event.eventMode}</div>
+                </div>
+                <div className="text-center">
+                  <Users className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <div className="text-xs opacity-75">Organization</div>
+                  <div className="text-sm font-semibold">{event.organizationName}</div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleClick}
+                  disabled={hasRegistered || (event && new Date(event.closeOn) < new Date())}
+                  className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 ${
+                    hasRegistered
+                      ? 'bg-gray-400 cursor-not-allowed'
+                        : (event && new Date(event.closeOn) < new Date())
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                  }`}
+                >
+                  {hasRegistered ? (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Already Registered
+                    </>
+                  ) : (event && new Date(event.closeOn) < new Date()) ? (
+                    <>
+                      <CheckCircle className="w-4 h-4" />
+                      Registration Closed
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4" />
+                      {isShow ? 'Close Registration' : 'Participate Now'}
+                    </>
+                  )}
+                </button>
+                
+                <button
+                  onClick={handleQueryClick}
+                  className="px-6 py-3 rounded-lg font-semibold text-base bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Ask Question
+                </button>
+
+                <button
+                  onClick={handleShowUserQueries}
+                  className="px-6 py-3 rounded-lg font-semibold text-base bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  My Queries
+                </button>
+              </div>
+            </div>
+
+            <div className="hidden lg:block">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <h3 className="text-lg font-bold mb-4">Event Highlights</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="w-5 h-5 text-yellow-400" />
+                    <span className="text-sm">Amazing Prizes</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users2 className="w-5 h-5 text-blue-400" />
+                    <span className="text-sm">Networking Opportunities</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-purple-400" />
+                    <span className="text-sm">Skill Development</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Target className="w-5 h-5 text-green-400" />
+                    <span className="text-sm">Real-world Experience</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Sidebar Navigation */}
+          <div className="lg:w-64 flex-shrink-0">
+            <div className="bg-white rounded-xl shadow-lg p-4 sticky top-30">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Event Sections</h3>
+              <nav className="space-y-2">
+                {[
+                  { id: 'overview', label: 'Overview', icon: Info },
+                  { id: 'stages', label: 'Event Stages', icon: Target },
+                  { id: 'prizes', label: 'Prizes & Rewards', icon: Trophy },
+                  { id: 'rules', label: 'Rules & Guidelines', icon: Shield },
+                  { id: 'timeline', label: 'Timeline', icon: Calendar }
+                ].map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => {
+                      sectionRefs.current[section.id]?.current?.scrollIntoView({ behavior: 'smooth' });
+                      setCurrentSection(section.id); // Set immediately on click for instant feedback
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium transition-all duration-200 hover:bg-gray-100 text-gray-700 hover:text-gray-900 ${
+                      currentSection === section.id ? 'bg-blue-100 text-blue-700 font-bold shadow border-l-4' : ''
+                    }`}
+                  >
+                    <section.icon className="w-4 h-4" />
+                    {section.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Main Content Area */}
+          <div className="flex-1">
+            <div className="space-y-8">
+              {/* Overview Section */}
+              <div id="overview" ref={sectionRefs.current['overview']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-64">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Event</h2>
+                <div className="prose prose-sm max-w-none mb-6">
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">{event.eventDescription}</p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      Important Dates
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Event Start:</span>
+                        <span className="font-semibold">{new Date(event.eventDate).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Registration Closes:</span>
+                        <span className="font-semibold">{new Date(event.closeOn).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Posted On:</span>
+                        <span className="font-semibold">{new Date(event.postedOn).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                      <MapPin className="w-4 h-4" />
+                      Event Details
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Location:</span>
+                        <span className="font-semibold">{event.eventLocation}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Mode:</span>
+                        <span className="font-semibold">{event.eventMode}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Organization:</span>
+                        <span className="font-semibold">{event.organizationName}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Event Stages Section */}
+              <div id="stages" ref={sectionRefs.current['stages']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Stages</h2>
+                <div className="space-y-4">
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                      <h3 className="text-lg font-bold">Registration Phase</h3>
+                    </div>
+                    <p className="opacity-90 text-sm">Complete your registration and submit required documents.</p>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                      <h3 className="text-lg font-bold">Qualification Round</h3>
+                    </div>
+                    <p className="opacity-90 text-sm">Showcase your skills in the initial qualification round.</p>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                      <h3 className="text-lg font-bold">Final Round</h3>
+                    </div>
+                    <p className="opacity-90 text-sm">Compete with the best participants in the final round.</p>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                      <h3 className="text-lg font-bold">Results & Awards</h3>
+                    </div>
+                    <p className="opacity-90 text-sm">Winners will be announced and prizes will be distributed.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Prizes Section */}
+              <div id="prizes" ref={sectionRefs.current['prizes']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Prizes & Rewards</h2>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                  <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white rounded-lg p-4 text-center">
+                    <Trophy className="w-12 h-12 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-1">1st Prize</h3>
+                    <p className="text-lg font-semibold mb-1">₹50,000</p>
+                    <p className="opacity-90 text-sm">Cash prize + Certificate + Trophy</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-gray-400 to-gray-600 text-white rounded-lg p-4 text-center">
+                    <Award className="w-12 h-12 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-1">2nd Prize</h3>
+                    <p className="text-lg font-semibold mb-1">₹25,000</p>
+                    <p className="opacity-90 text-sm">Cash prize + Certificate + Medal</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-orange-400 to-orange-600 text-white rounded-lg p-4 text-center">
+                    <Star className="w-12 h-12 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold mb-1">3rd Prize</h3>
+                    <p className="text-lg font-semibold mb-1">₹10,000</p>
+                    <p className="opacity-90 text-sm">Cash prize + Certificate</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg p-4">
+                  <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
+                    <Gift className="w-4 h-4" />
+                    Additional Benefits
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      <span className="text-sm">Internship Opportunities</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      <span className="text-sm">Networking with Industry Experts</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      <span className="text-sm">Certificate of Participation</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      <span className="text-sm">Skill Development Workshops</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rules Section */}
+              <div id="rules" ref={sectionRefs.current['rules']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Rules & Guidelines</h2>
+                <div className="space-y-4">
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-red-800 mb-3 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      Important Rules
+                    </h3>
+                    <ul className="space-y-2 text-red-700 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>All participants must be currently enrolled students</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Only one registration per participant is allowed</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Plagiarism will result in immediate disqualification</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Decisions made by the jury will be final</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-blue-800 mb-3 flex items-center gap-2">
+                      <Info className="w-4 h-4" />
+                      General Guidelines
+                    </h3>
+                    <ul className="space-y-2 text-blue-700 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Participants should arrive 30 minutes before the event</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Bring your college ID and registration confirmation</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Dress code: Business casual or formal attire</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Follow all COVID-19 safety protocols</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-green-800 mb-3 flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      What to Bring
+                    </h3>
+                    <ul className="space-y-2 text-green-700 text-sm">
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>College ID card</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Registration confirmation email</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Laptop/device if required</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></span>
+                        <span>Writing materials</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Timeline Section */}
+              <div id="timeline" ref={sectionRefs.current['timeline']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Timeline</h2>
+                <div className="relative">
+                  <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                  <div className="space-y-6">
+                    <div className="relative flex items-center">
+                      <div className="absolute left-4 w-3 h-3 bg-blue-500 rounded-full border-2 border-white shadow-lg"></div>
+                      <div className="ml-12">
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-blue-900 mb-1">Registration Opens</h3>
+                          <p className="text-blue-700 text-sm">{new Date(event.postedOn).toLocaleDateString()}</p>
+                          <p className="text-xs text-blue-600 mt-1">Event registration begins</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative flex items-center">
+                      <div className="absolute left-4 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-lg"></div>
+                      <div className="ml-12">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-green-900 mb-1">Registration Closes</h3>
+                          <p className="text-green-700 text-sm">{new Date(event.closeOn).toLocaleDateString()}</p>
+                          <p className="text-xs text-green-600 mt-1">Last date to register</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative flex items-center">
+                      <div className="absolute left-4 w-3 h-3 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>
+                      <div className="ml-12">
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-orange-900 mb-1">Event Day</h3>
+                          <p className="text-orange-700 text-sm">{new Date(event.eventDate).toLocaleDateString()}</p>
+                          <p className="text-xs text-orange-600 mt-1">Main event takes place</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="relative flex items-center">
+                      <div className="absolute left-4 w-3 h-3 bg-purple-500 rounded-full border-2 border-white shadow-lg"></div>
+                      <div className="ml-12">
+                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                          <h3 className="text-base font-bold text-purple-900 mb-1">Results Announcement</h3>
+                          <p className="text-purple-700 text-sm">TBD</p>
+                          <p className="text-xs text-purple-600 mt-1">Winners will be announced</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Registration Form Modal */}
+      {!hasRegistered && isShow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-900">Event Registration</h2>
+                <button
+                  onClick={() => setIsShow(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
               <EventRegistration
                 eventId={eventId}
                 eventName={event.eventName}
                 organizationName={event.organizationName}
                 setHasRegistered={setHasRegistered}
               />
-            )}
-            
-            {/* Query Section */}
-            {showQuery && (
-              <div className='my-10'>
-                <QueryComp
-                  eventId={event?._id || eventId}
-                  eventName={event?.eventName || ''}
-                  userEmail={email || ''}
-                  userName={user || ''}
-                  onSuccess={() => setShowQuery(false)}
-                />
-              </div>
-            )}
-            
-            {/* User Queries Modal */}
-            <Modal open={showUserQueries} onClose={() => setShowUserQueries(false)}>
-              <h3 className='text-lg font-bold mb-4 text-blue-800'>Your Queries for this Event</h3>
-              {loadingQueries ? (
-                <div className='flex items-center gap-2 text-blue-600'><Loader2 className='animate-spin' /> Loading...</div>
-              ) : userQueries.length === 0 ? (
-                <div className='text-gray-600'>You have not raised any queries for this event.</div>
-              ) : (
-                <div className='space-y-4 max-h-[60vh] overflow-y-auto'>
-                  {userQueries.map((q) => (
-                    <div key={q._id} className='bg-blue-50 border border-blue-200 rounded p-4'>
-                      <div className='font-semibold text-gray-800 mb-1'>Query:</div>
-                      <div className='mb-2 text-gray-700'>{q.message}</div>
-                      {q.resolution ? (
-                        <div className='bg-green-100 border border-green-300 rounded p-2 mt-2'>
-                          <div className='font-semibold text-green-800 mb-1'>Admin Response:</div>
-                          <div className='text-green-900'>{q.resolution}</div>
-                        </div>
-                      ) : (
-                        <div className='text-yellow-700 italic'>No response yet.</div>
-                      )}
-                      <div className='text-xs text-gray-400 mt-2'>Asked on: {new Date(q.createdAt).toLocaleString()}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Modal>
+            </div>
           </div>
-          <div className='h-20'></div>
-        </>
-      ) : (
-        <div className='text-center mt-10 text-gray-500 mb-100'>Loading event details...</div>
+        </div>
       )}
+
+      {/* Query Section */}
+      {showQuery && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="p-4 sm:p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-900">Ask a Question</h2>
+                <button
+                  onClick={() => setShowQuery(false)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+              <QueryComp
+                eventId={event?._id || eventId}
+                eventName={event?.eventName || ''}
+                userEmail={email || ''}
+                userName={user || ''}
+                onSuccess={() => setShowQuery(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* User Queries Modal */}
+      <Modal open={showUserQueries} onClose={() => setShowUserQueries(false)}>
+        <h3 className='text-lg font-bold mb-4 text-blue-800'>Your Queries for this Event</h3>
+        {loadingQueries ? (
+          <div className='flex items-center gap-2 text-blue-600'><Loader2 className='animate-spin' /> Loading...</div>
+        ) : userQueries.length === 0 ? (
+          <div className='text-gray-600'>You have not raised any queries for this event.</div>
+        ) : (
+          <div className='space-y-4 max-h-[60vh] overflow-y-auto'>
+            {userQueries.map((q) => (
+              <div key={q._id} className='bg-blue-50 border border-blue-200 rounded p-4'>
+                <div className='font-semibold text-gray-800 mb-1'>Query:</div>
+                <div className='mb-2 text-gray-700'>{q.message}</div>
+                {q.resolution ? (
+                  <div className='bg-green-100 border border-green-300 rounded p-2 mt-2'>
+                    <div className='font-semibold text-green-800 mb-1'>Admin Response:</div>
+                    <div className='text-green-900'>{q.resolution}</div>
+                  </div>
+                ) : (
+                  <div className='text-yellow-700 italic'>No response yet.</div>
+                )}
+                <div className='text-xs text-gray-400 mt-2'>Asked on: {new Date(q.createdAt).toLocaleString()}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }
 
 export default EventDetail
+  

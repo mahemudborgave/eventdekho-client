@@ -5,7 +5,7 @@ import eventdekhoLogo from '/eventapply.png';
 
 function FooterComp() {
   return (
-    <footer className="bg-gray-200 text-gray-700 mt-12 lg:mx-[200px] px-0">
+    <footer className="bg-gray-200 text-gray-700 mt-12 px-0">
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo and Tagline */}
         <div>

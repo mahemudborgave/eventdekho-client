@@ -35,6 +35,7 @@ import RootUsers from './pages/RootDashboard/RootUsers.jsx'
 import RootUsersEnhanced from './pages/RootDashboard/RootUsersEnhanced.jsx'
 import RootRegistrations from './pages/RootDashboard/RootRegistrations.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import Wishlist from './pages/Wishlist.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
           <Route path='about' element={<About />} />
           <Route path='contactus' element={<ContactUs />} />
           <Route path='blogs' element={<Blogs />} />
+          <Route path='wishlist' element={<Wishlist />} />
           <Route path='organizationDetails/:id' element={<OrganizationDetails />} />
         </Route>
         <Route path='register' element={<Register />} />

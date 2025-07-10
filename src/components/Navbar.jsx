@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef, useCallback, useMemo } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { User, AlignRight, X, House, LogIn, LayoutDashboard, ChevronDown, Bell } from 'lucide-react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { User, AlignRight, X, House, LogIn, LayoutDashboard, ChevronDown, Bell, Heart } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
 import eventdekhoLogo from '/eventapply.png';
 import UserContext from '../context/UserContext';
@@ -22,6 +22,7 @@ function Navbar() {
     const notifRef = useRef();
     const menuRef = useRef();
     const socketRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const verifyUser = async () => {
@@ -267,6 +268,12 @@ function Navbar() {
                         <li>
                             <NavLink to="/myParticipations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 lg:border-b-2 lg:border-blue-500 transition-all duration-200' : 'block text-gray-700 hover:text-blue-600 px-5 py-2 hover:bg-blue-50 lg:hover:bg-transparent rounded-lg lg:rounded-none transition-all duration-200'}>My Participations</NavLink>
                         </li>
+                        {/* Wishlist link for mobile only */}
+                        <li className="block lg:hidden">
+                            <NavLink to="/wishlist" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-pink-600 font-semibold px-5 py-2 transition-all duration-200' : 'block text-gray-700 hover:text-pink-600 px-5 py-2 hover:bg-pink-50 rounded-lg transition-all duration-200'}>
+                                <span className="inline-flex items-center gap-2"><Heart size={18} /> Wishlist</span>
+                            </NavLink>
+                        </li>
                         <li className="relative lg:hidden">
                             <button
                                 type="button"
@@ -340,6 +347,17 @@ function Navbar() {
                     </div>
                     {/* Notification Bell Icon - left of profile/user name */}
                     <div className="relative order-last lg:order-none lg:ml-0 lg:mr-5 flex items-center" ref={notifRef}>
+                        {/* Wishlist Icon */}
+                        <button
+                            className="relative p-2 focus:outline-none bg-gradient-to-r from-pink-400 to-orange-400 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 mr-2"
+                            aria-label="Wishlist"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => navigate('/wishlist')}
+                            title="Wishlist"
+                        >
+                            <Heart size={22} />
+                        </button>
+                        {/* Notification Bell Icon */}
                         <button
                             className="relative p-2 focus:outline-none bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
                             onClick={handleNotifClick}

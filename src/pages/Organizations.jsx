@@ -317,9 +317,9 @@ function Organizations() {
 
       {/* Organizations Table */}
       {filteredOrganizations.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white overflow-hidden mb-100">
+        <div className="w-full">
           {/* Only show mobile card design for all devices */}
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
             {filteredOrganizations.map((organization, index) => (
               <div key={organization._id} 
                    className="bg-gradient-to-r from-blue-200 to-blue-400 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200">
@@ -396,6 +396,7 @@ function Organizations() {
           )}
         </div>
       )}
+      <div className="h-50"></div>
     </div>
   );
 }
