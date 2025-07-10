@@ -11,6 +11,7 @@ import { ArrowBigRightDash } from 'lucide-react'
 import HomeRecent from '../components/HomeRecent'
 import NumbersComp from '../components/NumbersComp'
 import UserComp from '../components/UserComp'
+import FeaturedImagesCarousel from '../components/FeaturedImagesCarousel';
 
 function Home() {
     return (
@@ -37,6 +38,8 @@ function Home() {
                     <MainSearch />
                 </div>
             </div>
+            {/* Featured Images Carousel */}
+            <FeaturedImagesCarousel />
             <div className=''>
                 <UserComp />
             </div>
