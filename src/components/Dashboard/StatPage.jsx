@@ -7,6 +7,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   BarChart, Bar, Cell
 } from 'recharts';
+import { Mail, MessageCircle} from 'lucide-react';
 
 // Heroicons SVGs for stat cards (with color for contrast)
 const icons = [
@@ -15,15 +16,14 @@ const icons = [
   // Users
   <svg key="users" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-teal-500"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1" /><path strokeLinecap="round" strokeLinejoin="round" d="M9 20H4v-2a4 4 0 014-4h1" /><circle cx="9" cy="7" r="4" /><circle cx="17" cy="7" r="4" /></svg>,
   // Calendar
-  <svg key="calendar" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-red-500"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10m-9 4h6m-7 4h8" /><rect width="18" height="18" x="3" y="5" rx="2" /></svg>,
+  <svg key="calendar" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-purple-500"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10m-9 4h6m-7 4h8" /><rect width="18" height="18" x="3" y="5" rx="2" /></svg>,
   // Academic Cap
   <svg key="college" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 14v7" /><path strokeLinecap="round" strokeLinejoin="round" d="M5 19a7 7 0 0014 0" /></svg>
 ];
 const cardBgColors = [
   "bg-green-200",
   "bg-teal-200",
-  "bg-red-200",
-  "bg-blue-200"
+  "bg-purple-200"
 ];
 
 function StatPage() {
@@ -37,6 +37,7 @@ function StatPage() {
   const [recentEvents, setRecentEvents] = useState([]);
   const [eventTypeDistribution, setEventTypeDistribution] = useState([]);
   const [previousStats, setPreviousStats] = useState(null);
+  const [pendingQueries, setPendingQueries] = useState(0);
 
   const { user, email, token } = useContext(UserContext);
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -110,7 +111,7 @@ function StatPage() {
           { label: "Events Hosted", value: total.events, change: "+14%" },
           { label: "Total Registrations", value: total.registrations, change: "+21%" },
           { label: "Upcoming Events", value: total.upcoming, change: "+8%" },
-          { label: "Total Organizations", value: res.data.totalOrganizations, change: "+2%" },
+          // The last card will be replaced below
         ]);
 
         setTopEvents(res.data.topEvents || []);
@@ -118,8 +119,11 @@ function StatPage() {
         setRecentEvents(res.data.recentEvents || []);
         setEventTypeDistribution(res.data.eventTypeDistribution || []);
         setPreviousStats(res.data.previousStats || null);
-
         updateChart(timeRange);
+        // Fetch unresolved queries
+        const qres = await axios.get(`${baseURL}:${port}/query`);
+        const unresolved = Array.isArray(qres.data) ? qres.data.filter(q => !q.resolution || q.resolution.trim() === '').length : 0;
+        setPendingQueries(unresolved);
       } catch (err) {
         console.error('Error fetching stats:', err);
       } finally {
@@ -171,7 +175,7 @@ function StatPage() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, i) => (
+        {stats.slice(0, 3).map((stat, i) => (
           <div key={stat.label} className={`p-4 flex items-center gap-4 rounded-lg border border-gray-100 hover:shadow-lg transition ${cardBgColors[i]}`}>
             {icons[i]}
             <div>
@@ -181,6 +185,15 @@ function StatPage() {
             </div>
           </div>
         ))}
+        {/* Pending Queries Card */}
+          <div className="p-4 flex items-center gap-4 rounded-lg border border-gray-100 hover:shadow-lg transition bg-red-200">
+          <MessageCircle className="w-8 h-8 text-red-500" />
+          <div>
+            <div className="text-2xl font-bold text-gray-800">{pendingQueries}</div>
+            <div className="text-md text-gray-600">Pending Queries</div>
+            <div className="text-sm text-red-600">Unresolved</div>
+          </div>
+        </div>
       </div>
 
       {/* Analytics Section */}

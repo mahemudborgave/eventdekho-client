@@ -186,6 +186,7 @@ function StudentProfile() {
                     mobno: userData.mobileNumber || '',
                     role: userData.role || '',
                 });
+                localStorage.setItem("user", userData.name)
                 toast.success('Profile updated successfully!');
             }
             setEditMode(false);
@@ -295,7 +296,7 @@ function StudentProfile() {
                                         type="text" 
                                         id="studentName" 
                                         className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200" 
-                                        value={profile.studentName || user || ''} 
+                                        value={profile.studentName} 
                                         onChange={handleChange} 
                                         required 
                                     />
@@ -314,7 +315,7 @@ function StudentProfile() {
                                             <input type="radio" name="gender" id="gender-female" value="Female" checked={profile.gender === 'Female'} onChange={handleGenderChange} /> Female
                                         </label>
                                         {/* Debug display */}
-                                        <span className="text-xs text-gray-500">Current: {profile.gender || 'None'}</span>
+                                        {/* <span className="text-xs text-gray-500">Current: {profile.gender || 'None'}</span> */}
                                     </div>
                                 ) : (
                                     <span className="font-medium">{profile.gender || <span className="text-gray-400">Not set</span>}</span>

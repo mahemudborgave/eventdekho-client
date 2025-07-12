@@ -3,7 +3,7 @@ import UserContext from '../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-function EventRegistration({ eventId, eventName, organizationName, setHasRegistered }) {
+function EventRegistration({ eventId, eventName, organizationName, parentOrganization, setHasRegistered }) {
   const { user, email, token, role } = useContext(UserContext);
 
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -13,6 +13,7 @@ function EventRegistration({ eventId, eventName, organizationName, setHasRegiste
     eventId,
     eventName,
     organizationName: organizationName,
+    parentOrganization: parentOrganization,
     email,
     studentName: user || '',
     gender: '',

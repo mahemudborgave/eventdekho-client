@@ -175,7 +175,7 @@ function OrganizerProfile() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 flex flex-col items-center py-10">
+        <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 flex flex-col items-center py-10 px-5 lg:px-0">
             {/* Welcome Banner for New Organizers */}
             {completion < 50 && (
                 <div className="w-full max-w-5xl mb-6 bg-gradient-to-r from-amber-100 to-blue-100 border border-amber-200 rounded-xl p-6">
@@ -207,7 +207,7 @@ function OrganizerProfile() {
                         {profile.shortName && (
                             <div className="text-sm text-amber-600 font-medium mb-1">({profile.shortName})</div>
                         )}
-                        {console.log(profile.parentOrganization)}   
+                        {/* {console.log(profile.parentOrganization)}    */}
                         
                         {profile.parentOrganization && (
                             <div className="text-sm text-amber-600 font-medium mb-1">({profile.parentOrganization})</div>
@@ -246,23 +246,25 @@ function OrganizerProfile() {
                 <main className="flex-1 w-full bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-8 border border-blue-100 relative">
                     {/* Floating Action Buttons */}
                     {!editMode ? (
+                        <div>
                         <button
                             onClick={handleEdit}
-                            className="absolute top-6 right-6 bg-amber-400 hover:bg-amber-500 text-white rounded-full p-3 shadow-lg transition flex items-center gap-2 z-10"
+                            className="flex bg-amber-400 hover:bg-amber-500 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
                         >
                             <Edit size={20} /> Edit
                         </button>
+                        </div>
                     ) : (
-                        <div className="absolute top-6 right-6 flex gap-2 z-10">
+                        <div className="flex gap-2 z-10">
                             <button
                                 onClick={handleSave}
-                                className="bg-green-500 hover:bg-green-600 text-white rounded-full p-3 shadow-lg transition flex items-center gap-2"
+                                className="bg-green-500 hover:bg-green-600 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
                             >
                                 <Save size={20} /> Save
                             </button>
                             <button
                                 onClick={handleCancel}
-                                className="bg-gray-400 hover:bg-gray-500 text-white rounded-full p-3 shadow-lg transition flex items-center gap-2"
+                                className="bg-gray-400 hover:bg-gray-500 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
                             >
                                 <Close size={20} /> Cancel
                             </button>

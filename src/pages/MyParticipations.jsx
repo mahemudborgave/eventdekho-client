@@ -90,7 +90,8 @@ function MyParticipations() {
           <div key={index} className='border p-4 rounded bg-white'>
             <div className='mb-2'>
               <p className='flex items-center gap-2 font-medium mb-1'><BookmarkCheck /> {reg.eventName}</p>
-              <p>{reg.eventOrganizationName}</p>
+              <p>{reg.organizationName}</p>
+              <p>{reg.parentOrganization || ""}</p>
             </div>
             {/* <p><span className='font-medium'>Your College:</span> {reg.studentCollegeName}</p>
             <p><span className='font-medium'>Your branch:</span> {reg.branch}</p>

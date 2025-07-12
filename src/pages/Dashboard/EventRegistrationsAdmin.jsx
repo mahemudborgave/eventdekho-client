@@ -11,64 +11,72 @@ function EventRegistrationsAdmin() {
   const { eventId } = useParams();
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [eventInfo, setEventInfo] = useState({ eventName: '', collegeName: '' });
+  const [eventInfo, setEventInfo] = useState({ eventName: '', organizationName: '' });
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
 
   useEffect(() => {
-    const fetchRegistrations = async () => {
+    const fetchRegistrationsAndEvent = async () => {
       try {
         const res = await axios.get(`${baseURL}:${port}/eventt/geteventregfromeventid/${eventId}`);
         const data = res.data || [];
         setRegistrations(data);
 
-        if (data.length > 0) {
-          const { eventName, eventCollegeName } = data[0];
-          setEventInfo({ eventName, collegeName: eventCollegeName });
-        }
+        // Fetch event details for eventName and organizationName
+        const eventRes = await axios.get(`${baseURL}:${port}/eventt/geteventbyid/${eventId}`);
+        const event = eventRes.data;
+        setEventInfo({
+          eventName: event.eventName || '',
+          organizationName: event.organizationName || ''
+        });
       } catch (err) {
-        console.error('Error fetching registrations:', err);
+        console.error('Error fetching registrations or event info:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchRegistrations();
+    fetchRegistrationsAndEvent();
   }, [eventId]);
 
   const exportToPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: 'landscape', format: 'a4' });
+    doc.setFontSize(16);
     doc.text(`Event: ${eventInfo.eventName}`, 14, 16);
-    doc.text(`College: ${eventInfo.collegeName}`, 14, 24);
+    doc.text(`Organization: ${eventInfo.organizationName}`, 14, 26);
 
     const tableColumn = [
       "#", "Registration ID", "Name", "Email", "College", "Branch", "Year", "Course", "Gender", "Mobile", "Created At", "Updated At"
     ];
-    const tableRows = [];
-
-    registrations.forEach((reg, index) => {
-      const rowData = [
-        index + 1,
-        reg._id || '',
-        reg.studentName || '',
-        reg.email || '',
-        reg.studentCollegeName || '',
-        reg.branch || '',
-        reg.year || '',
-        reg.course || '',
-        reg.gender || '',
-        reg.mobno || '',
-        reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
-        reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
-      ];
-      tableRows.push(rowData);
-    });
+    const tableRows = registrations.map((reg, index) => [
+      index + 1,
+      reg._id || '',
+      reg.studentName || '',
+      reg.email || '',
+      reg.studentCollegeName || '',
+      reg.branch || '',
+      reg.year || '',
+      reg.course || '',
+      reg.gender || '',
+      reg.mobno || '',
+      reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
+      reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
+    ]);
 
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 30,
+      startY: 36,
+      styles: { fontSize: 9, cellPadding: 2 },
+      headStyles: { fillColor: [220, 220, 220], textColor: 40, fontStyle: 'bold' },
+      bodyStyles: { textColor: 30 },
+      margin: { left: 10, right: 10 },
+      tableWidth: 'auto',
+      theme: 'grid',
+      didDrawPage: (data) => {
+        // Optionally add page numbers or other header/footer
+      }
     });
 
     doc.save("event_registrations_all_details.pdf");
@@ -124,9 +132,9 @@ function EventRegistrationsAdmin() {
             <span className="font-medium">Event:</span> {eventInfo.eventName}
           </p>
         )}
-        {eventInfo.collegeName && (
+        {eventInfo.organizationName && (
           <p className="text-sm text-gray-700 inline-block">
-            <span className="font-medium">College:</span> {eventInfo.collegeName}
+            <span className="font-medium">College:</span> {eventInfo.organizationName}
           </p>
         )}
 

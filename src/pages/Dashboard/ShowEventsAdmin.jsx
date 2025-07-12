@@ -27,7 +27,7 @@ function ShowEventsAdmin() {
     const doc = new jsPDF({ orientation: 'landscape', format: 'a3' });
     doc.text("Your Events (All Details)", 14, 16);
     const tableColumn = [
-      "#", "Event ID", "Event Name", "Mode", "Club Name", "College Name", "College Code", "City", "Org. Type", "Website", "Contact Person", "Phone", "Email", "Event Date", "Location", "Posted On", "Closing On", "Tags", "Description", "Registrations", "Queries", "Created At", "Updated At"
+      "#", "Event ID", "Event Name", "Mode", "Club Name", "Parent Organization", "Email", "Event Date", "Location", "Posted On", "Closing On", "Tags", "Registrations", "Queries", "Created At", "Updated At"
     ];
     const tableRows = [];
 
@@ -38,20 +38,13 @@ function ShowEventsAdmin() {
         event.eventName || '',
         event.eventMode || '',
         event.clubName || '',
-        event.organizationName || '',
-        event.collegeCode || '',
-        event.collegeCity || '',
-        event.organizationType || '',
-        event.website || '',
-        event.contactPerson || '',
-        event.phone || '',
+        event.parentOrganization || '',
         event.email || '',
         formatDate(event.eventDate),
         event.eventLocation || '',
         formatDate(event.postedOn),
         formatDate(event.closeOn),
         Array.isArray(event.eventTags) ? event.eventTags.join(", ") : (event.eventTags || ''),
-        event.eventDescription || '',
         registrationCounts[event._id] ?? '',
         queryCounts[event._id] ?? '',
         event.createdAt ? formatDate(event.createdAt) : '',
@@ -79,13 +72,7 @@ function ShowEventsAdmin() {
       "Event Name": event.eventName || '',
       "Mode": event.eventMode || '',
       "Club Name": event.clubName || '',
-      "College Name": event.collegeName || '',
-      "College Code": event.collegeCode || '',
-      "City": event.collegeCity || '',
-      "Org. Type": event.organizationType || '',
-      "Website": event.website || '',
-      "Contact Person": event.contactPerson || '',
-      "Phone": event.phone || '',
+      "Parent Organization": event.parentOrganization || '',
       "Email": event.email || '',
       "Event Date": formatDate(event.eventDate),
       "Location": event.eventLocation || '',
@@ -240,8 +227,8 @@ function ShowEventsAdmin() {
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal uppercase">
                       <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Event Name</th>
-                      {/* <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Club</th> */}
+                      {/* <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th> */}
+                      {/* <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Club</th> */}
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Mode</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Location</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Date</th>
@@ -258,6 +245,7 @@ function ShowEventsAdmin() {
                         {/* <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
                           {event.collegeName}
                         </td> */}
+                        {/* <td className="py-3 px-6">{event.parentOrganization}</td> */}
                         {/* <td className="py-3 px-6">{event.clubName}</td> */}
                         <td className="py-3 px-6">{event.eventMode}</td>
                         <td className="py-3 px-6">{event.eventLocation}</td>
