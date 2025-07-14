@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import UserContext from '../context/UserContext';
-import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Building, CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScaleLoader } from 'react-spinners';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -101,15 +101,16 @@ function HomeRecent() {
                     <Slider ref={sliderRef} {...sliderSettings}>
                         {events.map(event => (
                             <div key={event._id} className="px-2">
-                                <div className="bg-gray-100 p-7 hover:shadow-lg transition-all border border-gray-300 w-full max-w-md mx-auto min-h-[230px] flex flex-col justify-between">
-                                    <div>
-                                        <h3 className="text-xl font-semibold text-[#0d0c22] mb-2">{event.eventName}</h3>
-                                        <p className="text-gray-600 mb-2">Organization: {event.organizationName}</p>
-                                        <p className="text-gray-600 mb-1 flex gap-2 items-center">
+                                <div className="bg-gray-100 p-4 hover:shadow-lg transition-all border border-gray-300 w-full max-w-md mx-auto min-h-[210px] flex flex-col justify-between">
+                                    <div className='flex flex-col gap-1'>
+                                        <h3 className="text-xl font-semibold text-[#0d0c22]">{event.eventName}</h3>
+                                        <p className="text-gray-600">{event.clubName} - <span className="text-gray-600">{event.parentOrganization}</span></p>
+                                        
+                                        <p className="text-gray-600 flex gap-2 items-center">
                                             <CalendarDays size={18} /> {new Date(event.eventDate).toLocaleDateString('en-GB').replace(/\//g, '-')}
                                         </p>
                                     </div>
-                                    <Link to={`/eventdetail/${event._id}`} className="mt-3 text-amber-600 px-5 py-1 bg-white rounded-full border border-amber-600 hover:bg-amber-50 flex justify-center items-center gap-2 w-40 self-center">
+                                    <Link to={`/eventdetail/${event._id}`} className="mt-3 text-amber-600 px-5 py-1 bg-white rounded-full border border-amber-600 hover:bg-amber-50 flex justify-center items-center gap-2 w-40 self-left">
                                         View Details <ArrowUpRight size={18} />
                                     </Link>
                                 </div>

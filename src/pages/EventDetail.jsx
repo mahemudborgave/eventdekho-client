@@ -110,7 +110,7 @@ function EventDetail() {
 
   const fetchUserQueries = async () => {
     if (!token || !email) return;
-    
+
     setLoadingQueries(true);
     try {
       const res = await axios.get(`${baseURL}:${port}/query/event/${eventId}`, {
@@ -204,37 +204,37 @@ function EventDetail() {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center">
-    <div>
+            <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className={`px-2 py-1 rounded-full text-xs font-semibold ${status.color} text-white`}>
                   {status.live && <span className="inline-block w-1.5 h-1.5 rounded-full bg-white mr-1 animate-pulse"></span>}
                   {status.label}
                 </div>
-                <div className="text-xs opacity-90">by {event.organizationName}</div>
+                <div className="text-xs opacity-90">by {event.parentOrganization || event.organizationName}</div>
               </div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight">{event.eventName}</h1>
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
                 <div className="text-center">
-                  <Calendar className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <Calendar className="h-5 mx-auto mb-1 opacity-80" />
                   <div className="text-xs opacity-75">Event Date</div>
                   <div className="text-sm font-semibold">{new Date(event.eventDate).toLocaleDateString()}</div>
                 </div>
                 <div className="text-center">
-                  <MapPin className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <MapPin className="h-5 mx-auto mb-1 opacity-80" />
                   <div className="text-xs opacity-75">Location</div>
                   <div className="text-sm font-semibold">{event.eventLocation}</div>
                 </div>
                 <div className="text-center">
-                  <Clock className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <Clock className="h-5 mx-auto mb-1 opacity-80" />
                   <div className="text-xs opacity-75">Mode</div>
                   <div className="text-sm font-semibold">{event.eventMode}</div>
                 </div>
                 <div className="text-center">
-                  <Users className="w-4 h-4 mx-auto mb-1 opacity-80" />
+                  <Users className="h-5 mx-auto mb-1 opacity-80" />
                   <div className="text-xs opacity-75">Organization</div>
-                  <div className="text-sm font-semibold">{event.organizationName}</div>
+                  <div className="text-sm font-semibold">{event.clubName}</div>
                 </div>
               </div>
 
@@ -244,10 +244,10 @@ function EventDetail() {
                   onClick={handleClick}
                   disabled={hasRegistered || (event && new Date(event.closeOn) < new Date())}
                   className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 ${hasRegistered
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : (event && new Date(event.closeOn) < new Date())
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : (event && new Date(event.closeOn) < new Date())
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                      : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105'
                     }`}
                 >
                   {hasRegistered ? (
@@ -268,16 +268,16 @@ function EventDetail() {
                   )}
                 </button>
 
-            <button
-              onClick={handleQueryClick}
+                <button
+                  onClick={handleQueryClick}
                   className="px-6 py-3 rounded-lg font-semibold text-base bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-2"
-            >
+                >
                   <MessageCircle className="w-4 h-4" />
                   Ask Question
-            </button>
+                </button>
 
-            <button
-              onClick={handleShowUserQueries}
+                <button
+                  onClick={handleShowUserQueries}
                   className="px-6 py-3 rounded-lg font-semibold text-base bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <BookOpen className="w-4 h-4" />
@@ -339,7 +339,7 @@ function EventDetail() {
                   >
                     <section.icon className="w-4 h-4" />
                     {section.label}
-            </button>
+                  </button>
                 ))}
               </nav>
             </div>
@@ -393,7 +393,7 @@ function EventDetail() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Organization:</span>
-                        <span className="font-semibold">{event.organizationName}</span>
+                        <span className="font-semibold">{event.clubName}</span>
                       </div>
                     </div>
                   </div>
@@ -571,7 +571,7 @@ function EventDetail() {
       </div>
 
       {/* Registration Form Modal */}
-            {!hasRegistered && isShow && (
+      {!hasRegistered && isShow && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="p-4 sm:p-6">
@@ -594,10 +594,10 @@ function EventDetail() {
             </div>
           </div>
         </div>
-            )}
-            
-            {/* Query Section */}
-            {showQuery && (
+      )}
+
+      {/* Query Section */}
+      {showQuery && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="p-4 sm:p-6">
@@ -610,45 +610,45 @@ function EventDetail() {
                   ×
                 </button>
               </div>
-                <QueryComp
-                  eventId={event?._id || eventId}
-                  eventName={event?.eventName || ''}
-                  userEmail={email || ''}
-                  userName={user || ''}
-                  onSuccess={() => setShowQuery(false)}
-                />
+              <QueryComp
+                eventId={event?._id || eventId}
+                eventName={event?.eventName || ''}
+                userEmail={email || ''}
+                userName={user || ''}
+                onSuccess={() => setShowQuery(false)}
+              />
             </div>
           </div>
+        </div>
+      )}
+
+      {/* User Queries Modal */}
+      <Modal open={showUserQueries} onClose={() => setShowUserQueries(false)}>
+        <h3 className='text-lg font-bold mb-4 text-blue-800'>Your Queries for this Event</h3>
+        {loadingQueries ? (
+          <div className='flex items-center gap-2 text-blue-600'><Loader2 className='animate-spin' /> Loading...</div>
+        ) : userQueries.length === 0 ? (
+          <div className='text-gray-600'>You have not raised any queries for this event.</div>
+        ) : (
+          <div className='space-y-4 max-h-[60vh] overflow-y-auto'>
+            {userQueries.map((q) => (
+              <div key={q._id} className='bg-blue-50 border border-blue-200 rounded p-4'>
+                <div className='font-semibold text-gray-800 mb-1'>Query:</div>
+                <div className='mb-2 text-gray-700'>{q.message}</div>
+                {q.resolution ? (
+                  <div className='bg-green-100 border border-green-300 rounded p-2 mt-2'>
+                    <div className='font-semibold text-green-800 mb-1'>Admin Response:</div>
+                    <div className='text-green-900'>{q.resolution}</div>
+                  </div>
+                ) : (
+                  <div className='text-yellow-700 italic'>No response yet.</div>
+                )}
+                <div className='text-xs text-gray-400 mt-2'>Asked on: {new Date(q.createdAt).toLocaleString()}</div>
               </div>
-            )}
-            
-            {/* User Queries Modal */}
-            <Modal open={showUserQueries} onClose={() => setShowUserQueries(false)}>
-              <h3 className='text-lg font-bold mb-4 text-blue-800'>Your Queries for this Event</h3>
-              {loadingQueries ? (
-                <div className='flex items-center gap-2 text-blue-600'><Loader2 className='animate-spin' /> Loading...</div>
-              ) : userQueries.length === 0 ? (
-                <div className='text-gray-600'>You have not raised any queries for this event.</div>
-              ) : (
-                <div className='space-y-4 max-h-[60vh] overflow-y-auto'>
-                  {userQueries.map((q) => (
-                    <div key={q._id} className='bg-blue-50 border border-blue-200 rounded p-4'>
-                      <div className='font-semibold text-gray-800 mb-1'>Query:</div>
-                      <div className='mb-2 text-gray-700'>{q.message}</div>
-                      {q.resolution ? (
-                        <div className='bg-green-100 border border-green-300 rounded p-2 mt-2'>
-                          <div className='font-semibold text-green-800 mb-1'>Admin Response:</div>
-                          <div className='text-green-900'>{q.resolution}</div>
-                        </div>
-                      ) : (
-                        <div className='text-yellow-700 italic'>No response yet.</div>
-                      )}
-                      <div className='text-xs text-gray-400 mt-2'>Asked on: {new Date(q.createdAt).toLocaleString()}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Modal>
+            ))}
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }

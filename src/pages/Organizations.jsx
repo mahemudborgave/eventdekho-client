@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ScaleLoader } from 'react-spinners';
+import { useRef } from 'react';
 import Search from "../components/Search";
 import UserContext from "../context/UserContext";
 import SearchContext from "../context/SearchContext";
@@ -8,7 +9,11 @@ import { ArrowUpRight, GraduationCap, Calendar, Filter, X, MapPin, Building2, Ey
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
-  const [filteredOrganizations, setFilteredOrganizations] = useState([]);
+  const [searchDropdown, setSearchDropdown] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { searchValue, setSearchValue } = useContext(SearchContext);
   const [loading, setLoading] = useState(true);
   const [activeFilters, setActiveFilters] = useState([]);
@@ -38,7 +43,6 @@ function Organizations() {
         const data = await res.json();
 
         setOrganizations(data);
-        setFilteredOrganizations(data);
 
         // Calculate statistics
         const totalEvents = data.reduce((sum, org) => sum + (org.eventsHosted || 0), 0);
@@ -71,6 +75,28 @@ function Organizations() {
     };
 
     getOrganizations();
+  }, []);
+  // Hide dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownVisible(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  // Hide dropdown on route change
+  useEffect(() => {
+    setDropdownVisible(false);
+  }, [location.pathname]);
+  // Hide dropdown on refresh
+  useEffect(() => {
+    const clearDropdown = () => setSearchDropdown([]);
+    window.addEventListener('beforeunload', clearDropdown);
+    return () => window.removeEventListener('beforeunload', clearDropdown);
   }, []);
 
   const applyFilters = (organizations, filters, searchTerm) => {
@@ -147,14 +173,38 @@ function Organizations() {
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchValue(value);
-    const filtered = applyFilters(organizations, activeFilters, value);
-    setFilteredOrganizations(filtered);
+    if (value.trim() === '') {
+      setSearchDropdown([]);
+      setDropdownVisible(false);
+      return;
+    }
+    const v = value.toLowerCase();
+    const result = organizations.filter(org =>
+      (org.organizationName && org.organizationName.toLowerCase().includes(v)) ||
+      (org.parentOrganization && org.parentOrganization.toLowerCase().includes(v)) ||
+      (org.shortName && org.shortName.toLowerCase().includes(v)) ||
+      (org.city && org.city.toLowerCase().includes(v)) ||
+      (org.organizationType && org.organizationType.toLowerCase().includes(v))
+    );
+    setSearchDropdown(result);
+    setDropdownVisible(true);
   };
-
+  // Show dropdown on input focus or keystroke if searchValue is not empty
+  const handleInputFocus = () => {
+    if (searchValue && searchValue.trim() !== '') {
+      setDropdownVisible(true);
+    }
+  };
+  // Show dropdown on search icon click if searchValue is not empty
+  const handleSearchIconClick = () => {
+    if (searchValue && searchValue.trim() !== '') {
+      setDropdownVisible(true);
+    }
+  };
   const handleClick = () => {
     setSearchValue('');
-    const filtered = applyFilters(organizations, activeFilters, '');
-    setFilteredOrganizations(filtered);
+    setSearchDropdown([]);
+    setDropdownVisible(false);
   };
 
   if (loading) {
@@ -229,8 +279,46 @@ function Organizations() {
       <div className="mb-6 space-y-4">
         {/* Search Bar and Filter Button */}
         <div className="flex flex-row gap-3 items-center lg:w-1/2">
-          <div className="relative w-full">
-            <Search handleChange={handleChange} handleClick={handleClick} page="organizations" />
+          <div className="relative w-full" ref={dropdownRef}>
+            <div className='px-2 py-1 lg:px-4 lg:py-2 bg-gray-200 m-auto rounded-full flex items-center text-sm'>
+              <input
+                type="text"
+                placeholder={`Search for organization`}
+                className='focus:outline-none outline-0 flex-grow ml-2 text-sm lg:text-base'
+                onChange={e => { handleChange(e); if (e.target.value.trim() !== '') setDropdownVisible(true); }}
+                value={searchValue}
+                onFocus={handleInputFocus}
+              />
+              <i
+                className="fa-solid fa-magnifying-glass p-3 lg:p-4 bg-amber-300 rounded-full cursor-pointer"
+                onClick={handleSearchIconClick}
+              ></i>
+              <span
+                className="material-symbols-outlined lg:ml-2 p-1.5 hover:bg-gray-100 rounded-full cursor-pointer"
+                onClick={handleClick}
+              >
+                close
+              </span>
+            </div>
+            {dropdownVisible && searchValue && searchDropdown.length > 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-30 max-h-72 overflow-y-auto">
+                {searchDropdown.map(org => (
+                  <div
+                    key={org._id}
+                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer flex flex-col border-b last:border-b-0"
+                    onClick={() => { setDropdownVisible(false); navigate(`/organizationDetails/${org._id}`); }}
+                  >
+                    <span className="font-medium text-gray-900 truncate">{org.organizationName}</span>
+                    <span className="text-xs text-gray-500">{org.parentOrganization}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {dropdownVisible && searchValue && searchValue.trim() !== '' && searchDropdown.length === 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-30 p-4 text-gray-400 text-center">
+                No matching organizations found.
+              </div>
+            )}
           </div>
 
           {/* Filter Toggle Button */}
@@ -300,7 +388,7 @@ function Organizations() {
       <div className="mb-10">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
           <h2 className="text-base text-gray-500">
-            {filteredOrganizations.length} Organization{filteredOrganizations.length !== 1 ? 's' : ''} Found
+            {organizations.length} Organization{organizations.length !== 1 ? 's' : ''} Found
           </h2>
           {activeFilters.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
@@ -319,12 +407,12 @@ function Organizations() {
         <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Organizations</h2>
       </div>
 
-      {/* Organizations Table */}
-      {filteredOrganizations.length > 0 ? (
+      {/* Organizations section*/}
+      {organizations.length > 0 ? (
         <div className="w-full">
           {/* Only show mobile card design for all devices */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
-            {filteredOrganizations.map((organization, index) => (
+            {organizations.map((organization, index) => (
               <div key={organization._id}
                 className="bg-gradient-to-r from-blue-200 to-blue-400 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200">
                 {/* Header with Organization Info */}
@@ -350,15 +438,6 @@ function Organizations() {
                       </div>
                     </div>
                   </div>
-                  {/* Events Badge */}
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="text-xs text-gray-500 font-medium">#{index + 1}</div>
-                    <div className="flex items-center gap-1.5 text-blue-600 bg-blue-50 px-3 py-2 rounded-full border border-blue-200">
-                      <Calendar size={16} />
-                      <span className="font-bold text-sm">{organization.eventsHosted || 0}</span>
-                      <span className="text-xs font-medium">Events</span>
-                    </div>
-                  </div>
                 </div>
                 {/* Action Button */}
                 <Link
@@ -366,7 +445,7 @@ function Organizations() {
                   className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-4 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-semibold text-sm shadow-sm hover:shadow-md"
                 >
                   <Eye size={18} />
-                  <span>View All Events</span>
+                  <span>View All Events <span className="font-bold text-sm bg-background/20 px-2 py-1 rounded-full ml-2">{organization.eventsHosted || 0}</span></span>
                   <ArrowUpRight size={16} />
                 </Link>
               </div>

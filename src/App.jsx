@@ -36,18 +36,18 @@ function App() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >
-      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
-          <ScrollToTop />
-          <Outlet />
-          <ToastContainer
-          theme="colored"
-          transition={Flip}
-          autoClose={1000}
-          style={{ marginTop: '80px' }}
-          />
-      </SearchContext.Provider>
-    </UserContext.Provider>
+      <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >
+        <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+            <ScrollToTop />
+            <Outlet />
+            <ToastContainer
+            theme="colored"
+            transition={Flip}
+            autoClose={1000}
+            style={{ marginTop: '80px' }}
+            />
+        </SearchContext.Provider>
+      </UserContext.Provider>
   )
 }
 

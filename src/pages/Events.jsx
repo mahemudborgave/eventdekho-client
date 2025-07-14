@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import dotenv from "dotenv";
 import { ScaleLoader } from 'react-spinners';
 import Eventt from '../components/Eventt';
@@ -40,6 +40,35 @@ function Events() {
     totalOrganizations: 0,
     totalParticipations: 0
   });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchDropdown, setSearchDropdown] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Hide dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownVisible(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  // Hide dropdown on route change
+  useEffect(() => {
+    setDropdownVisible(false);
+    // Optionally: setSearchValue('');
+  }, [location.pathname]);
+  // Hide dropdown on refresh
+  useEffect(() => {
+    const clearDropdown = () => setSearchDropdown([]);
+    window.addEventListener('beforeunload', clearDropdown);
+    return () => window.removeEventListener('beforeunload', clearDropdown);
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -84,26 +113,44 @@ function Events() {
 
   const handleChange = (e) => {
     const value = e.target.value;
-    // console.log(value);
     setSearchValue(value);
-
     if (value.trim() === '') {
-      setEvents(originalEvents);
+      setSearchDropdown([]);
+      setDropdownVisible(false);
       return;
     }
-
-    const result = originalEvents.filter(event =>
-      event.eventName.toLowerCase().includes(value.toLowerCase()) ||
-      event.organizationName.toLowerCase().includes(value.toLowerCase()) ||
-      event.organizationCode.toLowerCase().includes(value.toLowerCase())
-    )
-    setEvents(result);
+    const result = originalEvents.filter(event => {
+      const v = value.toLowerCase();
+      return (
+        (event.eventName && event.eventName.toLowerCase().includes(v)) ||
+        (event.organizationName && event.organizationName.toLowerCase().includes(v)) ||
+        (event.parentOrganization && event.parentOrganization.toLowerCase().includes(v)) ||
+        (event.organizationCode && event.organizationCode.toLowerCase().includes(v)) ||
+        (event.clubShortName && event.clubShortName.toLowerCase().includes(v)) ||
+        (event.clubName && event.clubName.toLowerCase().includes(v))
+      );
+    });
+    setSearchDropdown(result);
+    setDropdownVisible(true);
   }
 
   const handleClick = () => {
     setSearchValue('')
-    setEvents(originalEvents);
+    setSearchDropdown([]);
+    setDropdownVisible(false);
   }
+  // Show dropdown on input focus or keystroke if searchValue is not empty
+  const handleInputFocus = () => {
+    if (searchValue && searchValue.trim() !== '') {
+      setDropdownVisible(true);
+    }
+  };
+  // Show dropdown on search icon click if searchValue is not empty
+  const handleSearchIconClick = () => {
+    if (searchValue && searchValue.trim() !== '') {
+      setDropdownVisible(true);
+    }
+  };
 
   if (loading) {
     return (
@@ -192,7 +239,48 @@ function Events() {
 
       <div className='lg:px-30'>
         <div className='lg:w-1/2 mb-10'>
-          <Search handleChange={handleChange} handleClick={handleClick} page="event" />
+          <div className="relative" ref={dropdownRef}>
+            <div className='px-2 py-1 lg:px-4 lg:py-2 bg-gray-200 m-auto rounded-full flex items-center text-sm'>
+              <input
+                type="text"
+                placeholder={`Search for event`}
+                className='focus:outline-none outline-0 flex-grow ml-2 text-sm lg:text-base'
+                onChange={e => { handleChange(e); if (e.target.value.trim() !== '') setDropdownVisible(true); }}
+                value={searchValue}
+                onFocus={handleInputFocus}
+              />
+              <i
+                className="fa-solid fa-magnifying-glass p-3 lg:p-4 bg-amber-300 rounded-full cursor-pointer"
+                onClick={handleSearchIconClick}
+              ></i>
+              <span
+                className="material-symbols-outlined lg:ml-2 p-1.5 hover:bg-gray-100 rounded-full cursor-pointer"
+                onClick={handleClick}
+              >
+                close
+              </span>
+            </div>
+            {dropdownVisible && searchValue && searchDropdown.length > 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-30 max-h-72 overflow-y-auto">
+                {searchDropdown.map(event => (
+                  <div
+                    key={event._id}
+                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer flex flex-col border-b last:border-b-0"
+                    onClick={() => { setDropdownVisible(false); navigate(`/eventdetail/${event._id}`); }}
+                  >
+                    <span className="font-medium text-gray-900 truncate">{event.eventName}</span>
+                    <span className="text-xs text-gray-500">{event.clubName} -  <span className="text-xs text-gray-500">{event.parentOrganization}</span></span>
+                   
+                  </div>
+                ))}
+              </div>
+            )}
+            {dropdownVisible && searchValue && searchValue.trim() !== '' && searchDropdown.length === 0 && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-30 p-4 text-gray-400 text-center">
+                No matching events found.
+              </div>
+            )}
+          </div>
         </div>
 
         <div className='mb-15'>
@@ -232,24 +320,18 @@ function Events() {
                   <span className="ml-2 transition-transform flex items-center justify-center group-hover:scale-110 text-[#1C64F2]">
                     <ArrowRight size={28} />
                   </span>
-                </div>
+                </div>  
               ))}
             </Marquee>
           </div>
         )} */}
 
-        {events.length === 0 ? (
-          <div className="text-center mt-20 text-gray-500 text-lg mb-100">
-            No matching events found.
+        <div>
+          <div className='flex justify-start mb-6'>
+            <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
           </div>
-        ) : (
-          <div>
-            <div className='flex justify-start mb-6'>
-              <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
-            </div>
-            <Eventt events={events} />
-          </div>
-        )}
+          <Eventt events={originalEvents} />
+        </div>
       </div>
     </>
   )

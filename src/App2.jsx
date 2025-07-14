@@ -15,7 +15,17 @@ function App2() {
     <>
       <Navbar />
       <div className='h-20 lg:h-30'></div>
-      <div className='2xl:px-[200px] px-5'>
+      <div
+        className="
+          w-full
+          max-w-[min(100vw,1480px)]
+          mx-auto
+          px-[5vw]
+          sm:px-[4vw]
+          md:px-[3vw]
+          lg:px-[2vw]
+        "
+      >
         <Outlet />
       </div>
       <FooterComp />

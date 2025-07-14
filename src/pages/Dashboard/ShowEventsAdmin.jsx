@@ -189,7 +189,7 @@ function ShowEventsAdmin() {
           <div className="mb-10 flex flex-col lg:flex-row justify-between bg-gradient-to-r from-red-100 to-red-400 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 dark:text-gray-100 p-4 rounded-xl">
             <h1 className="text-2xl font-bold tracking-tight mb-5 lg:mb-0 flex-1">
               <span className="text-[#BB4D00] dark:text-yellow-400">Your</span> events
-            </h1>
+            </h1> 
             <div className="flex flex-col lg:flex-row gap-3">
               <div className="flex gap-3">
                 <Button
@@ -224,10 +224,10 @@ function ShowEventsAdmin() {
                     <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Posted On</th>
                     <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Closing On</th>
                     <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Actions</th>
-                  </tr>
-                </thead>
+                    </tr>
+                  </thead>
                 <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
-                  {events.map((event, index) => (
+                    {events.map((event, index) => (
                     <tr key={index} className="hover:bg-blue-100 dark:hover:bg-blue-900">
                       <td className="py-3 px-4 font-bold sticky left-0 z-10 bg-white dark:bg-gray-900 whitespace-nowrap">{index + 1}</td>
                       <td className="py-3 px-4 whitespace-nowrap text-gray-900 dark:text-gray-100">{event.eventName}</td>
@@ -254,11 +254,11 @@ function ShowEventsAdmin() {
                           <button onClick={() => handleUpdate(event)} className="bg-yellow-500 text-white rounded hover:bg-yellow-600 px-3 py-1">Update</button>
                           <button onClick={() => handleDelete(event._id)} className="bg-red-600 text-white rounded hover:bg-red-700 px-3 py-1">Delete</button>
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
             </div>
           )}
         </div>

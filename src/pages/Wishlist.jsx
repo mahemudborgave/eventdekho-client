@@ -116,7 +116,7 @@ function Wishlist() {
                                         className="flex-1 px-4 py-2 bg-[#0d0c22] rounded-lg text-white hover:bg-[#0d0c22d2] transition-colors duration-200 cursor-pointer text-sm font-semibold"
                                         onClick={e => { e.stopPropagation(); window.location.href = `/eventdetail/${event._id}`; }}
                                     >
-                                        Get Detail
+                                        Detail
                                     </button>
                                     <button
                                         className="flex-1 px-4 py-2 bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-lg font-semibold shadow hover:from-orange-400 hover:to-pink-500 transition-colors duration-200 cursor-pointer text-sm"

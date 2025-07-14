@@ -72,6 +72,7 @@ function OrganizerProfile() {
             localStorage.removeItem("user");
             localStorage.removeItem("email");
             localStorage.removeItem("role");
+            localStorage.removeItem("theme");
             setToken(null)
             setUser(null)
             setEmail(null)

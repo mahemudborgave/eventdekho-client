@@ -7,12 +7,12 @@ const NavigationMenu = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <nav
     ref={ref}
-    className={cn(
+      className={cn(
       "flex items-center gap-4 p-2 bg-background rounded-md shadow-sm",
-      className
-    )}
-    {...props}
-  />
+        className
+      )}
+      {...props}
+    />
 ))
 NavigationMenu.displayName = "NavigationMenu"
 

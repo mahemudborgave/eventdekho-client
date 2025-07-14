@@ -60,10 +60,10 @@ function AdminNavbar({ onToggle }) {
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-md">
         <div className="flex items-center justify-between px-4 py-3">
           {/* Logo/Brand */}
-          <Link to="/admin/dashboard" className="flex items-center group">
+            <Link to="/admin/dashboard" className="flex items-center group">
             <h1 className="text-xl font-bold text-amber-700 dark:text-amber-400 group-hover:underline">EventApply</h1>
             <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900 dark:text-amber-300 px-2 py-1 rounded">Admin</span>
-          </Link>
+            </Link>
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
             <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
@@ -93,7 +93,7 @@ function AdminNavbar({ onToggle }) {
                 </div>
                 <div className="flex flex-col gap-4 mt-4">
                   {navLinks.map(link => (
-                    <NavLink
+              <NavLink 
                       key={link.to}
                       to={link.to}
                       className={({ isActive }) =>
@@ -103,10 +103,10 @@ function AdminNavbar({ onToggle }) {
                         setMobileNavOpen(false);
                         document.activeElement.blur();
                       }}
-                    >
+              >
                       {link.icon}
                       {link.label}
-                    </NavLink>
+              </NavLink>
                   ))}
                   <div className="border-t border-gray-200 dark:border-gray-700 my-2" />
                   <SheetClose asChild>
@@ -114,24 +114,24 @@ function AdminNavbar({ onToggle }) {
                       <School size={20} /> Client Portal
                     </Link>
                   </SheetClose>
-                  {user ? (
-                    <>
+              {user ? (
+                <>
                       <Button variant="ghost" className="w-full justify-start dark:text-gray-200" onClick={() => navigate('/admin/profile')}>
                         <User size={20} className="mr-2" /> Profile
                       </Button>
                       <Button variant="destructive" className="w-full justify-start" onClick={handleLogout}>
                         <LogOut size={20} className="mr-2" /> Logout
                       </Button>
-                    </>
-                  ) : (
+                </>
+              ) : (
                     <Button variant="default" className="w-full justify-start dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800" onClick={handleLogin}>
                       <User size={20} className="mr-2" /> Login
                     </Button>
-                  )}
+              )}
                 </div>
                 <div className="mt-8 flex justify-center">
                   <ThemeSwitcher />
-                </div>
+              </div>
                 <SheetClose />
               </SheetContent>
             </Sheet>

@@ -5,7 +5,8 @@ import { HashLoader, ScaleLoader } from 'react-spinners';
 import Eventt from './Eventt';
 import { Typewriter } from 'react-simple-typewriter'
 import Search from './Search';
-import { ArrowBigRightDash, ArrowUpRight, Building, Landmark, MoveUpRight } from 'lucide-react';
+import { ArrowBigRightDash, ArrowUpRight, Building, Landmark, MoveUpRight, Quote } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from './ui/card';
 
 function MainSearch() {
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -14,6 +15,25 @@ function MainSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const testimonials = [
+    { name: "Amit S.", comment: "EventApply made it so easy to find and register for events. Loved the experience!" },
+    { name: "Priya K.", comment: "I discovered so many new opportunities through this platform. Highly recommended!" },
+    { name: "Rahul D.", comment: "The UI is super clean and the event reminders are a lifesaver." },
+    { name: "Sneha M.", comment: "I met amazing people at events I found here. Thank you EventApply!" },
+  ];
+  const [current, setCurrent] = useState(0);
+  const [fade, setFade] = useState(true);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setCurrent((prev) => (prev + 1) % testimonials.length);
+        setFade(true);
+      }, 350); // fade out before switching
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
 
   useEffect(() => {
     setLoading(true);
@@ -61,7 +81,7 @@ function MainSearch() {
         `}
       </style>
 
-      <div className='text-center'>
+      <div className='text-center px-2 lg:px-0'>
         <p className='my-10 lg:my-0 text-3xl md:text-5xl font-medium' style={{ fontFamily: "'Source Serif 4', sans-serif" }}>
           Discover India's&nbsp;
           <br />
@@ -87,7 +107,7 @@ function MainSearch() {
           <div className='px-2 py-2 lg:py-3 lg:px-4 bg-gradient-to-r from-amber-200 to-blue-300 m-auto rounded-full flex items-center justify-center text-sm text-center'>
 
             <p className='shiny-button grow px-3 py-2 lg:py-3 bg-[#0d0c22] ml-2 text-gray-100 rounded-full flex items-center justify-center'>
-              Explore <ArrowBigRightDash className='ml-1' size={20} />
+              Explore <ArrowBigRightDash className='ml-1 size-5' />
             </p>
 
             <NavLink to="/events" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full flex justify-center items-center gap-2'>Events <ArrowUpRight className='size-5' /></NavLink>
@@ -95,17 +115,35 @@ function MainSearch() {
           </div>
         </div>
 
-        <div className='hidden lg:flex items-center lg:flex-row justify-center gap-2 my-3 text-sm text-gray-900'>
-          <p className='py-1 px-6 border border-[#0d0c22] rounded-full border'>Technical</p>
-          <p className='py-1 px-6 border border-[#0d0c22] rounded-full'>Nontechnical</p>
-          <p className='py-1 px-6 border border-[#0d0c22] rounded-full'>social</p>
+        {/* Pure shadcn/ui style testimonial card, compact and minimal */}
+        <div className="flex flex-col items-center my-2 lg:my-4">
+          <Card className="w-full max-w-sm shadow border bg-background/90 dark:bg-background/80 gap-3 py-2">
+            <CardHeader className="flex flex-col items-left">
+              {/* <span className="flex items-center gap-1 dark:text-blue-300">
+                <Quote className="w-4 h-4 opacity-80" />
+                <CardTitle className="text-base tracking-tight">What students are saying</CardTitle>
+              </span> */}
+              {/* <div className="w-8 h-0.5 bg-gradient-to-r from-blue-400 via-amber-400 to-pink-400 rounded-full" /> */}
+            </CardHeader>
+            <CardContent className="flex flex-col items-center px-4 min-h-[70px] gap-0">
+              <div
+                className={`transition-all duration-400 ease-in-out w-full flex flex-col items-center ${fade ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-2 scale-95'}`}
+                key={current}
+              >
+                <span className="text-sm text-center text-foreground select-none block mb-1">
+                  “{testimonials[current].comment}”
+                </span>
+                <span className="text-xs text-left text-blue-600 dark:text-blue-300 font-semibold">— {testimonials[current].name}</span>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {loading && (
+        {/* {loading && (
           <div className="flex justify-center items-center">
             <ScaleLoader />
           </div>
-        )}
+        )} */}
       </div>
     </>
   )

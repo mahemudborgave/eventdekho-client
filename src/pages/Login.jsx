@@ -10,6 +10,7 @@ import { ScaleLoader } from 'react-spinners';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { getLastVisitedPage, clearLastVisitedPage, getSmartRedirectPath } from '../utils/navigationUtils';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Login() {
     const baseURL = import.meta.env.VITE_BASE_URL;
@@ -105,6 +106,34 @@ function Login() {
                 <div className='lg:p-20 lg:w-1/2 w-[300px] mx-auto border-3 border-amber-500 p-8'>
                     <p className='text-amber-300 font-bold text-3xl mb-4'>Login</p>
                     <p className='mb-6'>Sign in to your account</p>
+                    <div className="flex flex-col items-center my-4 gap-2">
+                        <GoogleLogin
+                            onSuccess={async credentialResponse => {
+                                try {
+                                    const res = await axios.post(
+                                        `${baseURL}:${port}/auth/google`,
+                                        { token: credentialResponse.credential }
+                                    );
+                                    localStorage.setItem('token', res.data.token);
+                                    localStorage.setItem('user', res.data.user.name);
+                                    localStorage.setItem('email', res.data.user.email);
+                                    localStorage.setItem('role', res.data.user.role);
+                                    setToken(res.data.token);
+                                    setUser(res.data.user.name);
+                                    setEmail(res.data.user.email);
+                                    setRole(res.data.user.role);
+                                    toast.success('Logged in with Google!');
+                                    navigate('/studentprofile');
+                                } catch (err) {
+                                    toast.error('Google login failed');
+                                }
+                            }}
+                            onError={() => {
+                                toast.error('Google Login Failed');
+                            }}
+                        />
+                        <span className="text-xs text-gray-400">or</span>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <div className='flex items-center justify-start bg-gray-100 w-full mb-4 p-2 '>
                             <MailIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />

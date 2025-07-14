@@ -160,9 +160,20 @@ function Navbar() {
 
     return (
         <>
-            <div className={`2xl:px-[200px] px-4 z-50 flex justify-between py-3 lg:py-6 text-md items-center fixed top-0 left-0 w-full lg:h-25 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"}`}>
+            <div className={
+              [
+                // Full width with small responsive paddings
+                "w-full",
+                "px-4",
+                "sm:px-4",
+                "md:px-30",
+                // Existing classes
+                "z-50 flex justify-between py-3 lg:py-6 text-md items-center fixed top-0 left-0 w-full lg:h-25 transition-all duration-300",
+                scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+              ].join(' ')
+            }>
                 <Link to='/' className='font-bold text-xl transition-transform duration-200'>
-                    <img src={eventdekhoLogo} alt="logo" className='h-12 lg:h-13 drop-shadow-lg' />
+                    <img src={eventdekhoLogo} alt="logo" className='h-11 lg:h-13 drop-shadow-lg' />
                 </Link>
 
                 <div className="flex items-center lg:hidden">

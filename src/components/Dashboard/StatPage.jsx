@@ -187,12 +187,12 @@ function StatPage() {
         {stats.slice(0, 3).map((stat, i) => (
           <Card key={stat.label} className={`flex items-center gap-4 ${cardBgColors[i]} border-none shadow-md`}>
             <CardContent className="flex items-center gap-4 p-4">
-              {icons[i]}
-              <div>
+            {icons[i]}
+            <div>
                 <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stat.value}</div>
                 <div className="text-md text-gray-600 dark:text-gray-300">{stat.label}</div>
                 <div className="text-sm text-green-600 dark:text-green-400">{stat.change}</div>
-              </div>
+            </div>
             </CardContent>
           </Card>
         ))}
@@ -200,11 +200,11 @@ function StatPage() {
         <Card className="flex items-center gap-4 bg-red-200 dark:bg-red-900 border-none shadow-md">
           <CardContent className="flex items-center gap-4 p-4">
             <MessageCircle className="w-8 h-8 text-red-500 dark:text-red-400" />
-            <div>
+          <div>
               <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">{pendingQueries}</div>
               <div className="text-md text-gray-600 dark:text-gray-300">Pending Queries</div>
               <div className="text-sm text-red-600 dark:text-red-400">Unresolved</div>
-            </div>
+          </div>
           </CardContent>
         </Card>
       </div>
@@ -300,9 +300,9 @@ function StatPage() {
               ) : (
                 <div className="flex items-center justify-center h-full">
                   <ScaleLoader />
-                </div>
+          </div>
               )}
-            </div>
+        </div>
           </CardContent>
         </Card>
         <Card className="bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-700">
@@ -313,30 +313,30 @@ function StatPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {topEvents.length === 0 ? (
+          {topEvents.length === 0 ? (
               <div className="text-gray-400 dark:text-gray-500">No data</div>
-            ) : (
-              <div className="w-full overflow-x-auto">
+          ) : (
+            <div className="w-full overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
                   <thead className="bg-gray-50 dark:bg-gray-800">
-                    <tr>
+                  <tr>
                       <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Rank</th>
                       <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Event Name</th>
                       <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Registrations</th>
-                    </tr>
-                  </thead>
+                  </tr>
+                </thead>
                   <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
-                    {topEvents.slice(0, 5).map((event, idx) => (
+                  {topEvents.slice(0, 5).map((event, idx) => (
                       <tr key={event.eventName} className={idx % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800 hover:bg-yellow-50 dark:hover:bg-yellow-900' : 'hover:bg-yellow-50 dark:hover:bg-yellow-900'}>
                         <td className="px-4 py-2 font-bold text-gray-700 dark:text-gray-100">{idx + 1}</td>
                         <td className="px-4 py-2 text-gray-700 dark:text-gray-100">{event.eventName}</td>
                         <td className="px-4 py-2 text-teal-600 dark:text-teal-400 font-semibold text-center">{event.registrations}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
           </CardContent>
         </Card>
       </div>
@@ -360,15 +360,15 @@ function StatPage() {
             <CardTitle className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">Recent Events Created</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul>
+          <ul>
               {recentEvents.length === 0 && <li className="text-gray-400 dark:text-gray-500">No data</li>}
-              {recentEvents.map((event) => (
-                <li key={event._id || event.eventName} className="flex justify-between py-1">
+            {recentEvents.map((event) => (
+              <li key={event._id || event.eventName} className="flex justify-between py-1">
                   <span className="text-gray-800 dark:text-gray-100">{event.eventName}</span>
                   <span className="text-gray-500 dark:text-gray-300">{event.eventDate ? new Date(event.eventDate).toLocaleDateString() : ''}</span>
-                </li>
-              ))}
-            </ul>
+              </li>
+            ))}
+          </ul>
           </CardContent>
         </Card>
       </div>

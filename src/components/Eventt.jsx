@@ -6,6 +6,18 @@ import UserContext from '../context/UserContext';
 import { Users, Heart } from 'lucide-react';
 import { toast } from 'react-toastify';
 
+// Minimal inline spinner for wishlist loading
+function Spinner() {
+  return (
+    <span className="inline-block w-5 h-5 align-middle">
+      <svg className="animate-spin" viewBox="0 0 24 24" width="20" height="20">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+      </svg>
+    </span>
+  );
+}
+
 function formatEventDate(dateStr) {
   const date = new Date(dateStr);
   return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -17,7 +29,8 @@ function Eventt({ events }) {
   const { email } = useContext(UserContext)
   // Wishlist state - fetch from backend
   const [wishlist, setWishlist] = useState([]);
-  const [wishlistLoading, setWishlistLoading] = useState(false);
+  // Track loading state per event for wishlist
+  const [wishlistLoading, setWishlistLoading] = useState({});
 
   // Fetch wishlist from backend
   useEffect(() => {
@@ -26,7 +39,7 @@ function Eventt({ events }) {
         setWishlist([]);
         return;
       }
-      setWishlistLoading(true);
+      setWishlistLoading({});
       try {
         const res = await axios.get(`${import.meta.env.VITE_BASE_URL}:${import.meta.env.VITE_PORT}/wishlist/${email}`);
         const wishlistEventIds = res.data.map(event => event._id);
@@ -35,7 +48,7 @@ function Eventt({ events }) {
         console.error('Error fetching wishlist:', err);
         setWishlist([]);
       } finally {
-        setWishlistLoading(false);
+        setWishlistLoading({});
       }
     };
 
@@ -100,6 +113,7 @@ function Eventt({ events }) {
       toast.warn('Please log in to add to wishlist');
       return;
     }
+    setWishlistLoading(prev => ({ ...prev, [eventId]: true }));
     const isAlreadyWishlisted = wishlist.includes(eventId);
     try {
       if (isAlreadyWishlisted) {
@@ -122,6 +136,8 @@ function Eventt({ events }) {
       }
     } catch (err) {
       toast.error('Failed to update wishlist');
+    } finally {
+      setWishlistLoading(prev => ({ ...prev, [eventId]: false }));
     }
   };
 
@@ -165,7 +181,11 @@ function Eventt({ events }) {
                 title={isWishlisted(eventt._id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
                 style={{ lineHeight: 0, cursor: 'pointer' }}
               >
-                <Heart size={18} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#aaa'} />
+                {wishlistLoading[eventt._id] ? (
+                  <Spinner />
+                ) : (
+                  <Heart size={18} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#aaa'} />
+                )}
               </button>
             </div>
             {/* Club Badge (now relative, inline at top of card content) */}
@@ -180,8 +200,8 @@ function Eventt({ events }) {
             )} */}
             <div className="lg:flex-grow">
               <p className="text-lg lg:text-xl mb-1 text-[#0d0c22] font-medium">{eventt.eventName}</p>
-              <p className="mt-2 text-gray-500 italic">
-                {eventt.organizationName}
+              <p className="mt-2 text-gray-500">
+                {eventt.clubName}
               </p>
               {eventt.parentOrganization && (
                 <p className="text-gray-500">

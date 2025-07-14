@@ -114,10 +114,10 @@ function EventRegistrationsAdmin() {
         <span className="text-2xl font-bold text-[#232946] dark:text-gray-100"><span className="text-[#BB4D00] dark:text-yellow-400">Event</span> Registrations</span>
         <div className="flex gap-3 mt-2 lg:mt-0">
           <Button onClick={exportToPDF} variant="destructive" className="flex gap-2 items-center">
-            <FileText size={20} />Export as PDF
+              <FileText size={20} />Export as PDF
           </Button>
           <Button onClick={exportToExcel} variant="secondary" className="flex gap-2 items-center">
-            <FileSpreadsheet size={20} />Export as Excel
+              <FileSpreadsheet size={20} />Export as Excel
           </Button>
         </div>
       </div>
@@ -147,10 +147,10 @@ function EventRegistrationsAdmin() {
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Course</th>
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Gender</th>
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Mobile</th>
-              </tr>
-            </thead>
+                </tr>
+              </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800 text-sm">
-              {registrations.map((reg, index) => (
+                {registrations.map((reg, index) => (
                 <tr key={reg._id} className="hover:bg-blue-100 dark:hover:bg-blue-900">
                   <td className="py-3 px-4 font-bold sticky left-0 z-10 bg-white dark:bg-gray-900 whitespace-nowrap">{index + 1}</td>
                   <td className="py-3 px-4 min-w-[120px] whitespace-nowrap text-gray-900 dark:text-gray-100">{reg.studentName}</td>
@@ -161,10 +161,10 @@ function EventRegistrationsAdmin() {
                   <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.course}</td>
                   <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.gender}</td>
                   <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.mobno}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
         </div>
       )}
     </div>
