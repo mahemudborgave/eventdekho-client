@@ -4,7 +4,42 @@ import { toast } from "react-toastify";
 import UserContext from "../../context/UserContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ScaleLoader } from "react-spinners";
-import { Calendar, MapPin, Clock, Users, Building2, Info, Mail, Phone, Globe, Tag, User, Sparkles, ChevronRight, BookOpen, Plus, Trash2, Award, Star, Gift, CheckCircle, AlertCircle, Target, Briefcase, Shield, ClipboardList, Backpack, Flame } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Clock,
+  Users,
+  Building2,
+  Info,
+  Mail,
+  Phone,
+  Globe,
+  Tag,
+  User,
+  Sparkles,
+  ChevronRight,
+  BookOpen,
+  Plus,
+  Trash2,
+  Award,
+  Star,
+  Gift,
+  CheckCircle,
+  AlertCircle,
+  Target,
+  Briefcase,
+  Shield,
+  ClipboardList,
+  Backpack,
+  Flame,
+} from "lucide-react";
+// shadcn/ui imports
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import { Button } from "../../components/ui/button";
+import { Label } from "../../components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 
 export default function AddEvent() {
   const { email, token, role } = useContext(UserContext);
@@ -55,7 +90,7 @@ export default function AddEvent() {
   useEffect(() => {
     const fetchOrganizerProfile = async () => {
       if (!token || role !== 'organizer') return;
-
+      
       try {
         const res = await axios.get(`${baseURL}:${port}/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -208,7 +243,7 @@ export default function AddEvent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-amber-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="w-full">
         {/* Modern Page Header */}
         {/* <div className="mt-8 mb-10 rounded-3xl shadow-2xl p-8 bg-gradient-to-r from-blue-600 via-pink-500 to-amber-400 flex flex-col items-center justify-center relative">
@@ -237,281 +272,236 @@ export default function AddEvent() {
           <p className="text-lg text-white/80 text-center max-w-xl font-medium">Easily add or update your event with all the details, stages, prizes, and more. Make your event stand out and attract participants!</p>
         </div> */}
 
-        <form className="bg-white shadow px-5 py-10 lg:px-20 flex flex-col gap-5 w-full" onSubmit={handleSubmit}>
-          <div className="bg-gradient-to-r from-red-100 to-red-400 p-6 mb-5">
-            <h1 className="text-2xl font-bold tracking-tight mb-2 flex-1">
-              <span className="text-[#BB4D00]">Host</span> event
-            </h1>
-            <p className="text-gray-500 text-sm">Fill in all the details to host your event. Fields marked with * are required.</p>
-          </div>
+        {/* Responsive flex container for form and preview */}
+        <div className="flex flex-col md:flex-row md:items-start gap-8 w-full max-w-7xl mx-auto px-2 md:px-6">
+          {/* Form section */}
+          <form className="flex flex-col gap-5 w-full md:w-2/3 lg:w-3/5 py-5 px-0" onSubmit={handleSubmit}>
+            <Card className="mb-5 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <h1 className="text-2xl font-bold tracking-tight mb-2 flex-1">
+                  <span className="text-[#BB4D00] dark:text-amber-400">Host</span> event
+                </h1>
+                <p className="text-gray-500 dark:text-gray-300 text-sm">Fill in all the details to host your event. Fields marked with * are required.</p>
+              </CardHeader>
+            </Card>
 
-
-          <div className="bg-white/70 border border-red-500 border-l-8 border-l-red-500 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Tag className="text-red-500" size={22} />} title={<span className="text-red-500">Event Name</span>} />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <InputField
-                name="eventName"
-                value={form.eventName}
-                onChange={handleChange}
-                required
-                placeholder="Enter the event name (e.g. Hackathon 2024)"
-              />
-            </div>
-          </div>
-
-
-
-          {/* About This Event */}
-          <div className="bg-white/70 backdrop-blur border border-blue-500 border-l-8 border-l-blue-500 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Info className="text-blue-500" size={22} />} title={<span className="text-blue-500">About This Event</span>} />
-            <textarea
-              name="eventDescription"
-              value={form.eventDescription}
-              onChange={handleChange}
-              rows={3}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-              required
-              placeholder="Describe your event, objectives, and what participants can expect..."
-            />
-          </div>
-
-          {/* Important Dates */}
-          <div className="bg-white/70 backdrop-blur border border-amber-400 border-l-8 border-l-amber-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Calendar className="text-amber-500" size={22} />} title={<span className="text-amber-400">Important Dates</span>} />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <InputField name="eventDate" type="date" label="Event Date*" value={form.eventDate} onChange={handleChange} required icon={<Clock className="text-blue-400" size={18} />} />
-              <InputField name="closeOn" type="date" label="Registration Closes*" value={form.closeOn} onChange={handleChange} required icon={<AlertCircle className="text-red-400" size={18} />} />
-              <InputField name="postedOn" type="date" label="Posted On*" readOnly value={form.postedOn} onChange={handleChange} required icon={<Calendar className="text-amber-400" size={18} />} />
-            </div>
-          </div>
-
-          {/* Event Details */}
-          <div className="bg-white/70 backdrop-blur border border-green-400 border-l-8 border-l-green-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<MapPin className="text-green-500" size={22} />} title={<span className="text-green-400">Event Details</span>} />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <InputField name="eventLocation" label="Location*" value={form.eventLocation} onChange={handleChange} required icon={<MapPin className="text-green-400" size={18} />} />
-              <InputField name="eventMode" type="select" label="Mode*" value={form.eventMode} onChange={handleChange} required options={["Onsite", "Online"]} icon={<Globe className="text-blue-400" size={18} />} />
-              <InputField name="organizationName" label="Organization*" value={organizerProfile.organizationName} onChange={() => { }} required readOnly icon={<Building2 className="text-gray-400" size={18} />} />
-            </div>
-          </div>
-
-          {/* Event Stages */}
-          <div className="bg-white/70 backdrop-blur border border-purple-400 border-l-8 border-l-purple-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<ClipboardList className="text-purple-500" size={22} />} title={<span className="text-purple-400">Event Stages</span>} />
-            <DynamicList
-              items={form.stages}
-              onChange={(idx, field, value) => handleListChange('stages', idx, field, value)}
-              onAdd={() => handleAddListItem('stages', { title: '', description: '' })}
-              onRemove={idx => handleRemoveListItem('stages', idx)}
-              renderItem={(item, idx, onChange, onRemove) => (
-                <div className="flex flex-col md:flex-row gap-2 items-start mb-2" key={idx}>
-                  <input
-                    type="text"
-                    value={item.title}
-                    onChange={e => onChange(idx, 'title', e.target.value)}
-                    placeholder="Stage Name (e.g. Screening Round)"
-                    className="w-full md:w-1/3 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <input
-                    type="text"
-                    value={item.description}
-                    onChange={e => onChange(idx, 'description', e.target.value)}
-                    placeholder="Stage Description (e.g. Submit your project for review)"
-                    className="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <button type="button" onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardContent className="grid gap-6">
+                <div>
+                  <Label htmlFor="eventName" className="dark:text-gray-200 mb-2">Event Name *</Label>
+                  <Input id="eventName" name="eventName" value={form.eventName} onChange={handleChange} required placeholder="Enter event name" className="dark:bg-gray-900 dark:text-gray-100" />
                 </div>
-              )}
-            />
-          </div>
-
-          {/* Prizes & Rewards */}
-          <div className="bg-white/70 backdrop-blur border border-pink-400 border-l-8 border-l-pink-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Gift className="text-pink-500" size={22} />} title={<span className="text-pink-400">Prizes & Rewards</span>} />
-            <DynamicList
-              items={form.prizes}
-              onChange={(idx, field, value) => handleListChange('prizes', idx, field, value)}
-              onAdd={() => handleAddListItem('prizes', { title: '', amount: '', description: '' })}
-              onRemove={idx => handleRemoveListItem('prizes', idx)}
-              renderItem={(item, idx, onChange, onRemove) => (
-                <div className="flex flex-col md:flex-row gap-2 items-start mb-2" key={idx}>
-                  <input
-                    type="text"
-                    value={item.title}
-                    onChange={e => onChange(idx, 'title', e.target.value)}
-                    placeholder="Prize Title (e.g. 1st Prize)"
-                    className="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <input
-                    type="text"
-                    value={item.amount}
-                    onChange={e => onChange(idx, 'amount', e.target.value)}
-                    placeholder="Amount (e.g. ₹10,000)"
-                    className="w-full md:w-1/4 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <input
-                    type="text"
-                    value={item.description}
-                    onChange={e => onChange(idx, 'description', e.target.value)}
-                    placeholder="Description (e.g. Cash + Certificate)"
-                    className="w-full md:w-2/4 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <button type="button" onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="eventDate" className="dark:text-gray-200 mb-2">Event Date *</Label>
+                    <Input id="eventDate" name="eventDate" type="date" value={form.eventDate} onChange={handleChange} required className="dark:bg-gray-900 dark:text-gray-100" />
+                  </div>
+                  <div>
+                    <Label htmlFor="closeOn" className="dark:text-gray-200 mb-2">Registration Close On *</Label>
+                    <Input id="closeOn" name="closeOn" type="date" value={form.closeOn} onChange={handleChange} required className="dark:bg-gray-900 dark:text-gray-100" />
+                  </div>
                 </div>
-              )}
-            />
-          </div>
-
-          {/* Additional Benefits */}
-          <div className="bg-white/70 backdrop-blur border border-sky-400 border-l-8 border-l-sky-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Star className="text-sky-500" size={22} />} title={<span className="text-sky-400">Additional Benefits</span>} />
-            <DynamicList
-              items={form.benefits}
-              onChange={(idx, _, value) => handleListChange('benefits', idx, null, value)}
-              onAdd={() => handleAddListItem('benefits', "")}
-              onRemove={idx => handleRemoveListItem('benefits', idx)}
-              renderItem={(item, idx, onChange, onRemove) => (
-                <div className="flex gap-2 items-center mb-2" key={idx}>
-                  <input
-                    type="text"
-                    value={item}
-                    onChange={e => onChange(idx, null, e.target.value)}
-                    placeholder="e.g. Internship Opportunities"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <button type="button" onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="eventLocation" className="dark:text-gray-200 mb-2">Location *</Label>
+                    <Input id="eventLocation" name="eventLocation" value={form.eventLocation} onChange={handleChange} required placeholder="Venue or online link" className="dark:bg-gray-900 dark:text-gray-100" />
+                  </div>
+                  <div>
+                    <Label htmlFor="eventMode" className="dark:text-gray-200 mb-2">Mode *</Label>
+                    <Select value={form.eventMode} onValueChange={val => setForm(f => ({ ...f, eventMode: val }))}>
+                      <SelectTrigger id="eventMode" name="eventMode" className="dark:bg-gray-900 dark:text-gray-100">
+                        <SelectValue placeholder="Select mode" />
+                      </SelectTrigger>
+                      <SelectContent className="dark:bg-gray-900 dark:text-gray-100">
+                        <SelectItem value="Onsite">Onsite</SelectItem>
+                        <SelectItem value="Online">Online</SelectItem>
+                        <SelectItem value="Hybrid">Hybrid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-              )}
-            />
-          </div>
-
-          {/* Rules & Guidelines */}
-          <div className="bg-white/70 backdrop-blur border border-orange-400 border-l-8 border-l-orange-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Shield className="text-orange-500" size={22} />} title={<span className="text-orange-400">Important Rules</span>} />
-            <DynamicList
-              items={form.rules}
-              onChange={(idx, _, value) => handleListChange('rules', idx, null, value)}
-              onAdd={() => handleAddListItem('rules', "")}
-              onRemove={idx => handleRemoveListItem('rules', idx)}
-              renderItem={(item, idx, onChange, onRemove) => (
-                <div className="flex gap-2 items-center mb-2" key={idx}>
-                  <input
-                    type="text"
-                    value={item}
-                    onChange={e => onChange(idx, null, e.target.value)}
-                    placeholder="e.g. All participants must be currently enrolled students"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <button type="button" onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+                <div>
+                  <Label htmlFor="eventDescription" className="dark:text-gray-200 mb-2">Description *</Label>
+                  <Textarea id="eventDescription" name="eventDescription" value={form.eventDescription} onChange={handleChange} required placeholder="Describe your event" className="dark:bg-gray-900 dark:text-gray-100" />
                 </div>
-              )}
-            />
-          </div>
-
-          <div className="bg-white/70 backdrop-blur border border-yellow-400 border-l-8 border-l-yellow-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<BookOpen className="text-yellow-500" size={22} />} title={<span className="text-yellow-400">General Guidelines</span>} />
-            <DynamicList
-              items={form.guidelines}
-              onChange={(idx, _, value) => handleListChange('guidelines', idx, null, value)}
-              onAdd={() => handleAddListItem('guidelines', "")}
-              onRemove={idx => handleRemoveListItem('guidelines', idx)}
-              renderItem={(item, idx, onChange, onRemove) => (
-                <div className="flex gap-2 items-center mb-2" key={idx}>
-                  <input
-                    type="text"
-                    value={item}
-                    onChange={e => onChange(idx, null, e.target.value)}
-                    placeholder="e.g. Participants should arrive 30 minutes before the event"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <button type="button" onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+                <div>
+                  <Label htmlFor="eventTags" className="dark:text-gray-200 mb-2">Tags (comma separated)</Label>
+                  <Input id="eventTags" name="eventTags" value={form.eventTags} onChange={handleChange} placeholder="e.g. tech, fest, workshop" className="dark:bg-gray-900 dark:text-gray-100" />
                 </div>
-              )}
-            />
-          </div>
+              </CardContent>
+            </Card>
 
-          <div className="bg-white/70 backdrop-blur border border-lime-400 border-l-8 border-l-lime-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Backpack className="text-lime-500" size={22} />} title={<span className="text-lime-400">What to Bring</span>} />
-            <DynamicList
-              items={form.bring}
-              onChange={(idx, _, value) => handleListChange('bring', idx, null, value)}
-              onAdd={() => handleAddListItem('bring', "")}
-              onRemove={idx => handleRemoveListItem('bring', idx)}
-              renderItem={(item, idx, onChange, onRemove) => (
-                <div className="flex gap-2 items-center mb-2" key={idx}>
-                  <input
-                    type="text"
-                    value={item}
-                    onChange={e => onChange(idx, null, e.target.value)}
-                    placeholder="e.g. College ID card"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-400 bg-white text-base shadow-sm transition-all duration-200 focus:shadow-lg"
-                    required
-                  />
-                  <button type="button" onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700"><Trash2 size={18} /></button>
+            {/* Dynamic Sections Example: Stages */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2"><Sparkles className="text-blue-500 dark:text-blue-300" size={18} /> Stages</span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {form.stages.map((stage, idx) => (
+                  <div key={idx} className="flex flex-col md:flex-row gap-2 items-center">
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Stage title"
+                      value={stage.title}
+                      onChange={e => handleListChange('stages', idx, 'title', e.target.value)}
+                    />
+                    <Textarea
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Stage description"
+                      value={stage.description}
+                      onChange={e => handleListChange('stages', idx, 'description', e.target.value)}
+                    />
+                    <Button type="button" variant="destructive" onClick={() => handleRemoveListItem('stages', idx)} size="icon" className="h-9 w-9"><Trash2 size={18} /></Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => handleAddListItem('stages', { title: '', description: '' })} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Stage</Button>
+              </CardContent>
+            </Card>
+
+            {/* Repeat similar Card sections for Prizes, Benefits, Rules, Guidelines, Bring */}
+            {/* ...Prizes... */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2"><Gift className="text-amber-500 dark:text-amber-300" size={18} /> Prizes</span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {form.prizes.map((prize, idx) => (
+                  <div key={idx} className="flex flex-col md:flex-row gap-2 items-center">
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Prize title"
+                      value={prize.title}
+                      onChange={e => handleListChange('prizes', idx, 'title', e.target.value)}
+                    />
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Amount/Type"
+                      value={prize.amount}
+                      onChange={e => handleListChange('prizes', idx, 'amount', e.target.value)}
+                    />
+                    <Textarea
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Prize description"
+                      value={prize.description}
+                      onChange={e => handleListChange('prizes', idx, 'description', e.target.value)}
+                    />
+                    <Button type="button" variant="destructive" onClick={() => handleRemoveListItem('prizes', idx)} size="icon" className="h-9 w-9"><Trash2 size={18} /></Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => handleAddListItem('prizes', { title: '', amount: '', description: '' })} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Prize</Button>
+              </CardContent>
+            </Card>
+
+            {/* ...Benefits... */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2"><Star className="text-green-500 dark:text-green-300" size={18} /> Benefits</span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {form.benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Benefit"
+                      value={benefit}
+                      onChange={e => handleListChange('benefits', idx, null, e.target.value)}
+                    />
+                    <Button type="button" variant="destructive" onClick={() => handleRemoveListItem('benefits', idx)} size="icon" className="h-9 w-9"><Trash2 size={18} /></Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => handleAddListItem('benefits', '')} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Benefit</Button>
+              </CardContent>
+            </Card>
+
+            {/* ...Rules... */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2"><ClipboardList className="text-blue-700 dark:text-blue-300" size={18} /> Rules</span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {form.rules.map((rule, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Rule"
+                      value={rule}
+                      onChange={e => handleListChange('rules', idx, null, e.target.value)}
+                    />
+                    <Button type="button" variant="destructive" onClick={() => handleRemoveListItem('rules', idx)} size="icon" className="h-9 w-9"><Trash2 size={18} /></Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => handleAddListItem('rules', '')} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Rule</Button>
+              </CardContent>
+            </Card>
+
+            {/* ...Guidelines... */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2"><Shield className="text-purple-600 dark:text-purple-300" size={18} /> Guidelines</span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {form.guidelines.map((guide, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Guideline"
+                      value={guide}
+                      onChange={e => handleListChange('guidelines', idx, null, e.target.value)}
+                    />
+                    <Button type="button" variant="destructive" onClick={() => handleRemoveListItem('guidelines', idx)} size="icon" className="h-9 w-9"><Trash2 size={18} /></Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => handleAddListItem('guidelines', '')} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Guideline</Button>
+              </CardContent>
+            </Card>
+
+            {/* ...Bring... */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2"><Backpack className="text-amber-700 dark:text-amber-400" size={18} /> Bring</span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {form.bring.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <Input
+                      className="flex-1 dark:bg-gray-900 dark:text-gray-100"
+                      placeholder="Item to bring"
+                      value={item}
+                      onChange={e => handleListChange('bring', idx, null, e.target.value)}
+                    />
+                    <Button type="button" variant="destructive" onClick={() => handleRemoveListItem('bring', idx)} size="icon" className="h-9 w-9"><Trash2 size={18} /></Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => handleAddListItem('bring', '')} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Item</Button>
+              </CardContent>
+            </Card>
+
+            <Button type="submit" className="w-full mt-6 text-lg font-semibold dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800">{isUpdate ? "Update Event" : "Create Event"}</Button>
+          </form>
+
+          {/* Preview section */}
+          <div className="w-full md:w-1/3 lg:w-2/5 md:sticky md:top-8">
+            <div className="mt-6 md:mt-0 p-4 md:p-0">
+              <h3 className="text-2xl font-bold text-blue-700 dark:text-blue-300 mb-5 flex items-center gap-2">Event Preview</h3>
+              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 text-white rounded-xl p-4 shadow-lg relative">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="px-2 py-1 rounded-full text-xs font-semibold bg-green-500 text-white dark:bg-green-700">{form.eventDate && new Date(form.eventDate) < new Date() ? 'Completed' : 'Upcoming'}</div>
+                  <div className="text-xs opacity-90">by {organizerProfile.organizationName}</div>
                 </div>
-              )}
-            />
-          </div>
-
-          {/* Organizer/Organization Details (read-only) */}
-          <div className="bg-white/70 backdrop-blur border border-gray-400 border-l-8 border-l-gray-400 p-6 rounded-2xl mb-4">
-            <SectionHeader icon={<Building2 className="text-gray-500" size={22} />} title={<span className="text-gray-400">Organization Details</span>} />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <ReadOnlyField label="Organization" value={organizerProfile.organizationName} />
-              <ReadOnlyField label="Short Name (Club)" value={organizerProfile.shortName} />
-              <ReadOnlyField label="Parent Organization" value={organizerProfile.parentOrganization} />
-              <ReadOnlyField label="City" value={organizerProfile.city} />
-              <ReadOnlyField label="Type" value={organizerProfile.organizationType} />
-              <ReadOnlyField label="Contact Person" value={organizerProfile.contactPerson} />
-              <ReadOnlyField label="Email" value={organizerProfile.email || email} />
-              <ReadOnlyField label="Phone" value={organizerProfile.phone} />
-              <ReadOnlyField label="Website" value={organizerProfile.website} />
-            </div>
-            {(!organizerProfile.organizationName || !organizerProfile.shortName) && (
-              <div className="mt-2 p-2 bg-amber-100 border border-amber-300 rounded text-amber-800 text-xs">
-                <strong>Note:</strong> Please complete your organization profile first.
-                <Link to="/admin/profile" className="ml-1 text-amber-600 underline font-medium">Go to Profile</Link>
+                <h1 className="text-xl font-bold mb-2 leading-tight">{form.eventName || 'Event Name'}</h1>
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                  <div className="flex items-center gap-2"><span className="text-xs">{form.eventDate || 'Date'}</span></div>
+                  <div className="flex items-center gap-2"><span className="text-xs">{form.eventLocation || 'Location'}</span></div>
+                  <div className="flex items-center gap-2"><span className="text-xs">{form.eventMode}</span></div>
+                  <div className="flex items-center gap-2"><span className="text-xs">{organizerProfile.organizationName || 'Organization'}</span></div>
+                </div>
+                <div className="mb-1 text-xs opacity-90 line-clamp-3">{form.eventDescription || 'Event description will appear here.'}</div>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {(form.eventTags ? form.eventTags.split(',').map(tag => tag.trim()).filter(Boolean) : []).map(tag => (
+                    <span key={tag} className="bg-white/20 dark:bg-white/10 border border-white/30 dark:border-white/20 rounded-full px-2 py-0.5 text-xs font-semibold">#{tag}</span>
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            className="mt-6 px-8 py-3 bg-gradient-to-r from-blue-600 to-amber-500 text-white font-extrabold text-lg rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-200"
-            disabled={!organizerProfile.organizationName || !organizerProfile.shortName}
-          >
-            {isUpdate ? "Update Event" : "Create Event"}
-          </button>
-        </form>
-
-        {/* Live Preview Section (now at the bottom, full width) */}
-        <div className="w-full mt-6 p-10">
-          <h3 className="text-2xl font-bold text-blue-700 mb-5 flex items-center gap-2">Event Preview</h3>
-          <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-xl p-4 shadow-lg relative">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="px-2 py-1 rounded-full text-xs font-semibold bg-green-500 text-white">{form.eventDate && new Date(form.eventDate) < new Date() ? 'Completed' : 'Upcoming'}</div>
-              <div className="text-xs opacity-90">by {organizerProfile.organizationName}</div>
-            </div>
-            <h1 className="text-xl font-bold mb-2 leading-tight">{form.eventName || 'Event Name'}</h1>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <div className="flex items-center gap-2"><span className="text-xs">{form.eventDate || 'Date'}</span></div>
-              <div className="flex items-center gap-2"><span className="text-xs">{form.eventLocation || 'Location'}</span></div>
-              <div className="flex items-center gap-2"><span className="text-xs">{form.eventMode}</span></div>
-              <div className="flex items-center gap-2"><span className="text-xs">{organizerProfile.organizationName || 'Organization'}</span></div>
-            </div>
-            <div className="mb-1 text-xs opacity-90 line-clamp-3">{form.eventDescription || 'Event description will appear here.'}</div>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {(form.eventTags ? form.eventTags.split(',').map(tag => tag.trim()).filter(Boolean) : []).map(tag => (
-                <span key={tag} className="bg-white/20 border border-white/30 rounded-full px-2 py-0.5 text-xs font-semibold">#{tag}</span>
-              ))}
             </div>
           </div>
         </div>
@@ -540,13 +530,13 @@ function InputField({ name, type = "text", label, value, onChange, required = fa
           {options && options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
         </select>
       ) : (
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-          placeholder={placeholder}
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-base"
           readOnly={readOnly}
         />

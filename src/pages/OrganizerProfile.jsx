@@ -175,15 +175,15 @@ function OrganizerProfile() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 flex flex-col items-center py-10 px-5 lg:px-0">
+        <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 flex flex-col items-center py-5 px-5 lg:px-0">
             {/* Welcome Banner for New Organizers */}
             {completion < 50 && (
-                <div className="w-full max-w-5xl mb-6 bg-gradient-to-r from-amber-100 to-blue-100 border border-amber-200 rounded-xl p-6">
+                <div className="w-full max-w-5xl mb-6 bg-gradient-to-r from-amber-100 to-blue-100 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 border border-amber-200 dark:border-gray-700 rounded-xl p-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-3 h-3 bg-amber-400 rounded-full animate-pulse"></div>
-                        <h3 className="text-lg font-semibold text-amber-800">Welcome to EventDekho!</h3>
+                        <div className="w-3 h-3 bg-amber-400 dark:bg-amber-600 rounded-full animate-pulse"></div>
+                        <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-300">Welcome to EventDekho!</h3>
                     </div>
-                    <p className="text-amber-700 mt-2">
+                    <p className="text-amber-700 dark:text-amber-200 mt-2">
                         Please complete your organization profile to start creating and managing events. 
                         This information will help students learn more about your organization.
                     </p>
@@ -192,64 +192,64 @@ function OrganizerProfile() {
             
             <div className="w-full max-w-5xl flex flex-col md:flex-row gap-8">
                 {/* Sidebar Summary */}
-                <aside className="md:w-1/3 w-full bg-gradient-to-br from-amber-100 to-blue-100 rounded-2xl shadow-lg p-6 flex flex-col items-center gap-6 border border-amber-200">
+                <aside className="md:w-1/3 w-full bg-gradient-to-br from-amber-100 to-blue-100 dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg p-6 flex flex-col items-center gap-6 border border-amber-200 dark:border-gray-700">
                     <div className="relative w-32 h-32 mb-2">
-                        <img src={userprofile} alt="Logo" className="w-32 h-32 rounded-full border-4 border-amber-400 shadow object-cover bg-white" />
+                        <img src={userprofile} alt="Logo" className="w-32 h-32 rounded-full border-4 border-amber-400 dark:border-amber-700 shadow object-cover bg-white dark:bg-gray-900" />
                         {/* Placeholder for logo upload */}
-                        <span className="absolute bottom-2 right-2 bg-amber-400 text-white rounded-full p-1 cursor-pointer shadow hover:bg-amber-500 transition" title="Upload Logo">
+                        <span className="absolute bottom-2 right-2 bg-amber-400 dark:bg-amber-700 text-white rounded-full p-1 cursor-pointer shadow hover:bg-amber-500 dark:hover:bg-amber-800 transition" title="Upload Logo">
                             <Edit size={16} />
                         </span>
                     </div>
                     <div className="text-center">
-                        <h2 className="text-2xl font-bold text-amber-700 mb-1 flex items-center justify-center gap-2">
+                        <h2 className="text-2xl font-bold text-amber-700 dark:text-amber-300 mb-1 flex items-center justify-center gap-2">
                             <Building2 size={22} /> {profile.organizationName || user || 'Organization'}
                         </h2>
                         {profile.shortName && (
-                            <div className="text-sm text-amber-600 font-medium mb-1">({profile.shortName})</div>
+                            <div className="text-sm text-amber-600 dark:text-amber-400 font-medium mb-1">({profile.shortName})</div>
                         )}
                         {/* {console.log(profile.parentOrganization)}    */}
                         
                         {profile.parentOrganization && (
-                            <div className="text-sm text-amber-600 font-medium mb-1">({profile.parentOrganization})</div>
+                            <div className="text-sm text-amber-600 dark:text-amber-400 font-medium mb-1">({profile.parentOrganization})</div>
                         )}
-                        <div className="text-sm text-blue-700 font-semibold mb-1 uppercase tracking-wider">{profile.organizationType || 'Type'}</div>
-                        <div className="text-gray-600 flex items-center justify-center gap-1 mb-1">
-                            <MapPin size={16} /> {profile.city || <span className="text-gray-400">City</span>}
+                        <div className="text-sm text-blue-700 dark:text-blue-300 font-semibold mb-1 uppercase tracking-wider">{profile.organizationType || 'Type'}</div>
+                        <div className="text-gray-600 dark:text-gray-300 flex items-center justify-center gap-1 mb-1">
+                            <MapPin size={16} /> {profile.city || <span className="text-gray-400 dark:text-gray-500">City</span>}
                         </div>
-                        <div className="text-gray-600 flex items-center justify-center gap-1 mb-1">
-                            <Globe size={16} /> {profile.website ? <a href={profile.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">{profile.website}</a> : <span className="text-gray-400">Website</span>}
+                        <div className="text-gray-600 dark:text-gray-300 flex items-center justify-center gap-1 mb-1">
+                            <Globe size={16} /> {profile.website ? <a href={profile.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 dark:text-blue-300">{profile.website}</a> : <span className="text-gray-400 dark:text-gray-500">Website</span>}
                         </div>
-                        <div className="text-gray-600 flex items-center justify-center gap-1 mb-1">
-                            <User size={16} /> {profile.contactPerson || <span className="text-gray-400">Contact Person</span>}
+                        <div className="text-gray-600 dark:text-gray-300 flex items-center justify-center gap-1 mb-1">
+                            <User size={16} /> {profile.contactPerson || <span className="text-gray-400 dark:text-gray-500">Contact Person</span>}
                         </div>
                     </div>
                     <div className="w-full flex flex-col items-center mt-4">
-                        <div className="w-full bg-gray-200 rounded-full h-2.5">
-                            <div className="bg-amber-400 h-2.5 rounded-full" style={{ width: `${completion}%` }}></div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5">
+                            <div className="bg-amber-400 dark:bg-amber-600 h-2.5 rounded-full" style={{ width: `${completion}%` }}></div>
                         </div>
-                        <span className="text-xs text-gray-500 mt-1">Profile Completion: {completion}%</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-300 mt-1">Profile Completion: {completion}%</span>
                         {completion < 100 && (
-                            <div className="text-xs text-amber-600 mt-2 text-center">
+                            <div className="text-xs text-amber-600 dark:text-amber-400 mt-2 text-center">
                                 Complete your profile to get the most out of EventDekho!
                             </div>
                         )}
                     </div>
                     <button
                         onClick={handleLogout}
-                        className="mt-4 w-full bg-red-600 text-white py-2 rounded-lg shadow hover:bg-red-700 transition font-semibold flex items-center justify-center gap-2"
+                        className="mt-4 w-full bg-red-600 dark:bg-red-800 text-white py-2 rounded-lg shadow hover:bg-red-700 dark:hover:bg-red-900 transition font-semibold flex items-center justify-center gap-2"
                     >
                         <LogoutIcon className="mr-1" size={18}/> Log out
                     </button>
                 </aside>
 
                 {/* Main Card */}
-                <main className="flex-1 w-full bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-8 border border-blue-100 relative">
+                <main className="flex-1 w-full bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 flex flex-col gap-8 border border-blue-100 dark:border-gray-700 relative">
                     {/* Floating Action Buttons */}
                     {!editMode ? (
                         <div>
                         <button
                             onClick={handleEdit}
-                            className="flex bg-amber-400 hover:bg-amber-500 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
+                            className="flex bg-amber-400 dark:bg-amber-700 hover:bg-amber-500 dark:hover:bg-amber-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
                         >
                             <Edit size={20} /> Edit
                         </button>
@@ -258,13 +258,13 @@ function OrganizerProfile() {
                         <div className="flex gap-2 z-10">
                             <button
                                 onClick={handleSave}
-                                className="bg-green-500 hover:bg-green-600 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
+                                className="bg-green-500 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
                             >
                                 <Save size={20} /> Save
                             </button>
                             <button
                                 onClick={handleCancel}
-                                className="bg-gray-400 hover:bg-gray-500 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
+                                className="bg-gray-400 dark:bg-gray-700 hover:bg-gray-500 dark:hover:bg-gray-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
                             >
                                 <Close size={20} /> Cancel
                             </button>
@@ -273,25 +273,25 @@ function OrganizerProfile() {
 
                     {/* About Section */}
                     <section>
-                        <h3 className="text-xl font-bold text-amber-600 mb-2 flex items-center gap-2"><Mail size={20}/> About Organization</h3>
+                        <h3 className="text-xl font-bold text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-2"><Mail size={20}/> About Organization</h3>
                         {editMode ? (
                             <textarea
                                 id="description"
                                 rows={4}
-                                className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                 value={profile.description}
                                 onChange={handleChange}
                                 placeholder="Describe your organization, mission, and activities..."
                                 maxLength={1000}
                             />
                         ) : (
-                            <p className="font-medium text-gray-800 min-h-[60px]">{profile.description || <span className="text-gray-400">No description available</span>}</p>
+                            <p className="font-medium text-gray-800 dark:text-gray-200 min-h-[60px]">{profile.description || <span className="text-gray-400 dark:text-gray-500">No description available</span>}</p>
                         )}
                     </section>
 
                     {/* Contact Section */}
                     <section>
-                        <h3 className="text-xl font-bold text-blue-600 mb-2 flex items-center gap-2"><User size={20}/> Contact Information</h3>
+                        <h3 className="text-xl font-bold text-blue-600 dark:text-blue-300 mb-2 flex items-center gap-2"><User size={20}/> Contact Information</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="flex items-center gap-2">
                                 <Building2 size={18} className="text-blue-400" />
@@ -299,13 +299,13 @@ function OrganizerProfile() {
                                     <input
                                         type="text"
                                         id="organizationName"
-                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                        className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                         value={profile.organizationName}
                                         onChange={handleChange}
                                         placeholder="Organization name"
                                     />
                                 ) : (
-                                    <span className="font-medium">{profile.organizationName || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.organizationName || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
@@ -315,16 +315,16 @@ function OrganizerProfile() {
                                         <input
                                             type="text"
                                             id="shortName"
-                                            className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                            className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                             value={profile.shortName}
                                             onChange={handleChange}
                                             placeholder="Short name (will be uppercase)"
                                             maxLength={50}
                                         />
-                                        <div className="text-xs text-gray-500 mt-1">Short names are automatically converted to uppercase</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-300 mt-1">Short names are automatically converted to uppercase</div>
                                     </div>
                                 ) : (
-                                    <span className="font-medium">{profile.shortName || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.shortName || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
@@ -333,13 +333,13 @@ function OrganizerProfile() {
                                     <input
                                         type="text"
                                         id="contactPerson"
-                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                        className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                         value={profile.contactPerson}
                                         onChange={handleChange}
                                         placeholder="Contact person name"
                                     />
                                 ) : (
-                                    <span className="font-medium">{profile.contactPerson || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.contactPerson || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
@@ -348,18 +348,18 @@ function OrganizerProfile() {
                                     <input
                                         type="tel"
                                         id="phone"
-                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                        className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                         value={profile.phone}
                                         onChange={handleChange}
                                         placeholder="Contact phone number"
                                     />
                                 ) : (
-                                    <span className="font-medium">{profile.phone || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.phone || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
                                 <Mail size={18} className="text-blue-400" />
-                                <span className="font-medium">{email}</span>
+                                <span className="font-medium text-gray-800 dark:text-gray-200">{email}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <MapPin size={18} className="text-blue-400" />
@@ -367,13 +367,13 @@ function OrganizerProfile() {
                                     <input
                                         type="text"
                                         id="city"
-                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                        className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                         value={profile.city}
                                         onChange={handleChange}
                                         placeholder="City"
                                     />
                                 ) : (
-                                    <span className="font-medium">{profile.city || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.city || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
@@ -382,21 +382,28 @@ function OrganizerProfile() {
                                     <input
                                         type="url"
                                         id="website"
-                                        className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200"
+                                        className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
                                         value={profile.website}
                                         onChange={handleChange}
                                         placeholder="Website URL (optional)"
                                     />
                                 ) : (
-                                    <span className="font-medium">{profile.website || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.website || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
                                 <Building2 size={18} className="text-blue-400" />
                                 {editMode ? (
-                                    <input type="text" id="parentOrganization" className="text-gray-700 block outline-none border border-gray-300 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200" value={profile.parentOrganization} onChange={handleChange} placeholder="Parent organization" />
+                                    <input
+                                      type="text"
+                                      id="parentOrganization"
+                                      className="text-gray-700 dark:text-gray-200 block outline-none border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-amber-200 dark:focus:ring-amber-900 bg-white dark:bg-gray-900"
+                                      value={profile.parentOrganization}
+                                      onChange={handleChange}
+                                      placeholder="Parent organization"
+                                    />
                                 ) : (
-                                    <span className="font-medium">{profile.parentOrganization || <span className="text-gray-400">Not set</span>}</span>
+                                    <span className="font-medium text-gray-800 dark:text-gray-200">{profile.parentOrganization || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
                                 )}
                             </div>
                         </div>
@@ -404,7 +411,7 @@ function OrganizerProfile() {
                 </main>
             </div>
             <div className="max-w-5xl mx-auto mt-8 flex flex-col items-center">
-                <Link to='/admin/dashboard' className='text-green-600 underline text-base font-medium'>Back to Dashboard</Link>
+                <Link to='/admin/dashboard' className='text-green-600 dark:text-green-400 underline text-base font-medium'>Back to Dashboard</Link>
             </div>
         </div>
     )

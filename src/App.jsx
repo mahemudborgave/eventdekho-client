@@ -7,6 +7,7 @@ import UserContext from './context/UserContext'
 import 'react-toastify/dist/ReactToastify.css';
 import SearchContext from './context/SearchContext'
 import ScrollToTop from './components/ScrollToTop'
+import { ThemeProvider } from './components/ui/ThemeProvider';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -35,20 +36,18 @@ function App() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <>
-      <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >
-        <SearchContext.Provider value={{ searchValue, setSearchValue }}>
-            <ScrollToTop />
-            <Outlet />
-            <ToastContainer
-            theme="colored"
-            transition={Flip}
-            autoClose={1000}
-            style={{ marginTop: '80px' }}
-            />
-        </SearchContext.Provider>
-      </UserContext.Provider>
-    </>
+    <UserContext.Provider value={{ user, setUser, email, setEmail, token, setToken, role, setRole }} >
+      <SearchContext.Provider value={{ searchValue, setSearchValue }}>
+          <ScrollToTop />
+          <Outlet />
+          <ToastContainer
+          theme="colored"
+          transition={Flip}
+          autoClose={1000}
+          style={{ marginTop: '80px' }}
+          />
+      </SearchContext.Provider>
+    </UserContext.Provider>
   )
 }
 

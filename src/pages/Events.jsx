@@ -9,6 +9,7 @@ import UserContext from '../context/UserContext';
 import SearchContext from '../context/SearchContext';
 import Marquee from 'react-fast-marquee';
 import { TrendingUp, ArrowRight, Calendar } from 'lucide-react';
+import FeaturedImagesCarousel from '../components/FeaturedImagesCarousel';
 
 
 function formatEventDate(dateStr) {
@@ -48,16 +49,16 @@ function Events() {
         const sorted = [...res.data].sort((a, b) => new Date(b.postedOn || b.createdAt) - new Date(a.postedOn || a.createdAt));
         setEvents(sorted);
         setOriginalEvents(sorted);
-        
+
         // Calculate statistics
         const totalEvents = sorted.length;
         const totalParticipations = sorted.reduce((sum, event) => sum + (event.participations || 0), 0);
-        
+
         // Fetch organizations count
         try {
           const orgsRes = await axios.get(`${baseURL}:${port}/auth/organizations-with-events`);
           const totalOrganizations = orgsRes.data.length;
-          
+
           setStats({
             totalEvents,
             totalOrganizations,
@@ -139,7 +140,7 @@ function Events() {
               <h1 className="text-lg sm:text-2xl lg:text-4xl font-bold mb-1 sm:mb-3 flex items-center gap-2 sm:gap-3">
                 {/* <Sparkles size={22} className="text-yellow-300 sm:size-10" /> */}
                 Events
-              </h1>   
+              </h1>
               <p className="text-orange-100 text-xs sm:text-base lg:text-lg">Discover exciting events happening around</p>
             </div>
             <div className="flex items-center gap-2 mt-2 sm:mt-0">
@@ -194,14 +195,18 @@ function Events() {
           <Search handleChange={handleChange} handleClick={handleClick} page="event" />
         </div>
 
-        {hot.length > 0 && (
+        <div className='mb-15'>
+          <FeaturedImagesCarousel />
+        </div>
+
+        {/* {hot.length > 0 && (
           <div className="mb-10 border-2 border-amber-300 bg-amber-50 rounded-2xl p-6">
             <h2 className="text-xl font-bold text-amber-900 mb-4">Hot Right Now</h2>
             <Eventt events={hot} />
           </div>
-        )}
+        )} */}
 
-        {recently.length > 0 && (
+        {/* {recently.length > 0 && (
           <div className="mb-10 border-0 rounded-2xl overflow-hidden bg-transparent">
             <div className="p-4 lg:p-6 flex items-center justify-between">
               <h2 className="text-xl font-bold text-[#1C64F2]">Recently Added</h2>
@@ -231,15 +236,17 @@ function Events() {
               ))}
             </Marquee>
           </div>
-        )}
+        )} */}
 
         {events.length === 0 ? (
           <div className="text-center mt-20 text-gray-500 text-lg mb-100">
             No matching events found.
           </div>
         ) : (
-          <div className='p-4 lg:p-6'>
-            <h2 className="text-xl font-bold text-[#1a093f] mb-4">All Events</h2>
+          <div>
+            <div className='flex justify-start mb-6'>
+              <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
+            </div>
             <Eventt events={events} />
           </div>
         )}

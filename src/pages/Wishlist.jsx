@@ -6,8 +6,8 @@ import { Heart } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 function formatEventDate(dateStr) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
 function Wishlist() {
@@ -62,8 +62,8 @@ function Wishlist() {
 
     return (
         <div className="">
-            <div className="flex items-center gap-3 mb-8">
-                <h2 className="text-2xl lg:text-3xl font-bold text-[#0d0c22]">My Wishlist</h2>
+            <div className='flex justify-start mb-6'>
+                <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>My </span>Wishlist</h2>
             </div>
             {loading ? (
                 <div className="flex justify-center items-center min-h-[30vh]">
@@ -108,7 +108,7 @@ function Wishlist() {
                             {/* <div className="text-gray-600 text-xs mt-auto italic mb-4">
                                 {event.eventDescription?.slice(0, 80)}{event.eventDescription?.length > 80 ? '...' : ''}
                             </div> */}
-                            
+
                             {/* Bottom buttons spanning complete card width */}
                             <div className="mt-auto pt-4 border-t border-pink-100">
                                 <div className="flex gap-2">

@@ -3,7 +3,7 @@ import React from 'react';
 
 function UserComp() {
     return (
-        <div className="flex flex-col md:flex-row gap-6 p-15 justify-center items-center">
+        <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
             <div className="border border-gray-500 rounded-xl p-6 lg:w-80 text-center hover:scale-105 transition duration-300">
                 <h2 className="text-xl font-semibold mb-2 flex justify-center items-center gap-2"><GraduationCap />Students</h2>
                 <p className="text-gray-600">Explore and join college events.</p>

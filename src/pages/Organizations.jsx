@@ -36,20 +36,20 @@ function Organizations() {
         const port = import.meta.env.VITE_PORT;
         const res = await fetch(`${baseURL}:${port}/auth/organizations-with-events`);
         const data = await res.json();
-        
+
         setOrganizations(data);
         setFilteredOrganizations(data);
-        
+
         // Calculate statistics
         const totalEvents = data.reduce((sum, org) => sum + (org.eventsHosted || 0), 0);
         const totalOrganizations = data.length;
-        
+
         // Fetch total participations
         try {
           const participationsRes = await fetch(`${baseURL}:${port}/eventt/getevents`);
           const eventsData = await participationsRes.json();
           const totalParticipations = eventsData.reduce((sum, event) => sum + (event.registrations || 0), 0);
-          
+
           setStats({
             totalEvents,
             totalOrganizations,
@@ -247,8 +247,8 @@ function Organizations() {
                 </span>
               )}
             </button>
-            
-            {activeFilters.length > 0 && (  
+
+            {activeFilters.length > 0 && (
               <button
                 onClick={clearAllFilters}
                 className="hidden lg:flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
@@ -257,7 +257,7 @@ function Organizations() {
                 <span className="hidden sm:inline">Clear</span>
               </button>
             )}
-          </div>  
+          </div>
         </div>
 
         {/* Filter Options */}
@@ -275,7 +275,7 @@ function Organizations() {
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${isActive
                       ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                       : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
-                    }`}
+                      }`}
                   >
                     <Icon size={16} />
                     <span className="text-sm font-medium">{option.label}</span>
@@ -297,9 +297,9 @@ function Organizations() {
       </div>
 
       {/* Results Section */}
-      <div className="mb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-          <h2 className="text-lg font-semibold text-gray-800">
+      <div className="mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+          <h2 className="text-base text-gray-500">
             {filteredOrganizations.length} Organization{filteredOrganizations.length !== 1 ? 's' : ''} Found
           </h2>
           {activeFilters.length > 0 && (
@@ -315,14 +315,18 @@ function Organizations() {
         </div>
       </div>
 
+      <div className='flex justify-start mb-6'>
+        <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Organizations</h2>
+      </div>
+
       {/* Organizations Table */}
       {filteredOrganizations.length > 0 ? (
         <div className="w-full">
           {/* Only show mobile card design for all devices */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
             {filteredOrganizations.map((organization, index) => (
-              <div key={organization._id} 
-                   className="bg-gradient-to-r from-blue-200 to-blue-400 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200">
+              <div key={organization._id}
+                className="bg-gradient-to-r from-blue-200 to-blue-400 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200">
                 {/* Header with Organization Info */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -378,7 +382,7 @@ function Organizations() {
             {searchValue || activeFilters.length > 0 ? 'No Organizations Found' : 'No Organizations with Events'}
           </h3>
           <p className="text-gray-500 mb-4 text-sm">
-            {searchValue || activeFilters.length > 0 
+            {searchValue || activeFilters.length > 0
               ? 'Try adjusting your search or filters to find more organizations.'
               : 'Organizations will appear here once they host events.'
             }

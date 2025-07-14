@@ -6,6 +6,8 @@ import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FileText, FileSpreadsheet } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
 
 function EventRegistrationsAdmin() {
   const { eventId } = useParams();
@@ -50,18 +52,18 @@ function EventRegistrationsAdmin() {
       "#", "Registration ID", "Name", "Email", "College", "Branch", "Year", "Course", "Gender", "Mobile", "Created At", "Updated At"
     ];
     const tableRows = registrations.map((reg, index) => [
-      index + 1,
-      reg._id || '',
-      reg.studentName || '',
-      reg.email || '',
-      reg.studentCollegeName || '',
-      reg.branch || '',
-      reg.year || '',
-      reg.course || '',
-      reg.gender || '',
-      reg.mobno || '',
-      reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
-      reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
+        index + 1,
+        reg._id || '',
+        reg.studentName || '',
+        reg.email || '',
+        reg.studentCollegeName || '',
+        reg.branch || '',
+        reg.year || '',
+        reg.course || '',
+        reg.gender || '',
+        reg.mobno || '',
+        reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
+        reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
     ]);
 
     autoTable(doc, {
@@ -107,77 +109,62 @@ function EventRegistrationsAdmin() {
   };
 
   return (
-    <div className='p-4 lg:p-10'>
-      <div className="mb-6">
-        <div className='flex flex-col lg:flex-row justify-between bg-gradient-to-r from-red-100 to-red-400 p-4 mb-10'>
-          <h2 className="text-2xl font-bold text-[#232946]"><span className="text-[#BB4D00]">Event</span> Registrations</h2>
-          <div className="flex gap-3 mt-5 lg:mt-0">
-            <button
-              onClick={exportToPDF}
-              className="flex gap-2 items-center bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-            >
-              <FileText size={20} />Export as PDF
-            </button>
-            <button
-              onClick={exportToExcel}
-              className="flex gap-2 items-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-            >
-              <FileSpreadsheet size={20} />Export as Excel
-            </button>
-          </div>
+    <div className="bg-white dark:bg-gray-900 p-4 md:p-8 rounded-xl">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center w-full gap-4 mb-6">
+        <span className="text-2xl font-bold text-[#232946] dark:text-gray-100"><span className="text-[#BB4D00] dark:text-yellow-400">Event</span> Registrations</span>
+        <div className="flex gap-3 mt-2 lg:mt-0">
+          <Button onClick={exportToPDF} variant="destructive" className="flex gap-2 items-center">
+            <FileText size={20} />Export as PDF
+          </Button>
+          <Button onClick={exportToExcel} variant="secondary" className="flex gap-2 items-center">
+            <FileSpreadsheet size={20} />Export as Excel
+          </Button>
         </div>
-
+      </div>
+      <div className="flex flex-col lg:flex-row gap-4 mb-6">
         {eventInfo.eventName && (
-          <p className="text-sm text-gray-700 lg:mt-2 mt-4">
-            <span className="font-medium">Event:</span> {eventInfo.eventName}
-          </p>
+          <p className="text-sm text-gray-700 dark:text-gray-200"><span className="font-medium">Event:</span> {eventInfo.eventName}</p>
         )}
         {eventInfo.organizationName && (
-          <p className="text-sm text-gray-700 inline-block">
-            <span className="font-medium">College:</span> {eventInfo.organizationName}
-          </p>
+          <p className="text-sm text-gray-700 dark:text-gray-200"><span className="font-medium">College:</span> {eventInfo.organizationName}</p>
         )}
-
       </div>
-
       {loading ? (
-        <div className="text-gray-500">Loading...</div>
+        <div className="text-gray-500 dark:text-gray-400">Loading...</div>
       ) : registrations.length === 0 ? (
-        <div className="text-gray-500">No registrations yet.</div>
+        <div className="text-gray-500 dark:text-gray-400">No registrations yet.</div>
       ) : (
         <div className="w-full overflow-x-auto">
-          <div className="inline-block min-w-max">
-            <table className="table-auto bg-white shadow-md rounded-xl">
-              <thead>
-                <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
-                  <th className="py-3 px-2 text-left sticky left-0 z-10 bg-gray-200">#</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Name</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Email</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Branch</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Year</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Course</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Gender</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Mobile</th>
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
+            <thead className="bg-gray-50 dark:bg-gray-800">
+              <tr>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider sticky left-0 z-10">#</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Name</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Email</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">College</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Branch</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Year</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Course</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Gender</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Mobile</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800 text-sm">
+              {registrations.map((reg, index) => (
+                <tr key={reg._id} className="hover:bg-blue-100 dark:hover:bg-blue-900">
+                  <td className="py-3 px-4 font-bold sticky left-0 z-10 bg-white dark:bg-gray-900 whitespace-nowrap">{index + 1}</td>
+                  <td className="py-3 px-4 min-w-[120px] whitespace-nowrap text-gray-900 dark:text-gray-100">{reg.studentName}</td>
+                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.email}</td>
+                  <td className="py-3 px-4 min-w-[120px] whitespace-nowrap">{reg.studentCollegeName}</td>
+                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.branch}</td>
+                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.year}</td>
+                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.course}</td>
+                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.gender}</td>
+                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.mobno}</td>
                 </tr>
-              </thead>
-              <tbody className="text-gray-700 text-sm">
-                {registrations.map((reg, index) => (
-                  <tr key={reg._id} className="border-b border-gray-200 hover:bg-blue-100">
-                    <td className="py-3 px-2 sticky left-0 z-10 bg-white">{index + 1}</td>
-                    <td className="py-3 px-4">{reg.studentName}</td>
-                    <td className="py-3 px-4">{reg.email}</td>
-                    <td className="py-3 px-4">{reg.studentCollegeName}</td>
-                    <td className="py-3 px-4">{reg.branch}</td>
-                    <td className="py-3 px-4">{reg.year}</td>
-                    <td className="py-3 px-4">{reg.course}</td>
-                    <td className="py-3 px-4">{reg.gender}</td>
-                    <td className="py-3 px-4">{reg.mobno}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

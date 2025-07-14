@@ -9,6 +9,9 @@ import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FileText, FileSpreadsheet } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 
 function ShowEventsAdmin() {
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -182,25 +185,25 @@ function ShowEventsAdmin() {
   return (
     <>
       {isShow ? (
-        <div className="h-full bg-[#F5F6FA] w-full lg:px-[50px] lg:p-8 p-4">
-          <div className="mb-10 flex flex-col lg:flex-row justify-between bg-gradient-to-r from-red-100 to-red-400 p-4">
+        <div className="h-full bg-gray-50 dark:bg-gray-900 w-full lg:px-[50px] lg:p-8 p-4">
+          <div className="mb-10 flex flex-col lg:flex-row justify-between bg-gradient-to-r from-red-100 to-red-400 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 dark:text-gray-100 p-4 rounded-xl">
             <h1 className="text-2xl font-bold tracking-tight mb-5 lg:mb-0 flex-1">
-              <span className="text-[#BB4D00]">Your</span> events
-            </h1> 
+              <span className="text-[#BB4D00] dark:text-yellow-400">Your</span> events
+            </h1>
             <div className="flex flex-col lg:flex-row gap-3">
               <div className="flex gap-3">
-                <button
+                <Button
                   onClick={exportToPDF}
                   className="flex gap-2 items-center bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                 >
                   <FileText size={20} />Export as PDF
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={exportToExcel}
                   className="flex gap-2 items-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                 >
                   <FileSpreadsheet size={20} />Export as Excel
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -210,91 +213,52 @@ function ShowEventsAdmin() {
             </div>
           ) : (
             <div className="w-full overflow-x-auto">
-              <div className="inline-block min-w-max">
-                <table className="table-auto bg-white shadow-md rounded-xl">
-                  {/* <colgroup>
-                  <col className="w-[5%]" />
-                  <col className="w-[15%]" />
-                  <col className="w-[23%]" />
-                  <col className="w-[8%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[12%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[5%]" />
-                </colgroup> */}
-                  <thead>
-                    <tr className="bg-gray-200 text-gray-600 text-sm leading-normal uppercase">
-                      <th className="py-3 px-4 text-left sticky left-0 z-10 bg-gray-200">#</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Event Name</th>
-                      {/* <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">College</th> */}
-                      {/* <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Club</th> */}
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Mode</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Location</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Date</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Posted On</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Closing On</th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold bg-gray-200 text-gray-600 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-700 text-sm">
-                    {events.map((event, index) => (
-                      <tr key={index} className="border-b border-gray-200 hover:bg-blue-100">
-                        <td className="py-3 px-4 sticky left-0 z-10 bg-white">{index + 1}</td>
-                        <td className="py-3 px-6">{event.eventName}</td>
-                        {/* <td className="py-3 px-6 max-w-[500px] truncate" title={event.collegeName}>
-                          {event.collegeName}
-                        </td> */}
-                        {/* <td className="py-3 px-6">{event.parentOrganization}</td> */}
-                        {/* <td className="py-3 px-6">{event.clubName}</td> */}
-                        <td className="py-3 px-6">{event.eventMode}</td>
-                        <td className="py-3 px-6">{event.eventLocation}</td>
-                        <td className="py-3 px-6">{formatDate(event.eventDate)}</td>
-                        <td className="py-3 px-6">{formatDate(event.postedOn)}</td>
-                        <td className="py-3 px-6">{formatDate(event.closeOn)}</td>
-                        <td className="py-3 px-6 text-center">
-                          <Link
-                            to={`/admin/eventdetail/${event._id}`}
-                            className="bg-blue-500 text-white px-3 py-1 rounded mr-2 hover:bg-blue-600"
-                          >
-                            Details
-                          </Link>
-                          <Link
-                            to={`/admin/eventregistrationsadmin/${event._id}`}
-                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 relative"
-                          >
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-lg overflow-hidden">
+                <thead className="bg-gray-50 dark:bg-gray-800">
+                  <tr>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider sticky left-0 z-10">#</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Event Name</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Mode</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Location</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Date</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Posted On</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Closing On</th>
+                    <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
+                  {events.map((event, index) => (
+                    <tr key={index} className="hover:bg-blue-100 dark:hover:bg-blue-900">
+                      <td className="py-3 px-4 font-bold sticky left-0 z-10 bg-white dark:bg-gray-900 whitespace-nowrap">{index + 1}</td>
+                      <td className="py-3 px-4 whitespace-nowrap text-gray-900 dark:text-gray-100">{event.eventName}</td>
+                      <td className="py-3 px-4 whitespace-nowrap">{event.eventMode}</td>
+                      <td className="py-3 px-4 whitespace-nowrap">{event.eventLocation}</td>
+                      <td className="py-3 px-4 whitespace-nowrap">{formatDate(event.eventDate)}</td>
+                      <td className="py-3 px-4 whitespace-nowrap">{formatDate(event.postedOn)}</td>
+                      <td className="py-3 px-4 whitespace-nowrap">{formatDate(event.closeOn)}</td>
+                      <td className="py-3 px-4 whitespace-nowrap">
+                        <div className="flex flex-nowrap gap-2 justify-center overflow-x-auto whitespace-nowrap">
+                          <Link to={`/admin/eventdetail/${event._id}`} className="bg-blue-600 text-white rounded hover:bg-blue-700 px-3 py-1">Details</Link>
+                          <Link to={`/admin/eventregistrationsadmin/${event._id}`} className="bg-green-600 text-white rounded hover:bg-green-700 px-3 py-1 flex items-center gap-1">
                             Registrations
                             <span className="ml-2 inline-block bg-green-200 text-green-700 font-bold px-2 py-0.5 rounded-full text-xs border border-green-500">
                               {registrationCounts[event._id] ?? '-'}
                             </span>
                           </Link>
-                          <Link
-                            to={`/admin/eventqueries/${event._id}`}
-                            className="bg-purple-500 text-white px-3 py-1 rounded ml-2 hover:bg-purple-600 relative"
-                          >
+                          <Link to={`/admin/eventqueries/${event._id}`} className="bg-purple-600 text-white rounded hover:bg-purple-700 px-3 py-1 flex items-center gap-1">
                             Queries
                             <span className="ml-2 inline-block bg-purple-200 text-purple-700 font-bold px-2 py-0.5 rounded-full text-xs border border-purple-500">
                               {queryCounts[event._id] ?? '-'}
                             </span>
                           </Link>
-                          <button
-                            onClick={() => handleUpdate(event)}
-                            className="bg-yellow-500 text-white px-3 py-1 rounded ml-2 hover:bg-yellow-600"
-                          >
-                            Update
-                          </button>
-                          <button
-                            onClick={() => handleDelete(event._id)}
-                            className="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-600"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                          <button onClick={() => handleUpdate(event)} className="bg-yellow-500 text-white rounded hover:bg-yellow-600 px-3 py-1">Update</button>
+                          <button onClick={() => handleDelete(event._id)} className="bg-red-600 text-white rounded hover:bg-red-700 px-3 py-1">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

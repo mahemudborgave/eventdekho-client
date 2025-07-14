@@ -2,8 +2,8 @@ import React from 'react';
 
 function NumbersComp() {
   return (
-    <div className="py-12 lg:px-40 px-4">
-      <h2 className="text-2xl lg:text-3xl font-semibold mb-8 text-center text-[#0d0c22]">
+    <div className="lg:px-40 px-4">
+      <h2 className="text-2xl lg:text-3xl font-semibold mb-6 text-center text-[#0d0c22]">
         Platform Statistics
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -14,9 +14,9 @@ import coepLogo from '../assets/images/colleges/College_of_Engineering,_Pune_log
 
 function CompaniesCoro() {
   return (
-    <div className='flex h-20 lg:h-25 bg-gray-200'>
+    <div className='flex h-20 lg:h-25 bg-gray-300'>
 
-      <div className='text-sm text-left flex flex-col justify-center lg:px-10 px-5 lg:w-45 w-30'>
+      <div className='text-sm text-left flex flex-col justify-center lg:px-10 px-5 lg:w-45 w-30 border-l-6 bg-gray-300'>
         Colleges
         <span className='font-bold text-md lg:text-[20px] text-[#0d0c22]'>
           Trust us
