@@ -68,9 +68,13 @@ function Login() {
                 setTimeout(() => {
                     // Redirect based on role
                     if (res.data.user.role === 'organizer') {
-                        navigate('/admin/profile');
+                        navigate('/admin/dashboard');
                     } else {
-                        navigate('/studentprofile');
+                        // For students, redirect to last visited page or smart path
+                        const lastPage = getLastVisitedPage();
+                        const redirectPath = getSmartRedirectPath(res.data.user.role, lastPage);
+                        clearLastVisitedPage();
+                        navigate(redirectPath);
                     }
                 }, 1000);
             } else {

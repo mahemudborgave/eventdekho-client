@@ -68,7 +68,12 @@ function Register() {
                 
                 // Get last visited page and determine redirect path
                 const lastPage = getLastVisitedPage();
-                const redirectPath = getSmartRedirectPath(res.data.user.role, lastPage);
+                let redirectPath = '/';
+                if (res.data.user.role === 'organizer') {
+                  redirectPath = '/admin/profile';
+                } else {
+                  redirectPath = getSmartRedirectPath(res.data.user.role, lastPage);
+                }
                 
                 toast.success("Sign Up successful and logged in!", { autoClose: 1000 });
                 setTimeout(() => {

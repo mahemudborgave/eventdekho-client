@@ -77,8 +77,26 @@ function Events() {
     const fetchEvents = async () => {
       try {
         const res = await axios.get(`${baseURL}:${port}/eventt/getevents`)
-        // Sort by postedOn or createdAt descending (newest first)
-        const sorted = [...res.data].sort((a, b) => new Date(b.postedOn || b.createdAt) - new Date(a.postedOn || a.createdAt));
+        // Sort by eventDate + eventTime (if available), then postedOn or createdAt descending (newest first)
+        const sorted = [...res.data].sort((a, b) => {
+          // Prefer eventDate + eventTime if available
+          const getDateTime = (event) => {
+            let dateStr = event.eventDate || event.date || event.createdAt;
+            let timeStr = event.eventTime || '23:59'; // Use end of day for missing time to push undated events lower
+            if (dateStr) {
+              if (dateStr instanceof Date) dateStr = dateStr.toISOString().slice(0, 10);
+              return new Date(`${dateStr}T${timeStr}`);
+            }
+            return new Date(0); // fallback to epoch
+          };
+          const dateA = getDateTime(a);
+          const dateB = getDateTime(b);
+          // Descending order (latest first)
+          if (dateB > dateA) return 1;
+          if (dateB < dateA) return -1;
+          // Fallback to createdAt only
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
         setEvents(sorted);
         setOriginalEvents(sorted);
         // Debug: Log all events after fetch and sort

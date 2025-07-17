@@ -369,32 +369,7 @@ function OrganizerProfile() {
 
                 {/* Main Card */}
                 <main className="flex-1 w-full bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 flex flex-col gap-8 border border-blue-100 dark:border-gray-700 relative">
-                    {/* Floating Action Buttons */}
-                    {!editMode ? (
-                        <div>
-                        <button
-                            onClick={handleEdit}
-                            className="flex bg-amber-400 dark:bg-amber-700 hover:bg-amber-500 dark:hover:bg-amber-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
-                        >
-                            <Edit size={20} /> Edit
-                        </button>
-                        </div>
-                    ) : (
-                        <div className="flex gap-2 z-10">
-                            <button
-                                onClick={handleSave}
-                                className="bg-green-500 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
-                            >
-                                <Save size={20} /> Save
-                            </button>
-                            <button
-                                onClick={handleCancel}
-                                className="bg-gray-400 dark:bg-gray-700 hover:bg-gray-500 dark:hover:bg-gray-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
-                            >
-                                <Close size={20} /> Cancel
-                            </button>
-                        </div>
-                    )}
+                    
 
                     {/* About Section */}
                     <section>
@@ -533,6 +508,33 @@ function OrganizerProfile() {
                             </div>
                         </div>
                     </section>
+
+                    {/* Floating Action Buttons */}
+                    {!editMode ? (
+                        <div>
+                        <button
+                            onClick={handleEdit}
+                            className="flex bg-amber-400 dark:bg-amber-700 hover:bg-amber-500 dark:hover:bg-amber-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
+                        >
+                            <Edit size={20} /> Edit
+                        </button>
+                        </div>
+                    ) : (
+                        <div className="flex gap-2 z-10">
+                            <button
+                                onClick={handleSave}
+                                className="bg-green-500 dark:bg-green-700 hover:bg-green-600 dark:hover:bg-green-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
+                            >
+                                <Save size={20} /> Save
+                            </button>
+                            <button
+                                onClick={handleCancel}
+                                className="bg-gray-400 dark:bg-gray-700 hover:bg-gray-500 dark:hover:bg-gray-800 text-white rounded-full py-2 px-5 shadow-lg transition flex items-center gap-2"
+                            >
+                                <Close size={20} /> Cancel
+                            </button>
+                        </div>
+                    )}  
                 </main>
             </div>
             <div className="max-w-5xl mx-auto mt-8 flex flex-col items-center">

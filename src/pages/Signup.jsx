@@ -202,9 +202,13 @@ function Signup() {
                 setEmail(res.data.user.email);
                 setRole(res.data.user.role);
                 
-                toast.success("Student account created successfully! Redirecting to your profile page...", { autoClose: 2000 });
+                // Redirect to last visited page or smart path
+                const lastPage = getLastVisitedPage();
+                const redirectPath = getSmartRedirectPath(res.data.user.role, lastPage);
+                toast.success("Student account created successfully! Redirecting...", { autoClose: 2000 });
                 setTimeout(() => {
-                    navigate('/studentprofile');
+                    clearLastVisitedPage();
+                    navigate(redirectPath);
                 }, 2000);
             }
         } catch (error) {

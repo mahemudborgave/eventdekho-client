@@ -34,12 +34,17 @@ function AdminNavbar({ onToggle }) {
       localStorage.removeItem('user');
       localStorage.removeItem('email');
       localStorage.removeItem('role');
+      localStorage.removeItem('theme');
       setToken(null);
       setUser(null);
       setEmail(null);
       setRole(null);
+      // Reset theme to light and reload the app
+      localStorage.setItem('theme', 'light');
       toast.success('Logged Out!', { autoClose: 2000 });
-      navigate('/');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
     }
   };
 
@@ -62,10 +67,10 @@ function AdminNavbar({ onToggle }) {
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-md">
         <div className="flex items-center justify-between px-4 py-3">
           {/* Logo/Brand */}
-            <Link to="/admin/dashboard" className="flex items-center group">
-            <h1 className="text-xl font-bold text-amber-700 dark:text-amber-400 group-hover:underline">EventApply</h1>
-            <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900 dark:text-amber-300 px-2 py-1 rounded">Admin</span>
-            </Link>
+          <Link to="/admin/dashboard" className="flex items-center group">
+            <h1 className="text-lg font-bold text-amber-700 dark:text-amber-500 group-hover:underline">EventApply</h1>
+            <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900/50 dark:text-amber-600 px-2 py-1 rounded">Admin</span>
+          </Link>
           <div className="flex items-center gap-3">
             <ThemeSwitcher />
             <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
@@ -75,15 +80,21 @@ function AdminNavbar({ onToggle }) {
                 </Button>
               </SheetTrigger>
               <SheetContent
-                className="dark:bg-gray-900 dark:text-gray-100 transition-transform duration-300 ease-in-out transform data-[state=open]:translate-x-0 data-[state=closed]:-translate-x-full"
+                className="dark:bg-gray-900 dark:text-gray-100 transition-transform duration-300 ease-in-out transform data-[state=open]:translate-x-0 data-[state=closed]:-translate-x-full p-4"
                 style={{ willChange: 'transform' }}
               >
                 <VisuallyHidden>
                   <DialogTitle>Admin Navigation Menu</DialogTitle>
                   <DialogDescription>Mobile navigation for admin panel</DialogDescription>
                 </VisuallyHidden>
-                <div className="flex items-center justify-between px-4 pt-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                  <span className="font-bold text-lg text-amber-700 dark:text-amber-400">Admin</span>
+                <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+                  <div className='pb-3'>
+                  <Link to="/admin/dashboard" className="flex items-center group">
+                    <h1 className="text-lg font-bold text-amber-700 dark:text-amber-500 group-hover:underline">EventApply</h1>
+                    <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900/50 dark:text-amber-600 px-2 py-1 rounded">Admin</span>
+                  </Link>
+
+                  </div>
                   <SheetClose asChild>
                     <button
                       aria-label="Close menu"
@@ -93,22 +104,22 @@ function AdminNavbar({ onToggle }) {
                     </button>
                   </SheetClose>
                 </div>
-                <div className="flex flex-col gap-4 mt-4">
+                <div className="flex flex-col gap-2 mt-4">
                   {navLinks.map(link => (
-              <NavLink 
+                    <NavLink
                       key={link.to}
                       to={link.to}
                       className={({ isActive }) =>
-                        `flex items-center gap-3 py-2 px-3 rounded font-medium transition ${isActive ? 'bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300' : 'hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200'}`
+                        `flex items-center gap-3 py-2 px-6 w-full rounded-none font-medium transition text-left ${isActive ? 'bg-gray-100 dark:bg-gray-700 text-amber-700 dark:text-amber-500' : 'hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200'} `
                       }
                       onClick={() => {
                         setMobileNavOpen(false);
                         document.activeElement.blur();
                       }}
-              >
+                    >
                       {link.icon}
                       {link.label}
-              </NavLink>
+                    </NavLink>
                   ))}
                   <div className="border-t border-gray-200 dark:border-gray-700 my-2" />
                   <SheetClose asChild>
@@ -116,24 +127,24 @@ function AdminNavbar({ onToggle }) {
                       <School size={20} /> Client Portal
                     </Link>
                   </SheetClose>
-              {user ? (
-                <>
-                      <Button variant="ghost" className="w-full justify-start dark:text-gray-200" onClick={() => navigate('/admin/profile')}>
-                        <User size={20} className="mr-2" /> Profile
+                  {user ? (
+                    <>
+                      <Button variant="outline" className="w-full justify-start dark:text-gray-200 py-7 mb-1" onClick={() => navigate('/admin/profile')}>
+                        <span className="break-words whitespace-normal text-center">{user}</span>
                       </Button>
                       <Button variant="destructive" className="w-full justify-start" onClick={handleLogout}>
                         <LogOut size={20} className="mr-2" /> Logout
                       </Button>
-                </>
-              ) : (
+                    </>
+                  ) : (
                     <Button variant="default" className="w-full justify-start dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800" onClick={handleLogin}>
                       <User size={20} className="mr-2" /> Login
                     </Button>
-              )}
+                  )}
                 </div>
                 <div className="mt-8 flex justify-center">
                   <ThemeSwitcher />
-              </div>
+                </div>
                 <SheetClose />
               </SheetContent>
             </Sheet>
@@ -145,10 +156,15 @@ function AdminNavbar({ onToggle }) {
       {role === 'organizer' && (
         <aside className={`hidden md:flex flex-col fixed top-0 left-0 h-full z-40 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-md transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <span className="font-bold text-lg text-amber-700 dark:text-amber-400" title={isSidebarCollapsed ? 'Admin' : undefined}>
-              {!isSidebarCollapsed && 'ADMIN'}
-            </span>
-            <Button variant="ghost" size="icon" className="dark:text-gray-200" onClick={() => { setIsSidebarCollapsed(v => !v); onToggle && onToggle(!isSidebarCollapsed); }}>
+
+            {!isSidebarCollapsed && (
+              <Link to="/admin/dashboard" className="flex items-center group">
+                <h1 className="text-lg font-bold text-amber-700 dark:text-amber-500 group-hover:underline">EventApply</h1>
+                <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900/50 dark:text-amber-600 px-2 py-1 rounded">Admin</span>
+              </Link>
+            )}
+
+            <Button variant="outline" size="icon" className={`dark:text-gray-200 ${isSidebarCollapsed ? 'ml-0' : 'ml-4'}`} onClick={() => { setIsSidebarCollapsed(v => !v); onToggle && onToggle(!isSidebarCollapsed); }}>
               {isSidebarCollapsed ? <Menu size={22} /> : <X size={22} />}
             </Button>
           </div>
@@ -158,7 +174,7 @@ function AdminNavbar({ onToggle }) {
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 py-3 px-6 w-full rounded-none font-medium transition text-left ${isActive ? 'bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300' : 'hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200'} `
+                  `flex items-center gap-3 py-2 px-6 w-full rounded-none font-medium transition text-left ${isActive ? 'bg-gray-100 dark:bg-gray-700 text-amber-700 dark:text-amber-500' : 'hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200'} `
                 }
                 style={{ minWidth: 0 }}
                 title={isSidebarCollapsed ? link.label : undefined}
@@ -168,12 +184,11 @@ function AdminNavbar({ onToggle }) {
               </NavLink>
             ))}
           </nav>
-          <div className="border-t border-gray-200 dark:border-gray-700 my-2 mx-4" />
-          <div className="mt-auto flex flex-col gap-2 p-4">
-            <Link className="text-red-600 dark:text-red-400 underline mb-2 text-center" to='/' target="_blank">Client Portal</Link>
+          <div className="mt-auto flex flex-col gap-2 p-4 border-t border-gray-200 dark:border-gray-700">
+            <Link className="text-red-600 dark:text-red-400 underline mb-1 text-center" to='/' target="_blank">Client Portal</Link>
             {user && !isSidebarCollapsed && (
-              <Button variant="ghost" className="mb-3 w-full justify-start dark:text-gray-200 break-words whitespace-normal text-left" onClick={() => navigate('/admin/profile')}>
-                <User className="mr-2" /> <span className="break-words whitespace-normal">{user}</span>
+              <Button variant="outline" className="mb-3 py-8 w-full justify-start dark:text-gray-200 break-words whitespace-normal text-left" onClick={() => navigate('/admin/profile')}>
+                <span className="break-words whitespace-normal text-center">{user}</span>
               </Button>
             )}
             {user ? (
@@ -183,7 +198,7 @@ function AdminNavbar({ onToggle }) {
             ) : (
               <Button variant="default" className="w-full justify-center dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800" onClick={handleLogin} title={isSidebarCollapsed ? 'Login' : undefined}>
                 <User className="mr-2" /> {!isSidebarCollapsed && 'Login'}
-              </Button> 
+              </Button>
             )}
             <div className="mt-4 flex justify-center">
               <ThemeSwitcher />

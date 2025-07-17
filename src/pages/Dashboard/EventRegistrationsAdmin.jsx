@@ -74,9 +74,11 @@ function EventRegistrationsAdmin() {
     doc.text(`Organization: ${eventInfo.organizationName}`, 14, 26);
 
     const tableColumn = [
-      "#", "Registration ID", "Name", "Email", "College", "Branch", "Year", "Course", "Gender", "Mobile", "Created At", "Updated At"
+      "#", "Registration ID", "Name", "Email", "College", "Branch", "Year", "Course", "Gender", "Mobile", "Transaction ID", "Payment Status", "Created At", "Updated At"
     ];
-    const tableRows = registrations.map((reg, index) => [
+    const tableRows = registrations.map((reg, index) => {
+      const payment = payments.find(p => p.studentId === reg.email);
+      return [
         index + 1,
         reg._id || '',
         reg.studentName || '',
@@ -87,9 +89,12 @@ function EventRegistrationsAdmin() {
         reg.course || '',
         reg.gender || '',
         reg.mobno || '',
+        payment ? payment.razorpay_payment_id : 'N/A',
+        payment ? payment.status : 'N/A',
         reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
         reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
-    ]);
+      ];
+    });
 
     autoTable(doc, {
       head: [tableColumn],
@@ -110,20 +115,25 @@ function EventRegistrationsAdmin() {
   };
 
   const exportToExcel = () => {
-    const worksheetData = registrations.map((reg, index) => ({
-      "#": index + 1,
-      "Registration ID": reg._id || '',
-      "Name": reg.studentName || '',
-      "Email": reg.email || '',
-      "College": reg.studentCollegeName || '',
-      "Branch": reg.branch || '',
-      "Year": reg.year || '',
-      "Course": reg.course || '',
-      "Gender": reg.gender || '',
-      "Mobile": reg.mobno || '',
-      "Created At": reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
-      "Updated At": reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
-    }));
+    const worksheetData = registrations.map((reg, index) => {
+      const payment = payments.find(p => p.studentId === reg.email);
+      return {
+        "#": index + 1,
+        "Registration ID": reg._id || '',
+        "Name": reg.studentName || '',
+        "Email": reg.email || '',
+        "College": reg.studentCollegeName || '',
+        "Branch": reg.branch || '',
+        "Year": reg.year || '',
+        "Course": reg.course || '',
+        "Gender": reg.gender || '',
+        "Mobile": reg.mobno || '',
+        "Transaction ID": payment ? payment.razorpay_payment_id : 'N/A',
+        "Payment Status": payment ? payment.status : 'N/A',
+        "Created At": reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
+        "Updated At": reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
+      };
+    });
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
     const workbook = XLSX.utils.book_new();
@@ -174,6 +184,7 @@ function EventRegistrationsAdmin() {
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Mobile</th>
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Transaction ID</th>
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Payment Status</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Registered On</th>
                 </tr>
               </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800 text-sm">
@@ -201,6 +212,7 @@ function EventRegistrationsAdmin() {
                     <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.mobno}</td>
                     <td className="py-3 px-4 min-w-[120px] break-words w-full">{payment ? payment.razorpay_payment_id : 'N/A'}</td>
                     <td className="py-3 px-4 min-w-[120px] break-words w-full font-semibold">{payment ? payment.status : 'N/A'}</td>
+                    <td className="py-3 px-4 min-w-[180px] whitespace-nowrap w-full">{reg.createdAt ? new Date(reg.createdAt).toLocaleString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }) : ''}</td>
                   </tr>
                 );
               })}

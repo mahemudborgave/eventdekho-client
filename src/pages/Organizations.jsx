@@ -24,6 +24,7 @@ function Organizations() {
     totalOrganizations: 0,
     totalParticipations: 0
   });
+  const [filteredOrganizations, setFilteredOrganizations] = useState([]);
 
   // Filter options
   const filterOptions = [
@@ -77,6 +78,11 @@ function Organizations() {
 
     getOrganizations();
   }, []);
+
+  useEffect(() => {
+    // After organizations are loaded, initialize filteredOrganizations
+    setFilteredOrganizations(organizations);
+  }, [organizations]);
   // Hide dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -409,11 +415,11 @@ function Organizations() {
       </div>
 
       {/* Organizations section*/}
-      {organizations.length > 0 ? (
+      {filteredOrganizations.length > 0 ? (
         <div className="w-full">
           {/* Only show mobile card design for all devices */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
-            {organizations.map((organization, index) => (
+            {filteredOrganizations.map((organization, index) => (
               <div key={organization._id}
                 className="bg-gradient-to-r from-blue-100 to-blue-100 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 {/* Header with Organization Info */}

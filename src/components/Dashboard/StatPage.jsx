@@ -129,9 +129,14 @@ function StatPage() {
           registrations: res.data.totalRegistrations,
           upcoming: res.data.upcomingEvents,
         });
-        // Fetch unresolved queries
+        // Fetch unresolved queries for only the user's events
+        const eventsRes = await axios.get(`${baseURL}:${port}/eventt/getevents`);
+        const userEvents = eventsRes.data.filter(event => event.email === email);
+        const userEventIds = userEvents.map(event => event._id);
         const qres = await axios.get(`${baseURL}:${port}/query`);
-        const unresolved = Array.isArray(qres.data) ? qres.data.filter(q => !q.resolution || q.resolution.trim() === '').length : 0;
+        const unresolved = Array.isArray(qres.data)
+          ? qres.data.filter(q => userEventIds.includes(q.eventId) && (!q.resolution || q.resolution.trim() === '')).length
+          : 0;
         setPendingQueries(unresolved);
       } catch (err) {
         console.error('Error fetching stats:', err);

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
+import UserContext from '../../context/UserContext';
 
 function QueriesAdmin() {
     const [eventQueries, setEventQueries] = useState([]);
@@ -11,6 +12,7 @@ function QueriesAdmin() {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const port = import.meta.env.VITE_PORT;
     const navigate = useNavigate();
+    const { email } = useContext(UserContext);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -37,11 +39,19 @@ function QueriesAdmin() {
         if (!isShow) return;
         const fetchQueries = async () => {
             try {
+                // Fetch all events
+                const eventsRes = await axios.get(`${baseURL}:${port}/eventt/getevents`);
+                // Only keep events created by the logged-in user
+                const userEvents = eventsRes.data.filter(event => event.email === email);
+                const userEventIds = userEvents.map(event => event._id);
+                // Fetch all queries
                 const res = await axios.get(`${baseURL}:${port}/query`);
                 const queries = res.data || [];
+                // Only keep queries for the user's events
+                const filteredQueries = queries.filter(q => userEventIds.includes(q.eventId));
                 // Group queries by eventId
                 const grouped = {};
-                queries.forEach(q => {
+                filteredQueries.forEach(q => {
                     if (!grouped[q.eventId]) {
                         grouped[q.eventId] = {
                             eventName: q.eventName,
@@ -66,7 +76,7 @@ function QueriesAdmin() {
             }
         };
         fetchQueries();
-    }, [isShow, baseURL, port]);
+    }, [isShow, baseURL, port, email]);
 
     if (!isShow) {
         return (

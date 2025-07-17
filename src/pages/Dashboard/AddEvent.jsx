@@ -368,7 +368,15 @@ export default function AddEvent() {
         {/* Responsive flex container for form and preview */}
         <div className="flex flex-col md:flex-row md:items-start gap-8 w-full max-w-7xl mx-auto px-2 md:px-6">
           {/* Form section */}
-          <form className="flex flex-col gap-5 w-full md:w-2/3 lg:w-3/5 py-5 px-0" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-5 w-full md:w-2/3 lg:w-3/5 py-5 px-0"
+            onSubmit={handleSubmit}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+              }
+            }}
+          >
             <Card className="mb-5 dark:bg-gray-800 dark:text-gray-100">
               <CardHeader>
                 <h1 className="text-2xl font-bold tracking-tight mb-2 flex-1">

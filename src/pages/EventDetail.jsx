@@ -188,6 +188,14 @@ function EventDetail() {
 
   const status = event ? getEventStatus(event) : { label: 'Loading', color: 'bg-gray-500', live: false };
 
+  // Helper functions to check for non-empty data
+  const hasNonEmptyStage = event => Array.isArray(event.stages) && event.stages.some(s => s && (s.title?.trim() || s.description?.trim()));
+  const hasNonEmptyPrize = event => Array.isArray(event.prizes) && event.prizes.some(p => p && (p.title?.trim() || p.amount?.trim() || p.description?.trim()));
+  const hasNonEmptyBenefit = event => Array.isArray(event.benefits) && event.benefits.some(b => b && b.trim());
+  const hasNonEmptyRule = event => Array.isArray(event.rules) && event.rules.some(r => r && r.trim());
+  const hasNonEmptyGuideline = event => Array.isArray(event.guidelines) && event.guidelines.some(g => g && g.trim());
+  const hasNonEmptyBring = event => Array.isArray(event.bring) && event.bring.some(b => b && b.trim());
+
   if (!event) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
@@ -206,27 +214,74 @@ function EventDetail() {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+            <div className="block">
+              {event.posterUrl ? (
+                <div className="relative flex justify-center">
+                  <img src={event.posterUrl} alt="Event Poster" className="rounded-xl shadow-lg border border-white/20 w-full max-w-md object-cover aspect-[1200/627]" />
+                  <button
+                    onClick={() => setShowPosterModal(true)}
+                    className="absolute bottom-2 right-2 bg-black/70 text-white px-3 py-1 rounded-lg text-xs font-semibold opacity-80 hover:opacity-100 transition-opacity z-10"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}
+                    title="Enlarge Poster"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V6a2 2 0 012-2h2m8 0h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2m-8 0H6a2 2 0 01-2-2v-2" /></svg>
+                    Enlarge
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <h3 className="text-lg font-bold mb-4">Event Highlights</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-yellow-400" />
+                      <span className="text-sm">Amazing Prizes</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users2 className="w-5 h-5 text-blue-400" />
+                      <span className="text-sm">Networking Opportunities</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-5 h-5 text-purple-400" />
+                      <span className="text-sm">Skill Development</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Target className="w-5 h-5 text-green-400" />
+                      <span className="text-sm">Real-world Experience</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <div className={`px-2 py-1 rounded-full text-xs font-semibold ${status.color} text-white`}>
-                  {status.live && <span className="inline-block w-1.5 h-1.5 rounded-full bg-white mr-1 animate-pulse"></span>}
+              {/* Top-right badges: Status and Price/Free */}
+              <div className="flex justify-end gap-2 mb-2">
+                <div className={`flex items-center px-3 py-1 rounded-full font-semibold shadow border ${status.live
+                  ? 'bg-gradient-to-r from-green-400 to-green-600 text-white border-green-400'
+                  : status.label === 'Upcoming'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white border-blue-400'
+                    : 'bg-gradient-to-r from-gray-300 to-gray-500 text-gray-100 border-gray-400'} animate-fade-in`}
+                  style={{ fontSize: '0.95rem', fontWeight: 600, letterSpacing: '0.01em', minWidth: 0 }}>
+                  {status.live && (
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-lime-300 mr-1 animate-pulse" style={{ boxShadow: '0 0 4px 1px #bef264' }}></span>
+                  )}
                   {status.label}
                 </div>
-                <div className="text-xs opacity-90">by {event.parentOrganization || event.organizationName}</div>
-              </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight flex items-center gap-4">
-                {event.eventName}
                 {Number(event.fee) > 0 ? (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 border border-yellow-400 text-yellow-800 font-semibold text-sm ml-2">
-                                  <IndianRupee size={15}/>
-                                  {Number(event.fee)}
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm ml-2">
-                                  FREE
-                                </span>
-                              )}
+                  <span className="inline-flex items-center px-3 py-1 rounded-full border-2 bg-[#DC3C22] text-white font-bold text-sm">
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7l10 10M7 17L17 7" /></svg> */}
+                    <IndianRupee className="inline-block" size={20} />{Number(event.fee)}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm">
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7l10 10M7 17L17 7" /></svg> */}
+                    FREE
+                  </span>
+                )}
+              </div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 gap-4 text-center">
+                {event.eventName}
               </h1>
+              <div className="text-xs opacity-90 mb-5 text-center">{event.clubName} - {event.parentOrganization || event.organizationName}</div>
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
@@ -300,38 +355,7 @@ function EventDetail() {
               </div>
             </div>
 
-            <div className="hidden lg:block">
-              {event.posterUrl ? (
-                <div className="relative group cursor-pointer" onClick={() => setShowPosterModal(true)}>
-                  <img src={event.posterUrl} alt="Event Poster" className="rounded-xl shadow-lg border border-white/20 w-full max-w-md object-cover aspect-[1200/627]" />
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-xl transition-opacity">
-                    <span className="text-white text-lg font-semibold">View Poster</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                  <h3 className="text-lg font-bold mb-4">Event Highlights</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Trophy className="w-5 h-5 text-yellow-400" />
-                      <span className="text-sm">Amazing Prizes</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users2 className="w-5 h-5 text-blue-400" />
-                      <span className="text-sm">Networking Opportunities</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-purple-400" />
-                      <span className="text-sm">Skill Development</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Target className="w-5 h-5 text-green-400" />
-                      <span className="text-sm">Real-world Experience</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+
 
             {/* Poster Expand Modal */}
             <Modal open={showPosterModal} onClose={() => setShowPosterModal(false)}>
@@ -341,7 +365,7 @@ function EventDetail() {
                   alt="Event Poster Expanded"
                   className="max-w-3xl w-full h-auto rounded-xl shadow-lg border"
                 />
-                <button onClick={() => setShowPosterModal(false)} className="mt-4 px-6 py-2 bg-amber-500 text-white rounded-lg font-semibold">Close</button>
+                {/* <button onClick={() => setShowPosterModal(false)} className="mt-4 px-6 py-2 bg-amber-500 text-white rounded-lg font-semibold">Close</button> */}
               </div>
             </Modal>
           </div>
@@ -357,20 +381,19 @@ function EventDetail() {
               <h3 className="text-lg font-bold text-gray-900 mb-4">Event Sections</h3>
               <nav className="space-y-2">
                 {[
-                  { id: 'overview', label: 'Overview', icon: Info },
-                  { id: 'stages', label: 'Event Stages', icon: Target },
-                  { id: 'prizes', label: 'Prizes & Rewards', icon: Trophy },
-                  { id: 'rules', label: 'Rules & Guidelines', icon: Shield },
-                  { id: 'timeline', label: 'Timeline', icon: Calendar }
-                ].map((section) => (
+                  { id: 'overview', label: 'Overview', icon: Info, show: true },
+                  { id: 'stages', label: 'Event Stages', icon: Target, show: hasNonEmptyStage(event) },
+                  { id: 'prizes', label: 'Prizes & Rewards', icon: Trophy, show: hasNonEmptyPrize(event) },
+                  { id: 'rules', label: 'Rules & Guidelines', icon: Shield, show: hasNonEmptyRule(event) || hasNonEmptyGuideline(event) || hasNonEmptyBring(event) },
+                  { id: 'timeline', label: 'Timeline', icon: Calendar, show: true }
+                ].filter(section => section.show).map((section) => (
                   <button
                     key={section.id}
                     onClick={() => {
                       sectionRefs.current[section.id]?.current?.scrollIntoView({ behavior: 'smooth' });
                       setCurrentSection(section.id); // Set immediately on click for instant feedback
                     }}
-                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium transition-all duration-200 hover:bg-gray-100 text-gray-700 hover:text-gray-900 ${currentSection === section.id ? 'bg-blue-100 text-blue-700 font-bold shadow border-l-4' : ''
-                      }`}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm font-medium transition-all duration-200 hover:bg-gray-100 text-gray-700 hover:text-gray-900 ${currentSection === section.id ? 'bg-blue-100 text-blue-700 font-bold shadow border-l-4' : ''}`}
                   >
                     <section.icon className="w-4 h-4" />
                     {section.label}
@@ -435,12 +458,12 @@ function EventDetail() {
                 </div>
               </div>
 
-              {/* Event Stages Section */}
-              <div id="stages" ref={sectionRefs.current['stages']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Stages</h2>
-                <div className="space-y-4">
-                  {event.stages && event.stages.length > 0 ? (
-                    event.stages.map((stage, idx) => (
+              {/* Event Stages Section (only if data) */}
+              {hasNonEmptyStage(event) && (
+                <div id="stages" ref={sectionRefs.current['stages']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Stages</h2>
+                  <div className="space-y-4">
+                    {event.stages.map((stage, idx) => (
                       <div key={idx} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-4 flex flex-col md:flex-row items-start gap-3">
                         <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold text-lg">{idx + 1}</div>
                         <div>
@@ -448,105 +471,93 @@ function EventDetail() {
                           <p className="opacity-90 text-sm">{stage.description}</p>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-gray-400 italic">No stages specified.</div>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
-
-              {/* Prizes Section */}
-              <div id="prizes" ref={sectionRefs.current['prizes']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Prizes & Rewards</h2>
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                  {event.prizes && event.prizes.length > 0 ? (
-                    event.prizes.map((prize, idx) => (
+              )}
+              {/* Prizes Section (only if data) */}
+              {hasNonEmptyPrize(event) && (
+                <div id="prizes" ref={sectionRefs.current['prizes']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Prizes & Rewards</h2>
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                    {event.prizes.map((prize, idx) => (
                       <div key={idx} className="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white rounded-lg p-4 text-center flex flex-col items-center">
                         <Trophy className="w-12 h-12 mx-auto mb-3" />
                         <h3 className="text-lg font-bold mb-1">{prize.title}</h3>
                         <p className="text-lg font-semibold mb-1">{prize.amount}</p>
                         <p className="opacity-90 text-sm">{prize.description}</p>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-gray-400 italic">No prizes specified.</div>
-                  )}
+                    ))}
+                  </div>
                 </div>
-                {/* Additional Benefits */}
+              )}
+              {/* Additional Benefits (only if data) */}
+              {hasNonEmptyBenefit(event) && (
                 <div className="mt-6 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg p-4">
                   <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
                     <Gift className="w-4 h-4" />
                     Additional Benefits
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {event.benefits && event.benefits.length > 0 ? (
-                      event.benefits.map((benefit, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4" />
-                          <span className="text-sm">{benefit}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-gray-200 italic">No additional benefits specified.</div>
+                    {event.benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4" />
+                        <span className="text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {/* Rules Section (only if data) */}
+              {(hasNonEmptyRule(event) || hasNonEmptyGuideline(event) || hasNonEmptyBring(event)) && (
+                <div id="rules" ref={sectionRefs.current['rules']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Rules & Guidelines</h2>
+                  <div className="space-y-4">
+                    {/* Important Rules */}
+                    {hasNonEmptyRule(event) && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <h3 className="text-lg font-bold text-red-800 mb-3 flex items-center gap-2">
+                          <AlertCircle className="w-4 h-4" />
+                          Important Rules
+                        </h3>
+                        <ul className="list-disc pl-6 space-y-1">
+                          {event.rules.map((rule, idx) => (
+                            <li key={idx} className="text-sm text-red-900">{rule}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {/* General Guidelines */}
+                    {hasNonEmptyGuideline(event) && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <h3 className="text-lg font-bold text-yellow-800 mb-3 flex items-center gap-2">
+                          <BookOpen className="w-4 h-4" />
+                          General Guidelines
+                        </h3>
+                        <ul className="list-disc pl-6 space-y-1">
+                          {event.guidelines.map((guide, idx) => (
+                            <li key={idx} className="text-sm text-yellow-900">{guide}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {/* What to Bring */}
+                    {hasNonEmptyBring(event) && (
+                      <div className="bg-lime-50 border border-lime-200 rounded-lg p-4">
+                        <h3 className="text-lg font-bold text-lime-800 mb-3 flex items-center gap-2">
+                          <Backpack className="w-4 h-4" />
+                          What to Bring
+                        </h3>
+                        <ul className="list-disc pl-6 space-y-1">
+                          {event.bring.map((item, idx) => (
+                            <li key={idx} className="text-sm text-lime-900">{item}</li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 </div>
-              </div>
-
-              {/* Rules Section */}
-              <div id="rules" ref={sectionRefs.current['rules']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Rules & Guidelines</h2>
-                <div className="space-y-4">
-                  {/* Important Rules */}
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <h3 className="text-lg font-bold text-red-800 mb-3 flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4" />
-                      Important Rules
-                    </h3>
-                    <ul className="list-disc pl-6 space-y-1">
-                      {event.rules && event.rules.length > 0 ? (
-                        event.rules.map((rule, idx) => (
-                          <li key={idx} className="text-sm text-red-900">{rule}</li>
-                        ))
-                      ) : (
-                        <li className="text-gray-400 italic">No rules specified.</li>
-                      )}
-                    </ul>
-                  </div>
-                  {/* General Guidelines */}
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <h3 className="text-lg font-bold text-yellow-800 mb-3 flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" />
-                      General Guidelines
-                    </h3>
-                    <ul className="list-disc pl-6 space-y-1">
-                      {event.guidelines && event.guidelines.length > 0 ? (
-                        event.guidelines.map((guide, idx) => (
-                          <li key={idx} className="text-sm text-yellow-900">{guide}</li>
-                        ))
-                      ) : (
-                        <li className="text-gray-400 italic">No guidelines specified.</li>
-                      )}
-                    </ul>
-                  </div>
-                  {/* What to Bring */}
-                  <div className="bg-lime-50 border border-lime-200 rounded-lg p-4">
-                    <h3 className="text-lg font-bold text-lime-800 mb-3 flex items-center gap-2">
-                      <Backpack className="w-4 h-4" />
-                      What to Bring
-                    </h3>
-                    <ul className="list-disc pl-6 space-y-1">
-                      {event.bring && event.bring.length > 0 ? (
-                        event.bring.map((item, idx) => (
-                          <li key={idx} className="text-sm text-lime-900">{item}</li>
-                        ))
-                      ) : (
-                        <li className="text-gray-400 italic">No items specified.</li>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              )}
 
               {/* Timeline Section */}
               <div id="timeline" ref={sectionRefs.current['timeline']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
