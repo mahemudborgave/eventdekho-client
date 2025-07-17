@@ -166,7 +166,7 @@ function Navbar() {
                 "w-full",
                 "px-4",
                 "sm:px-4",
-                "md:px-30",
+                "2xl:px-30",
                 // Existing classes
                 "z-50 flex justify-between py-3 lg:py-6 text-md items-center fixed top-0 left-0 w-full lg:h-25 transition-all duration-300",
                 scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
@@ -176,7 +176,7 @@ function Navbar() {
                     <img src={eventdekhoLogo} alt="logo" className='h-11 lg:h-13 drop-shadow-lg' />
                 </Link>
 
-                <div className="flex items-center lg:hidden">
+                <div className="flex items-center xl:hidden">
                     {/* Notification Bell Icon for mobile */}
                     <div className="relative mr-2 flex items-center" ref={notifRef}>
                         <button
@@ -259,14 +259,14 @@ function Navbar() {
                             </div>
                         )}
                     </div>
-                    <button className="lg:hidden cursor-pointer p-2 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full text-white hover:from-gray-700 hover:to-gray-800 transition-all duration-200" onClick={() => setMenuOpen(!menuOpen)}>
+                    <button className="xl:hidden cursor-pointer p-2 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full text-white hover:from-gray-700 hover:to-gray-800 transition-all duration-200" onClick={() => setMenuOpen(!menuOpen)}>
                         {!menuOpen ? <AlignRight size={24} /> : <X size={24} />}
                     </button>
                 </div>
 
                 {/* Shared Menu */}
-                <div className={`absolute text-start lg:static top-[70px] left-0 w-full lg:w-auto bg-white/95 backdrop-blur-md lg:bg-transparent px-6 lg:px-0 transition-all duration-300 ease-in-out overflow-hidden ${menuOpen ? 'max-h-[500px] py-4 shadow-lg' : 'max-h-0 py-0'} lg:max-h-none lg:flex lg:items-center`} ref={menuRef}>
-                    <ul className='flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-0'>
+                <div className={`absolute text-start xl:static top-[70px] left-0 w-full xl:w-auto bg-white/95 backdrop-blur-md xl:bg-transparent px-6 xl:px-0 transition-all duration-300 ease-in-out overflow-hidden ${menuOpen ? 'max-h-[500px] py-4 shadow-lg' : 'max-h-0 py-0'} xl:max-h-none xl:flex xl:items-center`} ref={menuRef}>
+                    <ul className='flex flex-col xl:flex-row xl:items-center gap-3 xl:gap-0'>
                         <li>
                             <NavLink to="/" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 lg:border-b-2 lg:border-blue-500 transition-all duration-200' : 'block text-gray-700 hover:text-blue-600 px-5 py-2 hover:bg-blue-50 lg:hover:bg-transparent rounded-lg lg:rounded-none transition-all duration-200'}>Home</NavLink>
                         </li>
@@ -285,7 +285,7 @@ function Navbar() {
                                 <span className="inline-flex items-center gap-2"><Heart size={18} /> Wishlist</span>
                             </NavLink>
                         </li>
-                        <li className="relative lg:hidden">
+                        <li className="relative xl:hidden">
                             <button
                                 type="button"
                                 className="flex items-center gap-1 px-5 py-2 focus:outline-none text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
@@ -309,7 +309,7 @@ function Navbar() {
                             )}
                         </li>
                     </ul>
-                    <div className='my-8 flex flex-col items-center justify-start my-5 lg:hidden'>
+                    <div className='my-8 flex flex-col items-center justify-start my-5 xl:hidden'>
                         {role === "organizer" && (
                             <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(false)} className='mb-2 px-5 py-2 text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-full hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200 font-medium' target="_blank">
                                 Dashboard
@@ -332,7 +332,7 @@ function Navbar() {
                 </div>
 
 
-                <div className='hidden lg:flex items-center gap-4'>
+                <div className='hidden xl:flex items-center gap-4'>
                     {/* Desktop More Dropdown */}
                     <div className="relative">
                         <button

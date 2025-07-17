@@ -32,7 +32,12 @@ import {
   ClipboardList,
   Backpack,
   Flame,
+  IndianRupee,
 } from "lucide-react";
+import Cropper from 'react-easy-crop';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import { v4 as uuidv4 } from 'uuid';
 // shadcn/ui imports
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
@@ -65,6 +70,11 @@ export default function AddEvent() {
     rules: [""],
     guidelines: [""],
     bring: [""],
+    // Payment fields
+    fee: 0,
+    upiId: "",
+    bankDetails: "",
+    posterUrl: "", // Added posterUrl to initialState
   };
 
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -86,11 +96,93 @@ export default function AddEvent() {
   const [isShow, setIsShow] = useState(true);
   const [loading, setLoading] = useState(true);
 
+  // Poster upload/crop state
+  const [showPosterCropModal, setShowPosterCropModal] = useState(false);
+  const [selectedPoster, setSelectedPoster] = useState(null);
+  const [posterCrop, setPosterCrop] = useState({ x: 0, y: 0 });
+  const [posterZoom, setPosterZoom] = useState(1);
+  const [posterCroppedAreaPixels, setPosterCroppedAreaPixels] = useState(null);
+  const [posterCropping, setPosterCropping] = useState(false);
+
+  // Helper to get cropped image blob
+  const createImage = (url) => new Promise((resolve, reject) => {
+    const image = new window.Image();
+    image.addEventListener('load', () => resolve(image));
+    image.addEventListener('error', (error) => reject(error));
+    image.setAttribute('crossOrigin', 'anonymous');
+    image.src = url;
+  });
+
+  async function getCroppedImg(imageSrc, cropPixels) {
+    const image = await createImage(imageSrc);
+    const canvas = document.createElement('canvas');
+    canvas.width = cropPixels.width;
+    canvas.height = cropPixels.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(
+      image,
+      cropPixels.x,
+      cropPixels.y,
+      cropPixels.width,
+      cropPixels.height,
+      0,
+      0,
+      cropPixels.width,
+      cropPixels.height
+    );
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob);
+      }, 'image/jpeg');
+    });
+  }
+
+  const handlePosterChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedPoster(URL.createObjectURL(e.target.files[0]));
+      setShowPosterCropModal(true);
+    }
+  };
+
+  const onPosterCropComplete = (croppedArea, croppedAreaPixels) => {
+    setPosterCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handlePosterCropSave = async () => {
+    setPosterCropping(true);
+    try {
+      const croppedBlob = await getCroppedImg(selectedPoster, posterCroppedAreaPixels);
+      // Upload to Cloudinary
+      const formData = new FormData();
+      formData.append('file', croppedBlob, uuidv4() + '.jpg');
+      formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+      formData.append('folder', 'eventdekho/event_posters');
+      const cloudinaryRes = await axios.post(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
+      const posterUrl = cloudinaryRes.data.secure_url;
+      setForm((prev) => ({ ...prev, posterUrl }));
+      toast.success('Poster uploaded!');
+      setShowPosterCropModal(false);
+      setSelectedPoster(null);
+    } catch (err) {
+      toast.error('Failed to upload poster');
+    } finally {
+      setPosterCropping(false);
+    }
+  };
+
+  const handlePosterCropCancel = () => {
+    setShowPosterCropModal(false);
+    setSelectedPoster(null);
+  };
+
   // Fetch organizer profile data
   useEffect(() => {
     const fetchOrganizerProfile = async () => {
       if (!token || role !== 'organizer') return;
-      
+
       try {
         const res = await axios.get(`${baseURL}:${port}/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -156,6 +248,7 @@ export default function AddEvent() {
         eventTags: Array.isArray(eventData.eventTags) ? eventData.eventTags.join(", ") : eventData.eventTags || "",
         eventDate: eventData.eventDate ? eventData.eventDate.slice(0, 10) : "",
         closeOn: eventData.closeOn ? eventData.closeOn.slice(0, 10) : "",
+        posterUrl: eventData.posterUrl || "", // Ensure posterUrl is set from eventData
       });
     }
   }, [isUpdate, eventData]);
@@ -331,6 +424,74 @@ export default function AddEvent() {
               </CardContent>
             </Card>
 
+            {/* Payment Section */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2">
+                  <IndianRupee className="text-yellow-600 dark:text-yellow-400" size={18} /> Event Fee & Payment Details
+                </span>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Payment Type Selection */}
+                <div className="space-y-2">
+                  <Label htmlFor="paymentType">Event Type</Label>
+                  <select
+                    name="paymentType"
+                    id="paymentType"
+                    value={form.paymentType}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-base dark:bg-gray-900 dark:text-gray-100 dark:border-gray-600"
+                  >
+                    <option value="free">Free Event</option>
+                    <option value="paid">Paid Event</option>
+                  </select>
+                </div>
+
+                {/* Payment Details - Only show if paid */}
+                {form.paymentType === 'paid' && (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="fee">Event Fee (INR)</Label>
+                      <Input
+                        type="number"
+                        name="fee"
+                        id="fee"
+                        min="1"
+                        value={form.fee}
+                        onChange={handleChange}
+                        placeholder="Enter event fee"
+                        className="dark:bg-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="upiId">Organizer UPI ID</Label>
+                      <Input
+                        type="text"
+                        name="upiId"
+                        id="upiId"
+                        value={form.upiId}
+                        onChange={handleChange}
+                        placeholder="e.g. organizer@upi"
+                        className="dark:bg-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="bankDetails">Bank Account Details (optional)</Label>
+                      <Textarea
+                        name="bankDetails"
+                        id="bankDetails"
+                        value={form.bankDetails}
+                        onChange={handleChange}
+                        placeholder="Account No, IFSC, Bank Name, etc."
+                        rows={2}
+                        className="dark:bg-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Dynamic Sections Example: Stages */}
             <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
               <CardHeader>
@@ -476,6 +637,58 @@ export default function AddEvent() {
               </CardContent>
             </Card>
 
+            {/* Poster Upload */}
+            <div className="mb-4">
+              <Label>Event Poster (Recommended: 1200x627px)</Label>
+              <Input type="file" accept="image/*" onChange={handlePosterChange} />
+              {form.posterUrl && (
+                <div className="mt-2">
+                  <img src={form.posterUrl} alt="Event Poster" className="w-full max-w-lg rounded shadow" />
+                </div>
+              )}
+              <div className="text-xs text-gray-500 mt-1">Upload a poster image for your event. Recommended size: 1200x627px.</div>
+            </div>
+
+            {/* Poster Crop Modal */}
+            <Modal open={showPosterCropModal} onClose={handlePosterCropCancel} aria-labelledby="poster-crop-modal">
+              <Box className="flex justify-center items-center h-screen">
+                <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-2xl">
+                  <h2 className="text-lg font-bold mb-4">Crop Poster</h2>
+                  {selectedPoster && (
+                    <>
+                      <div className="relative w-full h-80 bg-gray-100">
+                        <Cropper
+                          image={selectedPoster}
+                          crop={posterCrop}
+                          zoom={posterZoom}
+                          aspect={1200/627}
+                          onCropChange={setPosterCrop}
+                          onZoomChange={setPosterZoom}
+                          onCropComplete={onPosterCropComplete}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2 mt-4">
+                        <span className="text-xs">Zoom</span>
+                        <input
+                          type="range"
+                          min={1}
+                          max={3}
+                          step={0.01}
+                          value={posterZoom}
+                          onChange={(e) => setPosterZoom(Number(e.target.value))}
+                          className="w-full"
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div className="flex gap-2 mt-4">
+                    <button onClick={handlePosterCropCancel} className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 rounded transition">Cancel</button>
+                    <button onClick={handlePosterCropSave} disabled={posterCropping} className="flex-1 bg-amber-400 hover:bg-amber-500 text-white font-semibold py-2 rounded transition disabled:opacity-60">{posterCropping ? 'Saving...' : 'Save'}</button>
+                  </div>
+                </div>
+              </Box>
+            </Modal>
+
             <Button type="submit" className="w-full mt-6 text-lg font-semibold dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800">{isUpdate ? "Update Event" : "Create Event"}</Button>
           </form>
 
@@ -530,13 +743,13 @@ function InputField({ name, type = "text", label, value, onChange, required = fa
           {options && options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
         </select>
       ) : (
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        required={required}
-        placeholder={placeholder}
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          required={required}
+          placeholder={placeholder}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-base"
           readOnly={readOnly}
         />

@@ -17,6 +17,7 @@ import {
   MessageCircle,
   LogIn,
   X,
+  FileText,
 } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { DialogTitle, DialogDescription } from '../ui/dialog';
@@ -52,6 +53,7 @@ function AdminNavbar({ onToggle }) {
     { to: 'addevent', label: 'Host Events', icon: <PlusCircle size={20} /> },
     { to: 'showeventsadmin', label: 'Show Events', icon: <CalendarDays size={20} /> },
     { to: 'queries', label: 'Queries', icon: <MessageCircle size={20} /> },
+    // { to: 'transactions', label: 'Transactions', icon: <FileText size={20} /> },
   ];
 
   return (

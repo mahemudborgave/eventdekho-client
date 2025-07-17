@@ -15,6 +15,8 @@ import UserContext from '../context/UserContext';
 import { getLastVisitedPage, clearLastVisitedPage, getSmartRedirectPath } from '../utils/navigationUtils';
 import { Phone, Smartphone } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function Signup() {
     const baseURL = import.meta.env.VITE_BASE_URL;
@@ -56,6 +58,10 @@ function Signup() {
     });
     const [organizationLoading, setOrganizationLoading] = useState(false);
     const [showOrganizationSuggestions, setShowOrganizationSuggestions] = useState(false);
+
+    // Password visibility states
+    const [showStudentPasswords, setShowStudentPasswords] = useState(false);
+    const [showOrgPasswords, setShowOrgPasswords] = useState(false);
 
     // Fetch organizations on component mount
     useEffect(() => {
@@ -230,7 +236,7 @@ function Signup() {
 
             if (res.data) {
                 // Store user data and token for automatic login
-                const userName = res.data.user.organizationName;
+                const userName = res.data.user.name;
                 localStorage.setItem('token', res.data.token);
                 localStorage.setItem('user', userName);
                 localStorage.setItem('email', res.data.user.email);
@@ -244,7 +250,7 @@ function Signup() {
                 
                 toast.success("Organization registration successful! Redirecting to your profile page...", { autoClose: 2000 });
                 setTimeout(() => {
-                    navigate('/adminprofile');
+                    navigate('/admin/profile');
                 }, 2000);
             }
         } catch (error) {
@@ -421,7 +427,7 @@ function Signup() {
                                         <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
                                             <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
                                             <input 
-                                                type="password" 
+                                                type={showStudentPasswords ? 'text' : 'password'} 
                                                 name="password" 
                                                 placeholder='Create a strong password (min 6 characters)' 
                                                 className='block focus:outline-0 text-sm flex-1' 
@@ -429,12 +435,25 @@ function Signup() {
                                                 onChange={handleStudentChange}
                                                 required 
                                             />
+                                            <button
+                                                type="button"
+                                                tabIndex={-1}
+                                                onClick={() => setShowStudentPasswords((prev) => !prev)}
+                                                className="ml-2 focus:outline-none"
+                                                aria-label={showStudentPasswords ? 'Hide password' : 'Show password'}
+                                            >
+                                                {showStudentPasswords ? (
+                                                    <VisibilityOff sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                                ) : (
+                                                    <Visibility sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                                )}
+                                            </button>
                                         </div>
 
                                         <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
                                             <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
                                             <input 
-                                                type="password" 
+                                                type={showStudentPasswords ? 'text' : 'password'} 
                                                 name="confirmPassword" 
                                                 placeholder='Confirm your password' 
                                                 className='block focus:outline-0 text-sm flex-1' 
@@ -442,6 +461,19 @@ function Signup() {
                                                 onChange={handleStudentChange}
                                                 required 
                                             />
+                                            <button
+                                                type="button"
+                                                tabIndex={-1}
+                                                onClick={() => setShowStudentPasswords((prev) => !prev)}
+                                                className="ml-2 focus:outline-none"
+                                                aria-label={showStudentPasswords ? 'Hide password' : 'Show password'}
+                                            >
+                                                {showStudentPasswords ? (
+                                                    <VisibilityOff sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                                ) : (
+                                                    <Visibility sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                                )}
+                                            </button>
                                         </div>
                                     </div>
 
@@ -570,7 +602,7 @@ function Signup() {
                                     <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
                                         <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
                                         <input 
-                                            type="password" 
+                                            type={showOrgPasswords ? 'text' : 'password'} 
                                             name="password" 
                                             placeholder='Create a strong password (min 6 characters)' 
                                             className='block focus:outline-0 text-sm flex-1' 
@@ -578,12 +610,25 @@ function Signup() {
                                             onChange={handleOrgChange}
                                             required 
                                         />
+                                        <button
+                                            type="button"
+                                            tabIndex={-1}
+                                            onClick={() => setShowOrgPasswords((prev) => !prev)}
+                                            className="ml-2 focus:outline-none"
+                                            aria-label={showOrgPasswords ? 'Hide password' : 'Show password'}
+                                        >
+                                            {showOrgPasswords ? (
+                                                <VisibilityOff sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                            ) : (
+                                                <Visibility sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                            )}
+                                        </button>
                                     </div>
 
                                     <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
                                         <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
                                         <input 
-                                            type="password" 
+                                            type={showOrgPasswords ? 'text' : 'password'} 
                                             name="confirmPassword" 
                                             placeholder='Confirm your password' 
                                             className='block focus:outline-0 text-sm flex-1' 
@@ -591,6 +636,19 @@ function Signup() {
                                             onChange={handleOrgChange}
                                             required 
                                         />
+                                        <button
+                                            type="button"
+                                            tabIndex={-1}
+                                            onClick={() => setShowOrgPasswords((prev) => !prev)}
+                                            className="ml-2 focus:outline-none"
+                                            aria-label={showOrgPasswords ? 'Hide password' : 'Show password'}
+                                        >
+                                            {showOrgPasswords ? (
+                                                <VisibilityOff sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                            ) : (
+                                                <Visibility sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                            )}
+                                        </button>
                                     </div>
                                 </div>
 

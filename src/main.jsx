@@ -37,6 +37,7 @@ import RootRegistrations from './pages/RootDashboard/RootRegistrations.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import Wishlist from './pages/Wishlist.jsx';
 import BlogRead from './pages/BlogRead.jsx';
+import TransactionsAdmin from './pages/Dashboard/TransactionsAdmin.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -74,6 +75,7 @@ const router = createBrowserRouter(
           <Route path='profile' element={<OrganizerProfile />} />
           <Route path='queries' element={<QueriesAdmin />} />
           <Route path='eventqueries/:eventId' element={<EventQueriesAdmin />} />
+          {/* <Route path='transactions' element={<TransactionsAdmin />} /> */}
         </Route>
         {/* Root Routes */}
         <Route path='root/login' element={<RootLogin />} />

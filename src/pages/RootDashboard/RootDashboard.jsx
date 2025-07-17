@@ -15,11 +15,17 @@ import {
   Activity
 } from 'lucide-react';
 import FeaturedImagesManager from '../../components/Dashboard/FeaturedImagesManager';
+import { Tabs, Tab } from '@mui/material';
 
 function RootDashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [tabIndex, setTabIndex] = useState(0);
+  // Transaction history state
+  const [transactions, setTransactions] = useState([]);
+  const [loadingTx, setLoadingTx] = useState(false);
+  const adminEmail = localStorage.getItem('rootUser') || '';
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
@@ -27,6 +33,26 @@ function RootDashboard() {
   useEffect(() => {
     checkAuthAndFetchStats();
   }, []);
+
+  useEffect(() => {
+    if (tabIndex === 1) {
+      const fetchTransactions = async () => {
+        setLoadingTx(true);
+        try {
+          const res = await axios.get(`${baseURL}:${port}/api/payment/organizer-transactions`, {
+            params: { organizerEmail: adminEmail },
+            headers: { Authorization: `Bearer ${localStorage.getItem('rootToken')}` }
+          });
+          setTransactions(res.data);
+        } catch (err) {
+          console.error('Failed to fetch transactions:', err);
+        } finally {
+          setLoadingTx(false);
+        }
+      };
+      fetchTransactions();
+    }
+  }, [tabIndex, baseURL, port, adminEmail]);
 
   const checkAuthAndFetchStats = async () => {
     const rootToken = localStorage.getItem('rootToken');
@@ -140,6 +166,12 @@ function RootDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Tabs value={tabIndex} onChange={(e, v) => setTabIndex(v)} className="mb-8">
+          <Tab label="Dashboard" />
+          <Tab label="Transactions" />
+        </Tabs>
+        {tabIndex === 0 && (
+          <>
         {/* Featured Images Manager */}
         <FeaturedImagesManager />
         {/* Stats Overview */}
@@ -234,6 +266,45 @@ function RootDashboard() {
             <p>Activity monitoring coming soon...</p>
           </div>
         </div>
+          </>
+        )}
+        {tabIndex === 1 && (
+          <div className="w-full max-w-5xl mt-4">
+            <h2 className="text-2xl font-bold mb-4 text-blue-900">Event Transaction History</h2>
+            {loadingTx ? (
+              <div className="text-blue-600">Loading transactions...</div>
+            ) : transactions.length === 0 ? (
+              <div className="text-gray-500">No transactions found for your events.</div>
+            ) : (
+              <div className="overflow-x-auto rounded-lg shadow border border-gray-200">
+                <table className="min-w-full bg-white text-sm">
+                  <thead className="bg-gradient-to-r from-yellow-200 to-orange-100 text-yellow-900">
+                    <tr>
+                      <th className="px-4 py-2 text-left">Event ID</th>
+                      <th className="px-4 py-2 text-left">Student Email</th>
+                      <th className="px-4 py-2 text-left">Amount (₹)</th>
+                      <th className="px-4 py-2 text-left">Status</th>
+                      <th className="px-4 py-2 text-left">Transaction ID</th>
+                      <th className="px-4 py-2 text-left">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactions.map(tx => (
+                      <tr key={tx._id} className="border-b last:border-0">
+                        <td className="px-4 py-2">{tx.eventId}</td>
+                        <td className="px-4 py-2">{tx.studentId}</td>
+                        <td className="px-4 py-2">{(tx.amount || 'N/A')}</td>
+                        <td className="px-4 py-2 font-semibold text-green-700">{tx.status}</td>
+                        <td className="px-4 py-2">{tx.razorpay_payment_id || 'N/A'}</td>
+                        <td className="px-4 py-2">{new Date(tx.createdAt).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

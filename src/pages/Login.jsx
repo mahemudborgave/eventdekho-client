@@ -5,6 +5,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import PasswordIcon from '@mui/icons-material/Password';
 import MailIcon from '@mui/icons-material/Mail';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import UserContext from '../context/UserContext';
 import { ScaleLoader } from 'react-spinners';
 import Modal from '@mui/material/Modal';
@@ -23,6 +25,7 @@ function Login() {
     const { token, setToken } = useContext(UserContext);
     const { role, setRole } = useContext(UserContext);
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // <-- Add this line
     const [loading, setLoading] = useState(false); // loader state
 
     // Track page visits for smart redirects
@@ -141,7 +144,27 @@ function Login() {
                         </div>
                         <div className='flex items-center justify-start bg-gray-100 w-full mb-7 p-2 '>
                             <PasswordIcon sx={{ fontSize: 20 }} className='mr-2 text-[#7c7c7c]' />
-                            <input type="password" name="password" placeholder='Enter password' className='block focus:outline-0 text-sm grow' onChange={handleChange} required />
+                            <input 
+                                type={showPassword ? 'text' : 'password'} 
+                                name="password" 
+                                placeholder='Enter password' 
+                                className='block focus:outline-0 text-sm grow' 
+                                onChange={handleChange} 
+                                required 
+                            />
+                            <button
+                                type="button"
+                                tabIndex={-1}
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                className="ml-2 focus:outline-none"
+                                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                            >
+                                {showPassword ? (
+                                    <VisibilityOff sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                ) : (
+                                    <Visibility sx={{ fontSize: 20, color: '#7c7c7c' }} />
+                                )}
+                            </button>
                         </div>
 
                         <Button

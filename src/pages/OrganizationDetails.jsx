@@ -143,7 +143,7 @@ function OrganizationDetails() {
         </div>
         <h2 className="text-xl font-semibold mb-4">Events Hosted</h2>
         {organizationEvents.length > 0 ? (
-          <Eventt events={organizationEvents} />
+          (() => { console.log('Organization events:', organizationEvents); return <Eventt events={organizationEvents} /> })()
         ) : (
           <div className="text-gray-500 text-center py-8">No events found for this organization.</div>
         )}

@@ -3,7 +3,7 @@ import UserContext from '../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-function EventRegistration({ eventId, eventName, organizationName, parentOrganization, setHasRegistered }) {
+function EventRegistration({ eventId, eventName, organizationName, parentOrganization, setHasRegistered, eventFee = 0 }) {
   const { user, email, token, role } = useContext(UserContext);
 
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -25,6 +25,8 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   // Fetch user profile details on mount
   useEffect(() => {
@@ -71,8 +73,8 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
     }));
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
 
     if (!token) {
       toast.error('Please log in to register for events.');
@@ -145,6 +147,52 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
     }
   };
 
+  // Razorpay handler
+  const handleRazorpayPayment = async () => {
+    setPaymentLoading(true);
+    try {
+      // 1. Create order on backend
+      const { data } = await axios.post(`${baseURL}:${port}/api/payment/create-order`, {
+        amount: eventFee,
+        eventId,
+        studentId: email,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: data.amount,
+        currency: data.currency,
+        order_id: data.orderId,
+        handler: async function (response) {
+          // 2. Verify payment on backend
+          await axios.post(`${baseURL}:${port}/api/payment/verify`, {
+            ...response,
+            eventId,
+            studentId: email,
+          }, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setPaymentSuccess(true);
+          toast.success('Payment successful! Completing registration...');
+          // 3. Complete registration
+          await handleSubmit();
+        },
+        prefill: {
+          name: user,
+          email: email,
+        },
+        theme: { color: "#3399cc" },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      toast.error('Payment failed. Please try again.');
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
   // Helper to check if all profile fields are filled
   const allProfileFieldsFilled = [
     formData.studentName,
@@ -165,7 +213,14 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
       ) : (
         <div className="mb-4 text-yellow-800 bg-yellow-100 rounded px-3 py-2 text-sm">Some details are missing. Please <a href={role === "organizer" ? "/adminprofile" : "/studentprofile"} className="underline text-yellow-900">update your profile</a> for autofill next time.</div>
       )}
-      <form onSubmit={handleSubmit}>
+      {/* Show payment method if event has a fee */}
+      {eventFee > 0 && (
+        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-300 rounded">
+          <div className="font-semibold text-yellow-800">Event Fee: ₹{eventFee}</div>
+          <div className="text-yellow-700 text-sm">Pay securely with UPI, Netbanking, or Card via Razorpay</div>
+        </div>
+      )}
+      <form onSubmit={eventFee > 0 ? (e) => { e.preventDefault(); handleRazorpayPayment(); } : handleSubmit}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm lg:text-base'>
           <p className='lg:text-2xl text-lg text-center mb-5 lg:[grid-column:span_2]'>Registration Form</p>
           <div>
@@ -296,10 +351,10 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
           <div className='lg:[grid-column:span_2] flex justify-center'>
             <button
               type='submit'
-              disabled={loading}
+              disabled={loading || paymentLoading}
               className='cursor-pointer bg-amber-300 py-2 px-4 rounded-md hover:outline-5 hover:outline-amber-100 hover:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              {loading ? 'Submitting...' : 'Submit'}
+              {eventFee > 0 ? (paymentLoading ? 'Processing Payment...' : 'Pay & Register') : (loading ? 'Registering...' : 'Register')}
             </button>
           </div>
         </div>

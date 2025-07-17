@@ -6,7 +6,8 @@ import EventRegistration from '../components/EventRegistration';
 import { ToastContainer, toast } from 'react-toastify';
 import UserContext from '../context/UserContext';
 import QueryComp from '../components/QueryComp';
-import { Loader2, Calendar, MapPin, Clock, Users, Trophy, Award, BookOpen, MessageCircle, Play, CheckCircle, AlertCircle, Star, Zap, Target, Users2, Gift, Shield, Info, X, Backpack } from 'lucide-react';
+import { Loader2, Calendar, MapPin, Clock, Users, Trophy, Award, BookOpen, MessageCircle, Play, CheckCircle, AlertCircle, Star, Zap, Target, Users2, Gift, Shield, Info, X, Backpack, IndianRupee } from 'lucide-react';
+import defaultPoster from '../assets/images/university-academy-school-svgrepo-com.svg';
 
 // Simple Modal component
 function Modal({ open, onClose, children }) {
@@ -40,6 +41,7 @@ function EventDetail() {
   const [activeTab, setActiveTab] = useState('overview');
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
+  const [showPosterModal, setShowPosterModal] = useState(false);
 
   const sectionIds = ['overview', 'stages', 'prizes', 'rules', 'timeline'];
   const [currentSection, setCurrentSection] = useState('overview');
@@ -212,7 +214,19 @@ function EventDetail() {
                 </div>
                 <div className="text-xs opacity-90">by {event.parentOrganization || event.organizationName}</div>
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight">{event.eventName}</h1>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight flex items-center gap-4">
+                {event.eventName}
+                {Number(event.fee) > 0 ? (
+                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 border border-yellow-400 text-yellow-800 font-semibold text-sm ml-2">
+                                  <IndianRupee size={15}/>
+                                  {Number(event.fee)}
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm ml-2">
+                                  FREE
+                                </span>
+                              )}
+              </h1>
 
               {/* Quick Stats */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
@@ -273,7 +287,7 @@ function EventDetail() {
                   className="px-6 py-3 rounded-lg font-semibold text-base bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  Ask Question
+                  Ask Query
                 </button>
 
                 <button
@@ -287,28 +301,49 @@ function EventDetail() {
             </div>
 
             <div className="hidden lg:block">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                <h3 className="text-lg font-bold mb-4">Event Highlights</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-yellow-400" />
-                    <span className="text-sm">Amazing Prizes</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users2 className="w-5 h-5 text-blue-400" />
-                    <span className="text-sm">Networking Opportunities</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-purple-400" />
-                    <span className="text-sm">Skill Development</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Target className="w-5 h-5 text-green-400" />
-                    <span className="text-sm">Real-world Experience</span>
+              {event.posterUrl ? (
+                <div className="relative group cursor-pointer" onClick={() => setShowPosterModal(true)}>
+                  <img src={event.posterUrl} alt="Event Poster" className="rounded-xl shadow-lg border border-white/20 w-full max-w-md object-cover aspect-[1200/627]" />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-xl transition-opacity">
+                    <span className="text-white text-lg font-semibold">View Poster</span>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <h3 className="text-lg font-bold mb-4">Event Highlights</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Trophy className="w-5 h-5 text-yellow-400" />
+                      <span className="text-sm">Amazing Prizes</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users2 className="w-5 h-5 text-blue-400" />
+                      <span className="text-sm">Networking Opportunities</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Zap className="w-5 h-5 text-purple-400" />
+                      <span className="text-sm">Skill Development</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Target className="w-5 h-5 text-green-400" />
+                      <span className="text-sm">Real-world Experience</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Poster Expand Modal */}
+            <Modal open={showPosterModal} onClose={() => setShowPosterModal(false)}>
+              <div className="flex flex-col items-center justify-center">
+                <img
+                  src={event.posterUrl || defaultPoster}
+                  alt="Event Poster Expanded"
+                  className="max-w-3xl w-full h-auto rounded-xl shadow-lg border"
+                />
+                <button onClick={() => setShowPosterModal(false)} className="mt-4 px-6 py-2 bg-amber-500 text-white rounded-lg font-semibold">Close</button>
+              </div>
+            </Modal>
           </div>
         </div>
       </div>
@@ -590,6 +625,7 @@ function EventDetail() {
                 organizationName={event.organizationName}
                 parentOrganization={event.parentOrganization}
                 setHasRegistered={setHasRegistered}
+                eventFee={event.fee || 0}
               />
             </div>
           </div>

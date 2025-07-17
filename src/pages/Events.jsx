@@ -33,6 +33,7 @@ function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const { searchValue, setSearchValue } = useContext(SearchContext);
+  const { email } = useContext(UserContext);
   const [originalEvents, setOriginalEvents] = useState([]);
   const [isRecentlyCollapsed, setIsRecentlyCollapsed] = useState(true);
   const [stats, setStats] = useState({
@@ -45,6 +46,8 @@ function Events() {
   const [searchDropdown, setSearchDropdown] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
+  const [registeredEvents, setRegisteredEvents] = useState([]);
+  const [loadingRegistered, setLoadingRegistered] = useState(true);
 
   // Hide dropdown on click outside
   useEffect(() => {
@@ -78,6 +81,8 @@ function Events() {
         const sorted = [...res.data].sort((a, b) => new Date(b.postedOn || b.createdAt) - new Date(a.postedOn || a.createdAt));
         setEvents(sorted);
         setOriginalEvents(sorted);
+        // Debug: Log all events after fetch and sort
+        console.log('Fetched and sorted events:', sorted);
 
         // Calculate statistics
         const totalEvents = sorted.length;
@@ -110,6 +115,26 @@ function Events() {
 
     fetchEvents();
   }, [])
+
+  useEffect(() => {
+    const fetchRegisteredEvents = async () => {
+      if (!email) {
+        setRegisteredEvents([]);
+        setLoadingRegistered(false);
+        return;
+      }
+      setLoadingRegistered(true);
+      try {
+        const res = await axios.post(`${baseURL}:${port}/eventt/geteventsfromemail`, { email });
+        setRegisteredEvents(res.data || []);
+      } catch (err) {
+        setRegisteredEvents([]);
+      } finally {
+        setLoadingRegistered(false);
+      }
+    };
+    fetchRegisteredEvents();
+  }, [email]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -176,6 +201,16 @@ function Events() {
   // Exclude events already shown in hot or recently
   const shownIds = new Set([...hot, ...recently].map(e => e._id || e.id));
   const rest = events.filter(e => !shownIds.has(e._id || e.id));
+
+  // Compute a set of registered event IDs for sorting
+  const registeredEventIdsSet = new Set(registeredEvents.map(e => e.eventId || e._id));
+  // Sort all events: unregistered first, then registered
+  const sortedAllEvents = [...originalEvents].sort((a, b) => {
+    const aRegistered = registeredEventIdsSet.has(a._id);
+    const bRegistered = registeredEventIdsSet.has(b._id);
+    if (aRegistered === bRegistered) return 0;
+    return aRegistered ? 1 : -1;
+  });
 
   return (
     <>
@@ -330,8 +365,28 @@ function Events() {
           <div className='flex justify-start mb-6'>
             <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
           </div>
-          <Eventt events={originalEvents} />
+          <Eventt events={sortedAllEvents} />
         </div>
+        {/* Registered Events List at Bottom */}
+        {/* <div className="mt-16">
+          <h2 className="text-xl font-bold mb-4 text-green-700">Your Registered Events</h2>
+          {loadingRegistered ? (
+            <div className="flex justify-center items-center p-6"><ScaleLoader /></div>
+          ) : registeredEvents.length === 0 ? (
+            <div className="text-gray-400 italic">You have not registered for any events yet.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {registeredEvents.map(event => (
+                <div key={event.eventId || event._id} className="bg-white border border-green-200 rounded-xl shadow p-4 flex flex-col gap-2">
+                  <div className="font-semibold text-lg text-green-900">{event.eventName}</div>
+                  <div className="text-gray-500 text-sm">{event.organizationName}</div>
+                  <div className="text-gray-400 text-xs">{event.eventDate ? new Date(event.eventDate).toLocaleDateString('en-GB') : ''}</div>
+                  <Link to={`/eventdetail/${event.eventId || event._id}`} className="text-green-700 underline text-sm mt-2">View Details</Link>
+                </div>
+              ))} 
+            </div>
+          )}  
+        </div> */}
       </div>
     </>
   )

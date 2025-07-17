@@ -4,8 +4,18 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from 'react-toastify';
 import UserContext from '../context/UserContext';
 import { Link } from 'react-router-dom'
-import userprofile from '../assets/images/userprofile.jpg'
+import defaultOrgLogo from '../assets/images/university-academy-school-svgrepo-com.svg';
 import axios from 'axios';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
+import Cropper from 'react-easy-crop';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import { v4 as uuidv4 } from 'uuid';
+// Helper to get cropped image blob
+function getCroppedImg(imageSrc, crop, zoom, aspect) {
+  // This function will use canvas to crop the image and return a blob
+  // We'll use a helper below
+}
 
 function OrganizerProfile() {
     const { token, setToken } = useContext(UserContext);
@@ -26,10 +36,103 @@ function OrganizerProfile() {
         phone: '',
         city: '',
         parentOrganization: '',
+        logo: '',
     });
     const [editMode, setEditMode] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    // Transaction history state
+    const [transactions, setTransactions] = useState([]);
+    const [loadingTx, setLoadingTx] = useState(false);
+
+    // Logo upload/crop state
+    const [showCropModal, setShowCropModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [cropping, setCropping] = useState(false);
+
+    // Helper to get cropped image blob
+    const createImage = (url) => new Promise((resolve, reject) => {
+      const image = new window.Image();
+      image.addEventListener('load', () => resolve(image));
+      image.addEventListener('error', (error) => reject(error));
+      image.setAttribute('crossOrigin', 'anonymous');
+      image.src = url;
+    });
+
+    async function getCroppedImg(imageSrc, cropPixels) {
+      const image = await createImage(imageSrc);
+      const canvas = document.createElement('canvas');
+      canvas.width = cropPixels.width;
+      canvas.height = cropPixels.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(
+        image,
+        cropPixels.x,
+        cropPixels.y,
+        cropPixels.width,
+        cropPixels.height,
+        0,
+        0,
+        cropPixels.width,
+        cropPixels.height
+      );
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/jpeg');
+      });
+    }
+
+    const handleLogoChange = (e) => {
+      if (e.target.files && e.target.files[0]) {
+        setSelectedImage(URL.createObjectURL(e.target.files[0]));
+        setShowCropModal(true);
+      }
+    };
+
+    const onCropComplete = (croppedArea, croppedAreaPixels) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    };
+
+    const handleCropSave = async () => {
+      setCropping(true);
+      try {
+        const croppedBlob = await getCroppedImg(selectedImage, croppedAreaPixels);
+        // Upload to Cloudinary
+        const formData = new FormData();
+        formData.append('file', croppedBlob, uuidv4() + '.jpg');
+        formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+        formData.append('folder', 'eventdekho/organization_logos');
+        const cloudinaryRes = await axios.post(
+          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          formData
+        );
+        const logoUrl = cloudinaryRes.data.secure_url;
+        // Update profile with new logo
+        await axios.put(
+          `${baseURL}:${port}/auth/profile`,
+          { logo: logoUrl },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setProfile((prev) => ({ ...prev, logo: logoUrl }));
+        toast.success('Logo updated!');
+        setShowCropModal(false);
+        setSelectedImage(null);
+      } catch (err) {
+        toast.error('Failed to upload logo');
+      } finally {
+        setCropping(false);
+      }
+    };
+
+    const handleCropCancel = () => {
+      setShowCropModal(false);
+      setSelectedImage(null);
+    };
 
     // Fetch user details on mount or when email changes
     useEffect(() => {
@@ -53,6 +156,7 @@ function OrganizerProfile() {
                         phone: userData.phone || '',
                         city: userData.city || '',
                         parentOrganization: userData.parentOrganization || '',
+                        logo: userData.logo || '', // Set logo from fetched profile
                     });
                 }
             } catch (err) {
@@ -65,6 +169,25 @@ function OrganizerProfile() {
         fetchProfile();
         // eslint-disable-next-line
     }, [token]);
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            if (!token || !email) return;
+            setLoadingTx(true);
+            try {
+                const res = await axios.get(`${baseURL}:${port}/api/payment/organizer-transactions`, {
+                    params: { organizerEmail: email },
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setTransactions(res.data);
+            } catch (err) {
+                console.error('Failed to fetch transactions:', err);
+            } finally {
+                setLoadingTx(false);
+            }
+        };
+        fetchTransactions();
+    }, [token, email]);
 
     const handleLogout = () => {
         if (confirm("Are you sure you want to logout?")) {
@@ -195,11 +318,12 @@ function OrganizerProfile() {
                 {/* Sidebar Summary */}
                 <aside className="md:w-1/3 w-full bg-gradient-to-br from-amber-100 to-blue-100 dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg p-6 flex flex-col items-center gap-6 border border-amber-200 dark:border-gray-700">
                     <div className="relative w-32 h-32 mb-2">
-                        <img src={userprofile} alt="Logo" className="w-32 h-32 rounded-full border-4 border-amber-400 dark:border-amber-700 shadow object-cover bg-white dark:bg-gray-900" />
-                        {/* Placeholder for logo upload */}
-                        <span className="absolute bottom-2 right-2 bg-amber-400 dark:bg-amber-700 text-white rounded-full p-1 cursor-pointer shadow hover:bg-amber-500 dark:hover:bg-amber-800 transition" title="Upload Logo">
+                        <img src={profile.logo || defaultOrgLogo} alt="Logo" className="w-32 h-32 rounded-full border-4 border-amber-400 dark:border-amber-700 shadow object-cover bg-white dark:bg-gray-900 p-2" />
+                        {/* Logo upload button */}
+                        <label className="absolute bottom-2 right-2 bg-amber-400 dark:bg-amber-700 text-white rounded-full p-1 cursor-pointer shadow hover:bg-amber-500 dark:hover:bg-amber-800 transition" title="Upload Logo">
                             <Edit size={16} />
-                        </span>
+                            <input type="file" accept="image/*" className="hidden" onChange={handleLogoChange} />
+                        </label>
                     </div>
                     <div className="text-center">
                         <h2 className="text-2xl font-bold text-amber-700 dark:text-amber-300 mb-1 flex items-center justify-center gap-2">
@@ -414,6 +538,48 @@ function OrganizerProfile() {
             <div className="max-w-5xl mx-auto mt-8 flex flex-col items-center">
                 <Link to='/admin/dashboard' className='text-green-600 dark:text-green-400 underline text-base font-medium'>Back to Dashboard</Link>
             </div>
+            <div className="w-full max-w-5xl mt-10">
+                {/* Transaction history moved to dedicated admin tab */}
+            </div>
+            {/* Logo Crop Modal */}
+            <Modal open={showCropModal} onClose={handleCropCancel} aria-labelledby="logo-crop-modal">
+                <Box className="flex justify-center items-center h-screen">
+                    <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
+                        <h2 className="text-lg font-bold mb-4">Crop Logo</h2>
+                        {selectedImage && (
+                            <>
+                                <div className="relative w-full h-64 bg-gray-100">
+                                    <Cropper
+                                        image={selectedImage}
+                                        crop={crop}
+                                        zoom={zoom}
+                                        aspect={1}
+                                        onCropChange={setCrop}
+                                        onZoomChange={setZoom}
+                                        onCropComplete={onCropComplete}
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2 mt-4">
+                                    <span className="text-xs">Zoom</span>
+                                    <input
+                                        type="range"
+                                        min={1}
+                                        max={3}
+                                        step={0.01}
+                                        value={zoom}
+                                        onChange={(e) => setZoom(Number(e.target.value))}
+                                        className="w-full"
+                                    />
+                                </div>
+                            </>
+                        )}
+                        <div className="flex gap-2 mt-4">
+                            <button onClick={handleCropCancel} className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 rounded transition">Cancel</button>
+                            <button onClick={handleCropSave} disabled={cropping} className="flex-1 bg-amber-400 hover:bg-amber-500 text-white font-semibold py-2 rounded transition disabled:opacity-60">{cropping ? 'Saving...' : 'Save'}</button>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
         </div>
     )
 }

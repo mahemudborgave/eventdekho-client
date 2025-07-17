@@ -41,6 +41,8 @@ function MainSearch() {
       try {
         const res = await axios.get(`${baseURL}:${port}/eventt/getevents`)
         setEvents(res.data);
+        // Debug: Log all events fetched for MainSearch
+        console.log('Fetched events for MainSearch:', res.data);
       } catch (err) {
         console.error('Error fetching events:', err);
       } finally {

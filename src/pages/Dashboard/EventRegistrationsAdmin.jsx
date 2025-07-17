@@ -14,6 +14,7 @@ function EventRegistrationsAdmin() {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [eventInfo, setEventInfo] = useState({ eventName: '', organizationName: '' });
+  const [payments, setPayments] = useState([]);
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
@@ -24,16 +25,40 @@ function EventRegistrationsAdmin() {
         const res = await axios.get(`${baseURL}:${port}/eventt/geteventregfromeventid/${eventId}`);
         const data = res.data || [];
         setRegistrations(data);
+        console.log('[DEBUG] Registrations:', data);
 
         // Fetch event details for eventName and organizationName
-        const eventRes = await axios.get(`${baseURL}:${port}/eventt/geteventbyid/${eventId}`);
+        const eventRes = await axios.get(`${baseURL}:${port}/eventt/getevent/${eventId}`);
         const event = eventRes.data;
+        console.log('[DEBUG] Event details:', event);
         setEventInfo({
           eventName: event.eventName || '',
           organizationName: event.organizationName || ''
         });
+        
+        // Fetch payments for this event
+        const payRes = await axios.get(`${baseURL}:${port}/api/payment/organizer-transactions`, {
+          params: { organizerEmail: event.email },
+        });
+        const allPayments = payRes.data || [];
+        const eventPayments = allPayments.filter(p => {
+          // Handle both string and ObjectId comparison
+          const paymentEventId = p.eventId?.toString();
+          const currentEventId = eventId?.toString();
+          const match = paymentEventId === currentEventId;
+          console.log('[DEBUG] Event ID matching:', {
+            paymentEventId,
+            currentEventId,
+            match
+          });
+          return match;
+        });
+        console.log('[DEBUG] All payments:', allPayments);
+        console.log('[DEBUG] Event payments:', eventPayments);
+        console.log('[DEBUG] Event ID:', eventId);
+        setPayments(eventPayments);
       } catch (err) {
-        console.error('Error fetching registrations or event info:', err);
+        console.error('Error fetching registrations, event info, or payments:', err);
       } finally {
         setLoading(false);
       }
@@ -147,22 +172,38 @@ function EventRegistrationsAdmin() {
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Course</th>
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Gender</th>
                 <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Mobile</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Transaction ID</th>
+                <th className="px-4 py-3 bg-gray-200 dark:bg-gray-800 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider whitespace-nowrap">Payment Status</th>
                 </tr>
               </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800 text-sm">
-                {registrations.map((reg, index) => (
-                <tr key={reg._id} className="hover:bg-blue-100 dark:hover:bg-blue-900">
-                  <td className="py-3 px-4 font-bold sticky left-0 z-10 bg-white dark:bg-gray-900 whitespace-nowrap">{index + 1}</td>
-                  <td className="py-3 px-4 min-w-[120px] whitespace-nowrap text-gray-900 dark:text-gray-100">{reg.studentName}</td>
-                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.email}</td>
-                  <td className="py-3 px-4 min-w-[120px] whitespace-nowrap">{reg.studentCollegeName}</td>
-                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.branch}</td>
-                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.year}</td>
-                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.course}</td>
-                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.gender}</td>
-                  <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.mobno}</td>
+              {registrations.map((reg, index) => {
+                const payment = payments.find(p => {
+                  const match = p.studentId === reg.email;
+                  console.log('[DEBUG] Payment matching:', {
+                    paymentStudentId: p.studentId,
+                    registrationEmail: reg.email,
+                    match: match,
+                    paymentId: p._id
+                  });
+                  return match;
+                });
+                return (
+                  <tr key={reg._id} className="hover:bg-blue-100 dark:hover:bg-blue-900">
+                    <td className="py-3 px-4 font-bold sticky left-0 z-10 bg-white dark:bg-gray-900 whitespace-nowrap">{index + 1}</td>
+                    <td className="py-3 px-4 min-w-[120px] whitespace-nowrap text-gray-900 dark:text-gray-100">{reg.studentName}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.email}</td>
+                    <td className="py-3 px-4 min-w-[120px] whitespace-nowrap">{reg.studentCollegeName}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.branch}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.year}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.course}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.gender}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{reg.mobno}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full">{payment ? payment.razorpay_payment_id : 'N/A'}</td>
+                    <td className="py-3 px-4 min-w-[120px] break-words w-full font-semibold">{payment ? payment.status : 'N/A'}</td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
         </div>

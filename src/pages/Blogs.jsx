@@ -166,10 +166,10 @@ function Blogs() {
   return (
     <div className="min-h-screen bg-background pb-16">
       <div className="px-2 sm:px-6 py-10">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <h1 className="text-3xl font-bold text-foreground">Blogs</h1>
           <Button onClick={handleOpenModal} variant="default">Create Blog</Button>
-        </div>
+          </div>
 
         {/* Blog Creation/Edit Dialog */}
         <Dialog open={showModal} onOpenChange={open => { if (!open) handleCloseModal(); }}>
@@ -185,22 +185,22 @@ function Blogs() {
                 <Label htmlFor="title" className='mb-2'>Title</Label>
                 <Input
                   id="title"
-                  name="title"
-                  placeholder="Blog Title"
-                  value={editBlogId ? editForm.title : form.title}
-                  onChange={editBlogId ? handleEditChange : handleChange}
-                  required
-                />
+                    name="title"
+                    placeholder="Blog Title"
+                    value={editBlogId ? editForm.title : form.title}
+                    onChange={editBlogId ? handleEditChange : handleChange}
+                    required
+                  />
               </div>
               <div>
                 <Label htmlFor="content" className='mb-2'>Content</Label>
                 <Textarea
                   id="content"
-                  name="content"
-                  placeholder="Write your blog content here..."
-                  value={editBlogId ? editForm.content : form.content}
-                  onChange={editBlogId ? handleEditChange : handleChange}
-                  required
+                    name="content"
+                    placeholder="Write your blog content here..."
+                    value={editBlogId ? editForm.content : form.content}
+                    onChange={editBlogId ? handleEditChange : handleChange}
+                    required
                   rows={6}
                   className="max-h-60 overflow-y-auto"
                 />
@@ -221,14 +221,14 @@ function Blogs() {
         {/* Blog Read Dialog */}
         {/* Removed: Dialog for reading blog content */}
 
-        {/* User Blogs Section */}
-        {user && (
-          <section className="mb-14">
+          {/* User Blogs Section */}
+          {user && (
+            <section className="mb-14">
             <h2 className="text-xl font-semibold text-foreground mb-4">Your Blogs</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {userBlogs.length === 0 ? (
+                {userBlogs.length === 0 ? (
                 <div className="text-muted-foreground col-span-full">You haven't created any blogs yet.</div>
-              ) : (
+                ) : (
                 userBlogs.map(blog => (
                   <Card key={blog._id} className="flex flex-col h-full gap-0">
                     <CardHeader className="flex flex-row items-center justify-between">
@@ -250,20 +250,20 @@ function Blogs() {
                     </CardContent>
                   </Card>
                 ))
-              )}
-            </div>
-          </section>
-        )}
+                )}
+              </div>
+            </section>
+          )}
 
-        {/* All Blogs Section */}
-        <section>
+          {/* All Blogs Section */}
+          <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">All Blogs</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading ? (
+              {loading ? (
               <div className="text-muted-foreground py-8 col-span-full">Loading blogs...</div>
-            ) : allBlogs.length === 0 ? (
+              ) : allBlogs.length === 0 ? (
               <div className="text-muted-foreground col-span-full">No blogs available yet.</div>
-            ) : (
+              ) : (
               allBlogs.map(blog => (
                 <Card key={blog._id} className="flex flex-col h-full gap-0">
                   <CardHeader className="flex flex-row items-center justify-between mb-1">
@@ -289,10 +289,10 @@ function Blogs() {
                   </CardContent>
                 </Card>
               ))
-            )}
-          </div>
-        </section>
-      </div>
+              )}
+            </div>
+          </section>
+        </div>
     </div>
   );
 }

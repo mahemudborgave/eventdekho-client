@@ -6,6 +6,7 @@ import Search from "../components/Search";
 import UserContext from "../context/UserContext";
 import SearchContext from "../context/SearchContext";
 import { ArrowUpRight, GraduationCap, Calendar, Filter, X, MapPin, Building2, Eye, Users, TrendingUp } from 'lucide-react';
+import defaultOrgLogo from '../assets/images/university-academy-school-svgrepo-com.svg';
 
 function Organizations() {
   const [organizations, setOrganizations] = useState([]);
@@ -414,12 +415,16 @@ function Organizations() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
             {organizations.map((organization, index) => (
               <div key={organization._id}
-                className="bg-gradient-to-r from-blue-200 to-blue-400 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200">
+                className="bg-gradient-to-r from-blue-100 to-blue-100 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 {/* Header with Organization Info */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-0 to-blue-100 flex items-center justify-center flex-shrink-0">
-                      <GraduationCap size={24} className="text-blue-600" />
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-0 to-blue-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {organization.logo ? (
+                        <img src={organization.logo} alt="Logo" className="w-full h-full object-cover rounded-full" />
+                      ) : (
+                        <img src={defaultOrgLogo} alt="Logo" className="w-13 h-13 object-cover rounded-full" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-bold text-gray-900 text-base leading-tight mb-1">
