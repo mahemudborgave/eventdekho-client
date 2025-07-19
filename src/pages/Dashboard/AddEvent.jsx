@@ -500,6 +500,22 @@ export default function AddEvent() {
               </CardContent>
             </Card>
 
+            {/* Poster Upload */}
+            <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
+              <CardHeader>
+                <span className="font-semibold flex items-center gap-2">Event Poster <span className="text-xs text-muted-foreground ml-2">(Recommended: 1200x627px)</span></span>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                <Input type="file" accept="image/*" onChange={handlePosterChange} className="dark:bg-gray-900 dark:text-gray-100" />
+                {form.posterUrl && (
+                  <div className="mt-2">
+                    <img src={form.posterUrl} alt="Event Poster" className="w-full max-w-lg rounded shadow" />
+                  </div>
+                )}
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Upload a poster image for your event. Recommended size: 1200x627px.</div>
+              </CardContent>
+            </Card> 
+
             {/* Dynamic Sections Example: Stages */}
             <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
               <CardHeader>
@@ -644,18 +660,6 @@ export default function AddEvent() {
                 <Button type="button" variant="outline" onClick={() => handleAddListItem('bring', '')} className="w-fit dark:border-gray-600 dark:text-gray-200"><Plus size={16} className="mr-1" /> Add Item</Button>
               </CardContent>
             </Card>
-
-            {/* Poster Upload */}
-            <div className="mb-4">
-              <Label>Event Poster (Recommended: 1200x627px)</Label>
-              <Input type="file" accept="image/*" onChange={handlePosterChange} />
-              {form.posterUrl && (
-                <div className="mt-2">
-                  <img src={form.posterUrl} alt="Event Poster" className="w-full max-w-lg rounded shadow" />
-                </div>
-              )}
-              <div className="text-xs text-gray-500 mt-1">Upload a poster image for your event. Recommended size: 1200x627px.</div>
-            </div>
 
             {/* Poster Crop Modal */}
             <Modal open={showPosterCropModal} onClose={handlePosterCropCancel} aria-labelledby="poster-crop-modal">

@@ -18,6 +18,10 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { ThemeProvider } from '../../components/ui/ThemeProvider';
 
 function RootRegistrations() {
   const [registrations, setRegistrations] = useState([]);
@@ -164,172 +168,139 @@ function RootRegistrations() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <ThemeProvider>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => navigate('/root/dashboard')}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
-              </button>
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <FileText className="h-6 w-6 text-orange-600" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">Registration Management</h1>
-                <p className="text-sm text-gray-600">Manage all event registrations</p>
-              </div>
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={exportToPDF}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 transition-colors"
-              >
-                <FileText className="h-4 w-4" />
-                <span>Export PDF</span>
-              </button>
-              <button
-                onClick={exportToExcel}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-md hover:bg-green-200 transition-colors"
-              >
-                <FileSpreadsheet className="h-4 w-4" />
-                <span>Export Excel</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Registrations</p>
-              <p className="text-2xl font-bold text-orange-600">{registrations.length}</p>
-            </div>
-            <div className="p-3 bg-orange-100 rounded-full">
+      <header className="border-b bg-background">
+        <div className="max-w-7xl mx-auto px-2 flex justify-between items-center h-16">
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => navigate('/root/dashboard')}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <span className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
               <FileText className="h-6 w-6 text-orange-600" />
+            </span>
+            <div>
+              <h1 className="text-lg font-bold">Registration Management</h1>
+              <p className="text-xs text-muted-foreground">Manage all event registrations</p>
             </div>
           </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={exportToPDF} className="gap-1">
+              <FileText className="h-4 w-4" /> PDF
+            </Button>
+            <Button variant="outline" size="sm" onClick={exportToExcel} className="gap-1">
+              <FileSpreadsheet className="h-4 w-4" /> Excel
+            </Button>
+          </div>
         </div>
-
+      </header>
+      <main className="max-w-7xl mx-auto px-2 py-6">
+        {/* Stats */}
+        <Card className="mb-6">
+          <CardContent className="flex items-center justify-between p-3">
+            <div>
+              <div className="text-xs text-muted-foreground">Total Registrations</div>
+              <div className="text-lg font-bold text-orange-600">{registrations.length}</div>
+            </div>
+            <FileText className="h-6 w-6 text-orange-600" />
+          </CardContent>
+        </Card>
         {/* Search */}
         <div className="mb-6">
           <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <input
+            <Input
               type="text"
               placeholder="Search registrations..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="pl-10"
             />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
-
         {/* Registrations Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredRegistrations.map((reg) => (
-            <div key={reg._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{reg.eventName}</h3>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <User className="h-4 w-4 mr-2" />
+            <Card key={reg._id} className="hover:shadow cursor-pointer">
+              <CardContent className="p-4">
+                <div className="mb-2">
+                  <h3 className="text-base font-semibold mb-1">{reg.eventName}</h3>
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <User className="h-4 w-4 mr-1" />
                     <span>{reg.studentName}</span>
                   </div>
                 </div>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Mail className="h-4 w-4 mr-2" />
+                <div className="space-y-1 mb-2">
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <Mail className="h-4 w-4 mr-1" />
                     <span>{reg.email}</span>
                   </div>
-                  
                   {reg.gender && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">Gender:</span> {reg.gender}
                     </div>
                   )}
-                  
                   {reg.studentCollegeName && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">College:</span> {reg.studentCollegeName}
                     </div>
                   )}
-                  
                   {reg.branch && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">Branch:</span> {reg.branch}
                     </div>
                   )}
-                  
                   {reg.course && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">Course:</span> {reg.course}
                     </div>
                   )}
-                  
                   {reg.year && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">Year:</span> {reg.year}
                     </div>
                   )}
-                  
                   {reg.mobno && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Phone className="h-4 w-4 mr-2" />
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Phone className="h-4 w-4 mr-1" />
                       <span>{reg.mobno}</span>
                     </div>
                   )}
-                  
                   {reg.organizationName && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">Organization:</span> {reg.organizationName}
                     </div>
                   )}
-                  
-                  <div className="flex items-center text-sm text-gray-500 pt-2 border-t">
-                    <Calendar className="h-4 w-4 mr-2" />
+                  <div className="flex items-center text-xs text-muted-foreground pt-2 border-t mt-2">
+                    <Calendar className="h-4 w-4 mr-1" />
                     <span>Registered {formatDate(reg.createdAt)}</span>
                   </div>
                 </div>
-
                 {/* Action Buttons */}
-                <div className="flex justify-end pt-3 border-t">
-                  <button
-                    onClick={() => handleDeleteRegistration(reg._id)}
-                    className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
-                    title="Delete Registration"
-                  >
+                <div className="flex justify-end pt-2 border-t mt-2">
+                  <Button variant="destructive" size="icon" onClick={() => handleDeleteRegistration(reg._id)} title="Delete Registration">
                     <Trash2 className="h-4 w-4" />
-                  </button>
+                  </Button>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
-
         {filteredRegistrations.length === 0 && (
           <div className="text-center py-12">
-            <FileText className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No registrations found</p>
+            <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">No registrations found</p>
           </div>
         )}
-      </div>
-    </div>
+      </main>
+    </ThemeProvider>
   );
 }
 

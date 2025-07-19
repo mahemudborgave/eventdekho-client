@@ -27,6 +27,14 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../components/ui/dialog';
+import { Textarea } from '../../components/ui/textarea';
+import { ThemeProvider } from '../../components/ui/ThemeProvider';
 
 function RootUsers() {
   const [users, setUsers] = useState({ students: [], organizations: [] });
@@ -184,11 +192,11 @@ function RootUsers() {
         student.name || '',
         student.email || '',
         student.gender || '',
-        student.studentCollegeName || '',
+        student.collegeName || '',
         student.course || '',
         student.branch || '',
         student.year || '',
-        student.mobno || '',
+        student.mobileNumber || '',
         student.isVerified ? 'Yes' : 'No',
         student.isActive !== false ? 'Yes' : 'No',
         formatDate(student.createdAt)
@@ -246,11 +254,11 @@ function RootUsers() {
         "Name": student.name || '',
         "Email": student.email || '',
         "Gender": student.gender || '',
-        "College": student.studentCollegeName || '',
+        "College": student.collegeName || '',
         "Course": student.course || '',
         "Branch": student.branch || '',
         "Year": student.year || '',
-        "Mobile": student.mobno || '',
+        "Mobile": student.mobileNumber || '',
         "Verified": student.isVerified ? 'Yes' : 'No',
         "Active": student.isActive !== false ? 'Yes' : 'No',
         "Created At": formatDate(student.createdAt)
@@ -284,7 +292,7 @@ function RootUsers() {
   const filteredStudents = users.students?.filter(student =>
     student.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     student.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.studentCollegeName?.toLowerCase().includes(searchTerm.toLowerCase())
+    student.collegeName?.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
   const filteredOrganizations = users.organizations?.filter(org =>
@@ -297,519 +305,467 @@ function RootUsers() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <ThemeProvider>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => navigate('/root/dashboard')}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
-              </button>
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Users className="h-6 w-6 text-green-600" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">User Management</h1>
-                <p className="text-sm text-gray-600">Manage students and organizations</p>
-              </div>
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={exportToPDF}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 transition-colors"
-              >
-                <FileText className="h-4 w-4" />
-                <span>Export PDF</span>
-              </button>
-              <button
-                onClick={exportToExcel}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-md hover:bg-green-200 transition-colors"
-              >
-                <FileSpreadsheet className="h-4 w-4" />
-                <span>Export Excel</span>
-              </button>
+      <header className="border-b bg-background">
+        <div className="max-w-7xl mx-auto px-2 flex justify-between items-center h-16">
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => navigate('/root/dashboard')}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <span className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <Users className="h-6 w-6 text-green-600" />
+            </span>
+            <div>
+              <h1 className="text-lg font-bold">User Management</h1>
+              <p className="text-xs text-muted-foreground">Manage students and organizations</p>
             </div>
           </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={exportToPDF} className="gap-1">
+              <FileText className="h-4 w-4" /> PDF
+            </Button>
+            <Button variant="outline" size="sm" onClick={exportToExcel} className="gap-1">
+              <FileSpreadsheet className="h-4 w-4" /> Excel
+            </Button>
+          </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      </header>
+      <main className="max-w-7xl mx-auto px-2 py-6">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <Card>
+            <CardContent className="flex items-center justify-between p-3">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Students</p>
-                <p className="text-2xl font-bold text-green-600">{users.totalStudents || 0}</p>
+                <div className="text-xs text-muted-foreground">Total Students</div>
+                <div className="text-lg font-bold text-green-600">{users.totalStudents || 0}</div>
               </div>
-              <div className="p-3 bg-green-100 rounded-full">
-                <Users className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+              <Users className="h-6 w-6 text-green-600" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="flex items-center justify-between p-3">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Organizations</p>
-                <p className="text-2xl font-bold text-purple-600">{users.totalOrganizations || 0}</p>
+                <div className="text-xs text-muted-foreground">Total Organizations</div>
+                <div className="text-lg font-bold text-purple-600">{users.totalOrganizations || 0}</div>
               </div>
-              <div className="p-3 bg-purple-100 rounded-full">
-                <UserCheck className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+              <UserCheck className="h-6 w-6 text-purple-600" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="flex items-center justify-between p-3">
               <div>
-                <p className="text-sm font-medium text-gray-600">Verified Users</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {(users.students?.filter(s => s.isVerified).length || 0) + 
-                   (users.organizations?.filter(o => o.isVerified).length || 0)}
-                </p>
+                <div className="text-xs text-muted-foreground">Verified Users</div>
+                <div className="text-lg font-bold text-blue-600">{(users.students?.filter(s => s.isVerified).length || 0) + (users.organizations?.filter(o => o.isVerified).length || 0)}</div>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <CheckCircle className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between">
+              <CheckCircle className="h-6 w-6 text-blue-600" />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="flex items-center justify-between p-3">
               <div>
-                <p className="text-sm font-medium text-gray-600">Active Users</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  {(users.students?.filter(s => s.isActive !== false).length || 0) + 
-                   (users.organizations?.filter(o => o.isActive !== false).length || 0)}
-                </p>
+                <div className="text-xs text-muted-foreground">Active Users</div>
+                <div className="text-lg font-bold text-orange-600">{(users.students?.filter(s => s.isActive !== false).length || 0) + (users.organizations?.filter(o => o.isActive !== false).length || 0)}</div>
               </div>
-              <div className="p-3 bg-orange-100 rounded-full">
-                <UserCheckIcon className="h-6 w-6 text-orange-600" />
-              </div>
-            </div>
-          </div>
+              <UserCheckIcon className="h-6 w-6 text-orange-600" />
+            </CardContent>
+          </Card>
         </div>
-
         {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-md mb-6">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8 px-6">
-              <button
-                onClick={() => setActiveTab('students')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'students'
-                    ? 'border-green-500 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Students ({users.totalStudents || 0})
-              </button>
-              <button
-                onClick={() => setActiveTab('organizations')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === 'organizations'
-                    ? 'border-purple-500 text-purple-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                Organizations ({users.totalOrganizations || 0})
-              </button>
-            </nav>
-          </div>
-        </div>
-
-        {/* Search */}
-        <div className="mb-6">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder={`Search ${activeTab}...`}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-            />
-          </div>
-        </div>
-
-        {/* Users Table */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    User
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Contact
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Details
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {currentData.map((user) => (
-                  <tr key={user._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                            <span className="text-sm font-medium text-gray-700">
-                              {activeTab === 'students' ? user.name?.charAt(0) : user.organizationName?.charAt(0)}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
-                            {activeTab === 'students' ? user.name : user.organizationName}
-                          </div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {activeTab === 'students' ? user.mobno : user.phone}
-                      </div>
-                      {activeTab === 'organizations' && user.website && (
-                        <div className="text-sm text-gray-500">{user.website}</div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {activeTab === 'students' ? (
-                          <>
-                            {user.studentCollegeName && <div>{user.studentCollegeName}</div>}
-                            {user.course && user.branch && <div>{user.course} - {user.branch}</div>}
-                            {user.year && <div>{user.year}</div>}
-                          </>
-                        ) : (
-                          <>
-                            {user.city && <div>{user.city}</div>}
-                            {user.organizationType && <div>{user.organizationType}</div>}
-                            {user.contactPerson && <div>{user.contactPerson}</div>}
-                          </>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex space-x-2">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          user.isVerified 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
-                          {user.isVerified ? 'Verified' : 'Unverified'}
-                        </span>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          user.isActive !== false 
-                            ? 'bg-blue-100 text-blue-800' 
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {user.isActive !== false ? 'Active' : 'Inactive'}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleViewUser(user._id)}
-                          className="text-blue-600 hover:text-blue-900 p-1"
-                          title="View Details"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleEditUser(user)}
-                          className="text-green-600 hover:text-green-900 p-1"
-                          title="Edit User"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleToggleVerification(user._id, user.isVerified)}
-                          className={`p-1 ${user.isVerified ? 'text-red-600 hover:text-red-900' : 'text-green-600 hover:text-green-900'}`}
-                          title={user.isVerified ? 'Unverify User' : 'Verify User'}
-                        >
-                          {user.isVerified ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
-                        </button>
-                        <button
-                          onClick={() => handleToggleStatus(user._id, user.isActive !== false)}
-                          className={`p-1 ${user.isActive !== false ? 'text-orange-600 hover:text-orange-900' : 'text-green-600 hover:text-green-900'}`}
-                          title={user.isActive !== false ? 'Deactivate User' : 'Activate User'}
-                        >
-                          {user.isActive !== false ? <UserX className="h-4 w-4" /> : <UserCheckIcon className="h-4 w-4" />}
-                        </button>
-                        <button
-                          onClick={() => handleDeleteUser(user._id)}
-                          className="text-red-600 hover:text-red-900 p-1"
-                          title="Delete User"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {currentData.length === 0 && (
-          <div className="text-center py-12">
-            <Users className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No {activeTab} found</p>
-          </div>
-        )}
-      </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+          <TabsList className="w-full flex gap-2">
+            <TabsTrigger value="students">Students ({users.totalStudents || 0})</TabsTrigger>
+            <TabsTrigger value="organizations">Organizations ({users.totalOrganizations || 0})</TabsTrigger>
+          </TabsList>
+          <TabsContent value="students">
+            {/* Search */}
+            <div className="mb-4">
+              <div className="relative max-w-md">
+                <Input
+                  type="text"
+                  placeholder="Search students..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              </div>
+            </div>
+            {/* Users Table */}
+            <Card>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto rounded-lg border">
+                  <Table className="min-w-full text-sm">
+                    <TableHeader>
+                      <TableRow className="bg-muted sticky top-0 z-10">
+                        <TableHead className="whitespace-nowrap">User</TableHead>
+                        <TableHead className="whitespace-nowrap">Contact</TableHead>
+                        <TableHead className="whitespace-nowrap">Details</TableHead>
+                        <TableHead className="whitespace-nowrap">Status</TableHead>
+                        <TableHead className="whitespace-nowrap">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredStudents.map((user, i) => (
+                        <TableRow key={user._id} className={i % 2 === 0 ? 'bg-background' : 'bg-muted/50 hover:bg-muted'}>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                                <span className="text-xs font-medium text-foreground">
+                                  {user.name?.charAt(0)}
+                                </span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">{user.name}</div>
+                                <div className="text-xs text-muted-foreground">{user.email}</div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="text-xs">
+                              <div><span className="font-semibold">Email:</span> {user.email}</div>
+                              {user.mobileNumber && <div><span className="font-semibold">Mobile:</span> {user.mobileNumber}</div>}
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="text-xs">
+                              {user.collegeName && <div><span className="font-semibold">College:</span> {user.collegeName}</div>}
+                              {user.course && <div><span className="font-semibold">Course:</span> {user.course}</div>}
+                              {user.branch && <div><span className="font-semibold">Branch:</span> {user.branch}</div>}
+                              {user.year && <div><span className="font-semibold">Year:</span> {user.year}</div>}
+                              {user.semester && <div><span className="font-semibold">Semester:</span> {user.semester}</div>}
+                              {user.gender && <div><span className="font-semibold">Gender:</span> {user.gender}</div>}
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="flex flex-col gap-1">
+                              <span className={`text-xs font-semibold ${user.isVerified ? 'text-green-600' : 'text-red-600'}`}>{user.isVerified ? 'Verified' : 'Unverified'}</span>
+                              <span className={`text-xs font-semibold ${user.isActive !== false ? 'text-blue-600' : 'text-gray-400'}`}>{user.isActive !== false ? 'Active' : 'Inactive'}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="flex gap-1">
+                              <Button variant="outline" size="icon" onClick={() => handleViewUser(user._id)} title="View"><Eye className="h-4 w-4" /></Button>
+                              <Button variant="outline" size="icon" onClick={() => handleEditUser(user)} title="Edit"><Edit className="h-4 w-4" /></Button>
+                              <Button variant="destructive" size="icon" onClick={() => handleDeleteUser(user._id)} title="Delete"><Trash2 className="h-4 w-4" /></Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="organizations">
+            {/* Search */}
+            <div className="mb-4">
+              <div className="relative max-w-md">
+                <Input
+                  type="text"
+                  placeholder="Search organizations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              </div>
+            </div>
+            {/* Users Table */}
+            <Card>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto rounded-lg border">
+                  <Table className="min-w-full text-sm">
+                    <TableHeader>
+                      <TableRow className="bg-muted sticky top-0 z-10">
+                        <TableHead className="whitespace-nowrap">User</TableHead>
+                        <TableHead className="whitespace-nowrap">Contact</TableHead>
+                        <TableHead className="whitespace-nowrap">Details</TableHead>
+                        <TableHead className="whitespace-nowrap">Status</TableHead>
+                        <TableHead className="whitespace-nowrap">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredOrganizations.map((user, i) => (
+                        <TableRow key={user._id} className={i % 2 === 0 ? 'bg-background' : 'bg-muted/50 hover:bg-muted'}>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                                <span className="text-xs font-medium text-foreground">
+                                  {user.organizationName?.charAt(0)}
+                                </span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">{user.organizationName}</div>
+                                <div className="text-xs text-muted-foreground">{user.email}</div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="text-sm">{user.phone}</div>
+                            {user.website && <div className="text-xs text-muted-foreground">{user.website}</div>}
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="text-xs">
+                              {user.city && <div>{user.city}</div>}
+                              {user.organizationType && <div>{user.organizationType}</div>}
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="flex flex-col gap-1">
+                              <span className={`text-xs font-semibold ${user.isVerified ? 'text-green-600' : 'text-red-600'}`}>{user.isVerified ? 'Verified' : 'Unverified'}</span>
+                              <span className={`text-xs font-semibold ${user.isActive !== false ? 'text-blue-600' : 'text-gray-400'}`}>{user.isActive !== false ? 'Active' : 'Inactive'}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <div className="flex gap-1">
+                              <Button variant="outline" size="icon" onClick={() => handleViewUser(user._id)} title="View"><Eye className="h-4 w-4" /></Button>
+                              <Button variant="outline" size="icon" onClick={() => handleEditUser(user)} title="Edit"><Edit className="h-4 w-4" /></Button>
+                              <Button variant="destructive" size="icon" onClick={() => handleDeleteUser(user._id)} title="Delete"><Trash2 className="h-4 w-4" /></Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
 
       {/* User Details Modal */}
-      {showUserModal && selectedUser && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">User Details</h3>
-                <button
-                  onClick={() => setShowUserModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <XCircle className="h-6 w-6" />
-                </button>
-              </div>
-              <div className="space-y-3">
+      <Dialog open={showUserModal && !!selectedUser} onOpenChange={v => { if (!v) setShowUserModal(false); }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>User Details</DialogTitle>
+          </DialogHeader>
+          {selectedUser && (
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Name:</label>
-                  <p className="text-sm text-gray-900">
-                    {selectedUser.userType === 'student' ? selectedUser.user.name : selectedUser.user.organizationName}
-                  </p>
+                  <div className="font-semibold">Name:</div>
+                  <div>{selectedUser.userType === 'student' ? selectedUser.user.name : selectedUser.user.organizationName}</div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Email:</label>
-                  <p className="text-sm text-gray-900">{selectedUser.user.email}</p>
+                  <div className="font-semibold">Email:</div>
+                  <div>{selectedUser.user.email}</div>
                 </div>
                 {selectedUser.userType === 'student' ? (
                   <>
-                    {selectedUser.user.gender && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Gender:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.gender}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.studentCollegeName && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">College:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.studentCollegeName}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.course && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Course:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.course}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.branch && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Branch:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.branch}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.year && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Year:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.year}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.mobno && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Mobile:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.mobno}</p>
-                      </div>
-                    )}
+                    <div><span className="font-semibold">Name:</span> {selectedUser.user.name}</div>
+                    <div><span className="font-semibold">Email:</span> {selectedUser.user.email}</div>
+                    <div><span className="font-semibold">Mobile:</span> {selectedUser.user.mobileNumber || '-'}</div>
+                    <div><span className="font-semibold">College:</span> {selectedUser.user.collegeName || '-'}</div>
+                    <div><span className="font-semibold">Course:</span> {selectedUser.user.course || '-'}</div>
+                    <div><span className="font-semibold">Branch:</span> {selectedUser.user.branch || '-'}</div>
+                    <div><span className="font-semibold">Year:</span> {selectedUser.user.year || '-'}</div>
+                    <div><span className="font-semibold">Semester:</span> {selectedUser.user.semester || '-'}</div>
+                    <div><span className="font-semibold">Gender:</span> {selectedUser.user.gender || '-'}</div>
                   </>
                 ) : (
                   <>
-                    {selectedUser.user.shortName && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Short Name:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.shortName}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.organizationType && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Type:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.organizationType}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.city && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">City:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.city}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.phone && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Phone:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.phone}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.website && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Website:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.website}</p>
-                      </div>
-                    )}
-                    {selectedUser.user.contactPerson && (
-                      <div>
-                        <label className="text-sm font-medium text-gray-700">Contact Person:</label>
-                        <p className="text-sm text-gray-900">{selectedUser.user.contactPerson}</p>
-                      </div>
-                    )}
+                    <div>
+                      <div className="font-semibold">Short Name:</div>
+                      <div>{selectedUser.user.shortName || '-'}</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Type:</div>
+                      <div>{selectedUser.user.organizationType || '-'}</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold">City:</div>
+                      <div>{selectedUser.user.city || '-'}</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Phone:</div>
+                      <div>{selectedUser.user.phone || '-'}</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Website:</div>
+                      <div>{selectedUser.user.website || '-'}</div>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Contact Person:</div>
+                      <div>{selectedUser.user.contactPerson || '-'}</div>
+                    </div>
                   </>
                 )}
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Created:</label>
-                  <p className="text-sm text-gray-900">{formatDate(selectedUser.user.createdAt)}</p>
+                  <div className="font-semibold">Created:</div>
+                  <div>{formatDate(selectedUser.user.createdAt)}</div>
                 </div>
-                <div className="flex space-x-2">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    selectedUser.user.isVerified 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {selectedUser.user.isVerified ? 'Verified' : 'Unverified'}
-                  </span>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    selectedUser.user.isActive !== false 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    {selectedUser.user.isActive !== false ? 'Active' : 'Inactive'}
-                  </span>
+                <div>
+                  <div className="font-semibold">Status:</div>
+                  <div className="flex gap-2">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${selectedUser.user.isVerified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{selectedUser.user.isVerified ? 'Verified' : 'Unverified'}</span>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${selectedUser.user.isActive !== false ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>{selectedUser.user.isActive !== false ? 'Active' : 'Inactive'}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowUserModal(false)}>Close</Button>
+            <Button variant="default" onClick={() => { setEditForm(selectedUser.user); setShowEditModal(true); setShowUserModal(false); }}>Edit</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {/* Edit User Modal */}
-      {showEditModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Edit User</h3>
-                <button
-                  onClick={() => setShowEditModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <XCircle className="h-6 w-6" />
-                </button>
+      <Dialog open={showEditModal} onOpenChange={v => {
+        if (!v) {
+          setShowEditModal(false);
+          setEditForm({}); // Reset form state on close
+        }
+      }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={e => { e.preventDefault(); handleUpdateUser(); }} className="space-y-3">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium">Name</label>
+                <input
+                  type="text"
+                  value={editForm.name || editForm.organizationName || ''}
+                  onChange={e => setEditForm({ ...editForm, [activeTab === 'students' ? 'name' : 'organizationName']: e.target.value })}
+                  className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                />
               </div>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Name</label>
-                  <input
-                    type="text"
-                    value={editForm.name || editForm.organizationName || ''}
-                    onChange={(e) => setEditForm({
-                      ...editForm,
-                      [activeTab === 'students' ? 'name' : 'organizationName']: e.target.value
-                    })}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
-                  <input
-                    type="email"
-                    value={editForm.email || ''}
-                    onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                {activeTab === 'students' ? (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Mobile</label>
-                      <input
-                        type="text"
-                        value={editForm.mobno || ''}
-                        onChange={(e) => setEditForm({...editForm, mobno: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">College</label>
-                      <input
-                        type="text"
-                        value={editForm.studentCollegeName || ''}
-                        onChange={(e) => setEditForm({...editForm, studentCollegeName: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Phone</label>
-                      <input
-                        type="text"
-                        value={editForm.phone || ''}
-                        onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">City</label>
-                      <input
-                        type="text"
-                        value={editForm.city || ''}
-                        onChange={(e) => setEditForm({...editForm, city: e.target.value})}
-                        className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </>
-                )}
-                <div className="flex space-x-3 pt-4">
-                  <button
-                    onClick={handleUpdateUser}
-                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => setShowEditModal(false)}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  >
-                    Cancel
-                  </button>
-                </div>
+              <div>
+                <label className="block text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  value={editForm.email || ''}
+                  onChange={e => setEditForm({ ...editForm, email: e.target.value })}
+                  className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                />
               </div>
+              {activeTab === 'students' ? (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium">Mobile</label>
+                    <input
+                      type="text"
+                      value={editForm.mobileNumber || ''}
+                      onChange={e => setEditForm({ ...editForm, mobileNumber: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">College</label>
+                    <input
+                      type="text"
+                      value={editForm.collegeName || ''}
+                      onChange={e => setEditForm({ ...editForm, collegeName: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Course</label>
+                    <input
+                      type="text"
+                      value={editForm.course || ''}
+                      onChange={e => setEditForm({ ...editForm, course: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Branch</label>
+                    <input
+                      type="text"
+                      value={editForm.branch || ''}
+                      onChange={e => setEditForm({ ...editForm, branch: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Year</label>
+                    <input
+                      type="text"
+                      value={editForm.year || ''}
+                      onChange={e => setEditForm({ ...editForm, year: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium">Short Name</label>
+                    <input
+                      type="text"
+                      value={editForm.shortName || ''}
+                      onChange={e => setEditForm({ ...editForm, shortName: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Type</label>
+                    <input
+                      type="text"
+                      value={editForm.organizationType || ''}
+                      onChange={e => setEditForm({ ...editForm, organizationType: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">City</label>
+                    <input
+                      type="text"
+                      value={editForm.city || ''}
+                      onChange={e => setEditForm({ ...editForm, city: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Phone</label>
+                    <input
+                      type="text"
+                      value={editForm.phone || ''}
+                      onChange={e => setEditForm({ ...editForm, phone: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Website</label>
+                    <input
+                      type="text"
+                      value={editForm.website || ''}
+                      onChange={e => setEditForm({ ...editForm, website: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium">Contact Person</label>
+                    <input
+                      type="text"
+                      value={editForm.contactPerson || ''}
+                      onChange={e => setEditForm({ ...editForm, contactPerson: e.target.value })}
+                      className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
+                    />
+                  </div>
+                </>
+              )}
             </div>
-          </div>
-        </div>
-      )}
-    </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => { setShowEditModal(false); setEditForm({}); }}>Cancel</Button>
+              <Button type="submit" variant="default">Update</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </ThemeProvider>
   );
 }
 

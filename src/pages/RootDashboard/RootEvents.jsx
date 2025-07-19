@@ -11,17 +11,26 @@ import {
   Calendar,
   MapPin,
   Users,
-  Eye
+  Eye,
+  LayoutGrid,
+  Table2,
+  Loader2
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../components/ui/table';
+import { ThemeProvider } from '../../components/ui/ThemeProvider';
 
 function RootEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [view, setView] = useState('grid');
   const navigate = useNavigate();
 
   const baseURL = import.meta.env.VITE_BASE_URL;
@@ -150,150 +159,196 @@ function RootEvents() {
     event.eventLocation?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Remove the full-page loader
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+      <div className="min-h-screen bg-background text-foreground">
+        {/* Header */}
+        <header className="border-b bg-background">
+          <div className="max-w-7xl mx-auto px-2 flex justify-between items-center h-16">
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" onClick={() => navigate('/root/dashboard')}>
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <span className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                <Calendar className="h-6 w-6 text-blue-600" />
+              </span>
+              <div>
+                <h1 className="text-lg font-bold">All Events</h1>
+                <p className="text-xs text-muted-foreground">System-wide event management</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={exportToPDF} className="gap-1">
+                <FileText className="h-4 w-4" /> PDF
+              </Button>
+              <Button variant="outline" size="sm" onClick={exportToExcel} className="gap-1">
+                <FileSpreadsheet className="h-4 w-4" /> Excel
+              </Button>
+            </div>
+          </div>
+        </header>
+        <main className="max-w-7xl mx-auto px-2 py-6 relative min-h-[400px]">
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 rounded-lg">
+            <Loader2 className="animate-spin w-12 h-12 text-primary" />
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <ThemeProvider>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => navigate('/root/dashboard')}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="h-5 w-5 text-gray-600" />
-              </button>
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Calendar className="h-6 w-6 text-blue-600" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">All Events</h1>
-                <p className="text-sm text-gray-600">System-wide event management</p>
-              </div>
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={exportToPDF}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200 transition-colors"
-              >
-                <FileText className="h-4 w-4" />
-                <span>Export PDF</span>
-              </button>
-              <button
-                onClick={exportToExcel}
-                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-md hover:bg-green-200 transition-colors"
-              >
-                <FileSpreadsheet className="h-4 w-4" />
-                <span>Export Excel</span>
-              </button>
+      <header className="border-b bg-background">
+        <div className="max-w-7xl mx-auto px-2 flex justify-between items-center h-16">
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => navigate('/root/dashboard')}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <span className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <Calendar className="h-6 w-6 text-blue-600" />
+            </span>
+            <div>
+              <h1 className="text-lg font-bold">All Events</h1>
+              <p className="text-xs text-muted-foreground">System-wide event management</p>
             </div>
           </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={exportToPDF} className="gap-1">
+              <FileText className="h-4 w-4" /> PDF
+            </Button>
+            <Button variant="outline" size="sm" onClick={exportToExcel} className="gap-1">
+              <FileSpreadsheet className="h-4 w-4" /> Excel
+            </Button>
+          </div>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      </header>
+      <main className="max-w-7xl mx-auto px-2 py-6">
         {/* Search and Stats */}
-        <div className="mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search events..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div className="text-sm text-gray-600">
-              Showing {filteredEvents.length} of {events.length} events
-            </div>
+        <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="relative flex-1 max-w-md">
+            <Input
+              type="text"
+              placeholder="Search events..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant={view === 'grid' ? 'default' : 'outline'} size="icon" onClick={() => setView('grid')} aria-label="Grid view" className={view === 'grid' ? 'ring-2 ring-primary' : ''}><LayoutGrid className="h-5 w-5" /></Button>
+            <Button variant={view === 'table' ? 'default' : 'outline'} size="icon" onClick={() => setView('table')} aria-label="Table view" className={view === 'table' ? 'ring-2 ring-primary' : ''}><Table2 className="h-5 w-5" /></Button>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            Showing {filteredEvents.length} of {events.length} events
           </div>
         </div>
-
-        {/* Events Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEvents.map((event) => (
-            <div key={event._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                    {event.eventName}
-                  </h3>
-                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                    event.eventMode === 'Online' 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-green-100 text-green-800'
-                  }`}>
-                    {event.eventMode}
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Users className="h-4 w-4 mr-2" />
-                    <span>{event.organizationName}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-600">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    <span>{event.eventLocation}</span>
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    <span>{formatDate(event.eventDate)}</span>
-                  </div>
-
-                  {event.eventTags && event.eventTags.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {event.eventTags.slice(0, 3).map((tag, index) => (
-                        <span key={index} className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded">
-                          {tag}
-                        </span>
-                      ))}
-                      {event.eventTags.length > 3 && (
-                        <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded">
-                          +{event.eventTags.length - 3} more
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="flex justify-between items-center pt-3 border-t">
-                    <span className="text-sm text-gray-500">
-                      {event.registrationCount || 0} registrations
+        {/* Events Table or Grid */}
+        {view === 'table' ? (
+          <div className="overflow-x-auto rounded-lg border mb-8">
+            <Table className="min-w-full text-sm">
+              <TableHeader>
+                <TableRow className="bg-muted sticky top-0 z-10">
+                  <TableHead className="whitespace-nowrap">#</TableHead>
+                  <TableHead className="whitespace-nowrap">Event Name</TableHead>
+                  <TableHead className="whitespace-nowrap">Organization</TableHead>
+                  <TableHead className="whitespace-nowrap">Mode</TableHead>
+                  <TableHead className="whitespace-nowrap">Date</TableHead>
+                  <TableHead className="whitespace-nowrap">Location</TableHead>
+                  <TableHead className="whitespace-nowrap">Tags</TableHead>
+                  <TableHead className="whitespace-nowrap">Registrations</TableHead>
+                  <TableHead className="whitespace-nowrap">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredEvents.map((event, i) => (
+                  <TableRow key={event._id} className={i % 2 === 0 ? 'bg-background' : 'bg-muted/50 hover:bg-muted'}>
+                    <TableCell className="whitespace-nowrap font-mono">{i + 1}</TableCell>
+                    <TableCell className="whitespace-nowrap font-semibold">{event.eventName}</TableCell>
+                    <TableCell className="whitespace-nowrap">{event.organizationName}</TableCell>
+                    <TableCell className="whitespace-nowrap">{event.eventMode}</TableCell>
+                    <TableCell className="whitespace-nowrap">{formatDate(event.eventDate)}</TableCell>
+                    <TableCell className="whitespace-nowrap">{event.eventLocation}</TableCell>
+                    <TableCell className="max-w-xs truncate" title={Array.isArray(event.eventTags) ? event.eventTags.join(', ') : event.eventTags}>{Array.isArray(event.eventTags) ? event.eventTags.slice(0, 3).join(', ') : event.eventTags}</TableCell>
+                    <TableCell className="whitespace-nowrap">{event.registrationCount || 0}</TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <Button variant="link" size="sm" onClick={() => navigate(`/root/eventdetail/${event._id}`)} className="gap-1">
+                        <Eye className="h-4 w-4" /> View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredEvents.map((event) => (
+              <Card key={event._id} className="hover:shadow cursor-pointer">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-base font-semibold line-clamp-2">
+                      {event.eventName}
+                    </h3>
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      event.eventMode === 'Online' 
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' 
+                        : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                    }`}>
+                      {event.eventMode}
                     </span>
-                    <button
-                      onClick={() => navigate(`/event/${event._id}`)}
-                      className="flex items-center space-x-1 text-sm text-blue-600 hover:text-blue-700"
-                    >
-                      <Eye className="h-4 w-4" />
-                      <span>View</span>
-                    </button>
                   </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredEvents.length === 0 && (
-          <div className="text-center py-12">
-            <Calendar className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No events found</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Users className="h-4 w-4 mr-1" />
+                      <span>{event.organizationName}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <MapPin className="h-4 w-4 mr-1" />
+                      <span>{event.eventLocation}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      <span>{formatDate(event.eventDate)}</span>
+                    </div>
+                    {event.eventTags && event.eventTags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {event.eventTags.slice(0, 3).map((tag, index) => (
+                          <span key={index} className="px-2 py-1 text-xs bg-muted text-foreground rounded">
+                            {tag}
+                          </span>
+                        ))}
+                        {event.eventTags.length > 3 && (
+                          <span className="px-2 py-1 text-xs bg-muted text-foreground rounded">
+                            +{event.eventTags.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <div className="flex justify-between items-center pt-2 border-t mt-2">
+                      <span className="text-xs text-muted-foreground">
+                        {event.registrationCount || 0} registrations
+                      </span>
+                      <Button variant="link" size="sm" onClick={() => navigate(`/root/eventdetail/${event._id}`)} className="gap-1">
+                        <Eye className="h-4 w-4" /> View
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
-      </div>
-    </div>
+        {filteredEvents.length === 0 && (
+          <div className="text-center py-12">
+            <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <p className="text-muted-foreground">No events found</p>
+          </div>
+        )}
+      </main>
+    </ThemeProvider>
   );
 }
 

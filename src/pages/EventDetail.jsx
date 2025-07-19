@@ -270,13 +270,13 @@ function EventDetail() {
                   <span className="inline-flex items-center px-3 py-1 rounded-full border-2 bg-[#DC3C22] text-white font-bold text-sm">
                     {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7l10 10M7 17L17 7" /></svg> */}
                     <IndianRupee className="inline-block" size={20} />{Number(event.fee)}
-                  </span>
-                ) : (
+                                </span>
+                              ) : (
                   <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm">
                     {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7l10 10M7 17L17 7" /></svg> */}
-                    FREE
-                  </span>
-                )}
+                                  FREE
+                                </span>
+                              )}
               </div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 gap-4 text-center">
                 {event.eventName}
@@ -460,9 +460,9 @@ function EventDetail() {
 
               {/* Event Stages Section (only if data) */}
               {hasNonEmptyStage(event) && (
-                <div id="stages" ref={sectionRefs.current['stages']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Stages</h2>
-                  <div className="space-y-4">
+              <div id="stages" ref={sectionRefs.current['stages']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Event Stages</h2>
+                <div className="space-y-4">
                     {event.stages.map((stage, idx) => (
                       <div key={idx} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-4 flex flex-col md:flex-row items-start gap-3">
                         <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold text-lg">{idx + 1}</div>
@@ -477,9 +477,9 @@ function EventDetail() {
               )}
               {/* Prizes Section (only if data) */}
               {hasNonEmptyPrize(event) && (
-                <div id="prizes" ref={sectionRefs.current['prizes']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Prizes & Rewards</h2>
-                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+              <div id="prizes" ref={sectionRefs.current['prizes']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Prizes & Rewards</h2>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
                     {event.prizes.map((prize, idx) => (
                       <div key={idx} className="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white rounded-lg p-4 text-center flex flex-col items-center">
                         <Trophy className="w-12 h-12 mx-auto mb-3" />
@@ -500,59 +500,59 @@ function EventDetail() {
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {event.benefits.map((benefit, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4" />
-                        <span className="text-sm">{benefit}</span>
-                      </div>
+                        <div key={idx} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4" />
+                          <span className="text-sm">{benefit}</span>
+                        </div>
                     ))}
                   </div>
                 </div>
               )}
               {/* Rules Section (only if data) */}
               {(hasNonEmptyRule(event) || hasNonEmptyGuideline(event) || hasNonEmptyBring(event)) && (
-                <div id="rules" ref={sectionRefs.current['rules']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Rules & Guidelines</h2>
-                  <div className="space-y-4">
-                    {/* Important Rules */}
+              <div id="rules" ref={sectionRefs.current['rules']} className="bg-white rounded-xl shadow-lg p-4 sm:p-6 scroll-mt-32">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Rules & Guidelines</h2>
+                <div className="space-y-4">
+                  {/* Important Rules */}
                     {hasNonEmptyRule(event) && (
-                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 className="text-lg font-bold text-red-800 mb-3 flex items-center gap-2">
-                          <AlertCircle className="w-4 h-4" />
-                          Important Rules
-                        </h3>
-                        <ul className="list-disc pl-6 space-y-1">
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-red-800 mb-3 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      Important Rules
+                    </h3>
+                    <ul className="list-disc pl-6 space-y-1">
                           {event.rules.map((rule, idx) => (
-                            <li key={idx} className="text-sm text-red-900">{rule}</li>
+                          <li key={idx} className="text-sm text-red-900">{rule}</li>
                           ))}
-                        </ul>
-                      </div>
+                    </ul>
+                  </div>
                     )}
-                    {/* General Guidelines */}
+                  {/* General Guidelines */}
                     {hasNonEmptyGuideline(event) && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <h3 className="text-lg font-bold text-yellow-800 mb-3 flex items-center gap-2">
-                          <BookOpen className="w-4 h-4" />
-                          General Guidelines
-                        </h3>
-                        <ul className="list-disc pl-6 space-y-1">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-yellow-800 mb-3 flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" />
+                      General Guidelines
+                    </h3>
+                    <ul className="list-disc pl-6 space-y-1">
                           {event.guidelines.map((guide, idx) => (
-                            <li key={idx} className="text-sm text-yellow-900">{guide}</li>
+                          <li key={idx} className="text-sm text-yellow-900">{guide}</li>
                           ))}
-                        </ul>
-                      </div>
+                    </ul>
+                  </div>
                     )}
-                    {/* What to Bring */}
+                  {/* What to Bring */}
                     {hasNonEmptyBring(event) && (
-                      <div className="bg-lime-50 border border-lime-200 rounded-lg p-4">
-                        <h3 className="text-lg font-bold text-lime-800 mb-3 flex items-center gap-2">
-                          <Backpack className="w-4 h-4" />
-                          What to Bring
-                        </h3>
-                        <ul className="list-disc pl-6 space-y-1">
+                  <div className="bg-lime-50 border border-lime-200 rounded-lg p-4">
+                    <h3 className="text-lg font-bold text-lime-800 mb-3 flex items-center gap-2">
+                      <Backpack className="w-4 h-4" />
+                      What to Bring
+                    </h3>
+                    <ul className="list-disc pl-6 space-y-1">
                           {event.bring.map((item, idx) => (
-                            <li key={idx} className="text-sm text-lime-900">{item}</li>
+                          <li key={idx} className="text-sm text-lime-900">{item}</li>
                           ))}
-                        </ul>
+                    </ul>
                       </div>
                     )}
                   </div>

@@ -20,4 +20,11 @@ export const uploadFeaturedImage = async (file, title, token) => {
     },
   });
   return res.data;
+};
+
+export const deleteFeaturedImage = async (id, token) => {
+  const res = await axios.delete(`${API_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
 }; 

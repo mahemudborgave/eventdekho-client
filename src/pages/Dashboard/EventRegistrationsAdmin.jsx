@@ -118,20 +118,20 @@ function EventRegistrationsAdmin() {
     const worksheetData = registrations.map((reg, index) => {
       const payment = payments.find(p => p.studentId === reg.email);
       return {
-        "#": index + 1,
-        "Registration ID": reg._id || '',
-        "Name": reg.studentName || '',
-        "Email": reg.email || '',
-        "College": reg.studentCollegeName || '',
-        "Branch": reg.branch || '',
-        "Year": reg.year || '',
-        "Course": reg.course || '',
-        "Gender": reg.gender || '',
-        "Mobile": reg.mobno || '',
+      "#": index + 1,
+      "Registration ID": reg._id || '',
+      "Name": reg.studentName || '',
+      "Email": reg.email || '',
+      "College": reg.studentCollegeName || '',
+      "Branch": reg.branch || '',
+      "Year": reg.year || '',
+      "Course": reg.course || '',
+      "Gender": reg.gender || '',
+      "Mobile": reg.mobno || '',
         "Transaction ID": payment ? payment.razorpay_payment_id : 'N/A',
         "Payment Status": payment ? payment.status : 'N/A',
-        "Created At": reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
-        "Updated At": reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
+      "Created At": reg.createdAt ? new Date(reg.createdAt).toLocaleString() : '',
+      "Updated At": reg.updatedAt ? new Date(reg.updatedAt).toLocaleString() : ''
       };
     });
 
