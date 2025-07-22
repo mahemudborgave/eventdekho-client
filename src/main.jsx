@@ -40,6 +40,9 @@ import BlogRead from './pages/BlogRead.jsx';
 import TransactionsAdmin from './pages/Dashboard/TransactionsAdmin.jsx';
 import { ThemeProvider } from './components/ui/ThemeProvider';
 import RootEventDetail from './pages/RootDashboard/RootEventDetail.jsx';
+import RootOrganizations from './pages/RootDashboard/RootOrganizations.jsx';
+import RootOrgEvents from './pages/RootDashboard/RootOrgEvents.jsx';
+import RootOrgEventTransactions from './pages/RootDashboard/RootOrgEventTransactions.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -84,8 +87,12 @@ const router = createBrowserRouter(
         <Route path='root/dashboard' element={<RootDashboard />} />
         <Route path='root/events' element={<RootEvents />} />
         <Route path='root/users' element={<RootUsers />} />
+        <Route path='root/organizations' element={<RootOrganizations />} />
         <Route path='root/registrations' element={<RootRegistrations />} />
+        <Route path='root/org-event/:eventId' element={<div>Event detail page placeholder</div>} />
         <Route path='root/eventdetail/:eventId' element={<RootEventDetail />} />
+        <Route path='root/org-events/:email' element={<RootOrgEvents />} />
+        <Route path='root/org-event-transactions/:eventId' element={<RootOrgEventTransactions />} />
       </Route>
     </>
 

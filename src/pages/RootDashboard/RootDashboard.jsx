@@ -246,7 +246,7 @@ function RootDashboard() {
     <ThemeProvider>
       {loading ? (
         <div className="min-h-screen bg-background text-foreground">
-          {/* Header */}
+      {/* Header */}
           <header className="border-b bg-background">
             <div className="max-w-7xl mx-auto px-2 flex justify-between items-center h-16">
               <div className="flex items-center gap-2">
@@ -269,7 +269,7 @@ function RootDashboard() {
           <main className="max-w-7xl mx-auto px-2 py-6 relative min-h-[400px]">
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 rounded-lg">
               <Loader2 className="animate-spin w-12 h-12 text-primary" />
-            </div>
+          </div>
           </main>
         </div>
       ) : (
@@ -284,15 +284,15 @@ function RootDashboard() {
                 <div>
                   <h1 className="text-lg font-bold">Root Dashboard</h1>
                   <p className="text-xs text-muted-foreground">System Administration</p>
-                </div>
-              </div>
+        </div>
+      </div>
               <div className="flex items-center gap-2">
                 <ThemeSwitcher />
                 <Button variant="outline" size="sm" onClick={handleLogout} className="gap-1">
                   <LogOut className="h-4 w-4" /> Logout
                 </Button>
-              </div>
-            </div>
+          </div>
+        </div>
           </header>
           <main className="max-w-7xl mx-auto px-2 py-6">
             <Tabs value={tab} onValueChange={setTab} className="w-full">
@@ -300,6 +300,7 @@ function RootDashboard() {
                 <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
                 <TabsTrigger value="transactions">Transactions</TabsTrigger>
                 <TabsTrigger value="queries">Queries</TabsTrigger>
+                <TabsTrigger value="organizations">Organizations</TabsTrigger>
               </TabsList>
               <TabsContent value="dashboard">
                 <div className="mb-6">
@@ -344,8 +345,8 @@ function RootDashboard() {
                         </div>
                       </CardContent>
                     </Card>
-                  </div>
-                </div>
+          </div>
+        </div>
                 <div className="mb-6">
                   <h2 className="text-xl font-semibold mb-3">Quick Access</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -403,8 +404,8 @@ function RootDashboard() {
                         </div>
                       </CardContent>
                     </Card>
-                  </div>
-                </div>
+          </div>
+        </div>
                 <Card className="mb-6">
                   <CardHeader>
                     <CardTitle>Recent Activity</CardTitle>
@@ -431,11 +432,11 @@ function RootDashboard() {
                       />
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                     </div>
-                    {loadingTx ? (
-                      <div className="text-blue-600">Loading transactions...</div>
+            {loadingTx ? (
+              <div className="text-blue-600">Loading transactions...</div>
                     ) : filteredTransactions.length === 0 ? (
                       <div className="text-muted-foreground">No transactions found.</div>
-                    ) : (
+            ) : (
                       <div className="overflow-x-auto rounded-lg border">
                         <Table className="min-w-full text-sm">
                           <TableHeader>
@@ -458,11 +459,11 @@ function RootDashboard() {
                                 <TableCell className="whitespace-nowrap font-mono">{tx.razorpay_order_id || 'N/A'}</TableCell>
                                 <TableCell className="whitespace-nowrap">{new Date(tx.createdAt).toLocaleString()}</TableCell>
                               </TableRow>
-                            ))}
+                    ))}
                           </TableBody>
                         </Table>
-                      </div>
-                    )}
+              </div>
+            )}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -521,8 +522,8 @@ function RootDashboard() {
                             ))}
                           </TableBody>
                         </Table>
-                      </div>
-                    )}
+          </div>
+        )}
                     {/* Edit Resolution Modal */}
                     <Dialog open={!!editQuery} onOpenChange={v => { if (!v) setEditQuery(null); }}>
                       <DialogContent className="max-w-lg">
@@ -539,7 +540,7 @@ function RootDashboard() {
                             rows={4}
                             className="w-full"
                           />
-                        </div>
+      </div>
                         <DialogFooter>
                           <Button variant="outline" onClick={() => setEditQuery(null)}><X className="h-4 w-4 mr-1" /> Cancel</Button>
                           <Button onClick={handleSaveResolution} disabled={editResolution.trim() === ''}><Save className="h-4 w-4 mr-1" /> Save</Button>
@@ -549,9 +550,17 @@ function RootDashboard() {
                   </CardContent>
                 </Card>
               </TabsContent>
+              <TabsContent value="organizations">
+                <div className="flex flex-col items-center justify-center min-h-[200px]">
+                  <Button variant="default" size="lg" onClick={() => navigate('/root/organizations')}>
+                    Go to Organizations Management
+                  </Button>
+                  <div className="text-xs text-muted-foreground mt-2">View all organizations, their events, and payment stats</div>
+                </div>
+              </TabsContent>
             </Tabs>
           </main>
-        </div>
+    </div>
       )}
     </ThemeProvider>
   );

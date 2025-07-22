@@ -9,6 +9,9 @@ function FeaturedImagesManager() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
+  // Add state for eventName and eventUrl
+  const [eventName, setEventName] = useState('');
+  const [eventUrl, setEventUrl] = useState('');
 
   const fetchImages = async () => {
     try {
@@ -29,7 +32,7 @@ function FeaturedImagesManager() {
     setLoading(true);
     try {
       const token = localStorage.getItem('rootToken');
-      await uploadFeaturedImage(file, title, token);
+      await uploadFeaturedImage(file, title, token, eventName, eventUrl);
       toast.success('Image uploaded!');
       setFile(null);
       setTitle('');
@@ -67,6 +70,8 @@ function FeaturedImagesManager() {
       <form onSubmit={handleUpload} className="flex flex-col md:flex-row gap-4 items-center mb-6">
         <input type="file" accept="image/*" onChange={e => setFile(e.target.files[0])} className="border border-muted bg-background text-foreground p-2 rounded" />
         <input type="text" placeholder="Title (optional)" value={title} onChange={e => setTitle(e.target.value)} className="border border-muted bg-background text-foreground p-2 rounded" />
+        <input type="text" placeholder="Event Name (required)" value={eventName} onChange={e => setEventName(e.target.value)} required className="border border-muted bg-background text-foreground p-2 rounded" />
+        <input type="url" placeholder="Event URL (required)" value={eventUrl} onChange={e => setEventUrl(e.target.value)} required className="border border-muted bg-background text-foreground p-2 rounded" />
         <button type="submit" disabled={loading} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50">
           {loading ? 'Uploading...' : 'Upload'}
         </button>

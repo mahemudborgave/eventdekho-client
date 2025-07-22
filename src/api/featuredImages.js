@@ -9,10 +9,12 @@ export const getFeaturedImages = async () => {
   return res.data;
 };
 
-export const uploadFeaturedImage = async (file, title, token) => {
+export const uploadFeaturedImage = async (file, title, token, eventName, eventUrl) => {
   const formData = new FormData();
   formData.append('image', file);
   if (title) formData.append('title', title);
+  if (eventName) formData.append('eventName', eventName);
+  if (eventUrl) formData.append('eventUrl', eventUrl);
   const res = await axios.post(API_URL, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

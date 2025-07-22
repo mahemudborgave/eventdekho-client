@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { Button } from './ui/button';
 
 function FeaturedImagesCarousel() {
   const [images, setImages] = useState([]);
@@ -82,8 +83,14 @@ function FeaturedImagesCarousel() {
         <Slider ref={sliderRef} {...sliderSettings}>
           {images.map((img) => (
             <div key={img._id} className="px-2">
-              <div className="flex flex-col items-center bg-gray-50 rounded-lg h-45 flex-shrink-0 w-full overflow-hidden">
+              <div className="flex flex-col items-center bg-gray-50 rounded-lg h-60 flex-shrink-0 w-full overflow-hidden">
                 <img src={img.url} alt={img.title || 'Featured'} className="object-cover w-full h-full rounded" />
+                <div className="w-full bg-gray-200 bg-opacity-60 text-white flex justify-between items-center px-4 py-2">
+                  <span className="truncate text-black font-semibold">{img.eventName}</span>
+                  <a href={img.eventUrl} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="text-black" size="sm">Visit</Button>
+                  </a>
+                </div>
               </div>
             </div>
           ))}

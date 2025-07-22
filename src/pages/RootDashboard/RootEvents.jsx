@@ -207,9 +207,9 @@ function RootEvents() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <span className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
-              <Calendar className="h-6 w-6 text-blue-600" />
+                <Calendar className="h-6 w-6 text-blue-600" />
             </span>
-            <div>
+              <div>
               <h1 className="text-lg font-bold">All Events</h1>
               <p className="text-xs text-muted-foreground">System-wide event management</p>
             </div>
@@ -227,22 +227,22 @@ function RootEvents() {
       <main className="max-w-7xl mx-auto px-2 py-6">
         {/* Search and Stats */}
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="relative flex-1 max-w-md">
+            <div className="relative flex-1 max-w-md">
             <Input
-              type="text"
-              placeholder="Search events..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+                type="text"
+                placeholder="Search events..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
-            />
+              />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
           <div className="flex items-center gap-2">
             <Button variant={view === 'grid' ? 'default' : 'outline'} size="icon" onClick={() => setView('grid')} aria-label="Grid view" className={view === 'grid' ? 'ring-2 ring-primary' : ''}><LayoutGrid className="h-5 w-5" /></Button>
             <Button variant={view === 'table' ? 'default' : 'outline'} size="icon" onClick={() => setView('table')} aria-label="Table view" className={view === 'table' ? 'ring-2 ring-primary' : ''}><Table2 className="h-5 w-5" /></Button>
-          </div>
+            </div>
           <div className="text-sm text-muted-foreground">
-            Showing {filteredEvents.length} of {events.length} events
+              Showing {filteredEvents.length} of {events.length} events
           </div>
         </div>
         {/* Events Table or Grid */}
@@ -285,52 +285,52 @@ function RootEvents() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredEvents.map((event) => (
+          {filteredEvents.map((event) => (
               <Card key={event._id} className="hover:shadow cursor-pointer">
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-base font-semibold line-clamp-2">
-                      {event.eventName}
-                    </h3>
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      event.eventMode === 'Online' 
+                    {event.eventName}
+                  </h3>
+                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                    event.eventMode === 'Online' 
                         ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' 
                         : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                    }`}>
-                      {event.eventMode}
-                    </span>
-                  </div>
+                  }`}>
+                    {event.eventMode}
+                  </span>
+                </div>
                   <div className="space-y-2">
                     <div className="flex items-center text-xs text-muted-foreground">
                       <Users className="h-4 w-4 mr-1" />
-                      <span>{event.organizationName}</span>
-                    </div>
+                    <span>{event.organizationName}</span>
+                  </div>
                     <div className="flex items-center text-xs text-muted-foreground">
                       <MapPin className="h-4 w-4 mr-1" />
-                      <span>{event.eventLocation}</span>
-                    </div>
+                    <span>{event.eventLocation}</span>
+                  </div>
                     <div className="flex items-center text-xs text-muted-foreground">
                       <Calendar className="h-4 w-4 mr-1" />
-                      <span>{formatDate(event.eventDate)}</span>
-                    </div>
-                    {event.eventTags && event.eventTags.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {event.eventTags.slice(0, 3).map((tag, index) => (
+                    <span>{formatDate(event.eventDate)}</span>
+                  </div>
+                  {event.eventTags && event.eventTags.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {event.eventTags.slice(0, 3).map((tag, index) => (
                           <span key={index} className="px-2 py-1 text-xs bg-muted text-foreground rounded">
-                            {tag}
-                          </span>
-                        ))}
-                        {event.eventTags.length > 3 && (
+                          {tag}
+                        </span>
+                      ))}
+                      {event.eventTags.length > 3 && (
                           <span className="px-2 py-1 text-xs bg-muted text-foreground rounded">
-                            +{event.eventTags.length - 3} more
-                          </span>
-                        )}
-                      </div>
-                    )}
+                          +{event.eventTags.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  )}
                     <div className="flex justify-between items-center pt-2 border-t mt-2">
                       <span className="text-xs text-muted-foreground">
-                        {event.registrationCount || 0} registrations
-                      </span>
+                      {event.registrationCount || 0} registrations
+                    </span>
                       <Button variant="link" size="sm" onClick={() => navigate(`/root/eventdetail/${event._id}`)} className="gap-1">
                         <Eye className="h-4 w-4" /> View
                       </Button>
@@ -338,8 +338,8 @@ function RootEvents() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+          ))}
+        </div>
         )}
         {filteredEvents.length === 0 && (
           <div className="text-center py-12">

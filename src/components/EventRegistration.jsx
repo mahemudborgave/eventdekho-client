@@ -170,6 +170,7 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
             ...response,
             eventId,
             studentId: email,
+            amount: data.amount, // <-- send amount in paise
           }, {
             headers: { Authorization: `Bearer ${token}` }
           });

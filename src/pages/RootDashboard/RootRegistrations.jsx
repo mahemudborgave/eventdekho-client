@@ -184,9 +184,9 @@ function RootRegistrations() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <span className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
-              <FileText className="h-6 w-6 text-orange-600" />
+                <FileText className="h-6 w-6 text-orange-600" />
             </span>
-            <div>
+              <div>
               <h1 className="text-lg font-bold">Registration Management</h1>
               <p className="text-xs text-muted-foreground">Manage all event registrations</p>
             </div>
@@ -209,7 +209,7 @@ function RootRegistrations() {
               <div className="text-xs text-muted-foreground">Total Registrations</div>
               <div className="text-lg font-bold text-orange-600">{registrations.length}</div>
             </div>
-            <FileText className="h-6 w-6 text-orange-600" />
+              <FileText className="h-6 w-6 text-orange-600" />
           </CardContent>
         </Card>
         {/* Search */}

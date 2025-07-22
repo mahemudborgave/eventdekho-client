@@ -321,9 +321,9 @@ function RootUsers() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <span className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
-              <Users className="h-6 w-6 text-green-600" />
+                <Users className="h-6 w-6 text-green-600" />
             </span>
-            <div>
+              <div>
               <h1 className="text-lg font-bold">User Management</h1>
               <p className="text-xs text-muted-foreground">Manage students and organizations</p>
             </div>
@@ -347,7 +347,7 @@ function RootUsers() {
                 <div className="text-xs text-muted-foreground">Total Students</div>
                 <div className="text-lg font-bold text-green-600">{users.totalStudents || 0}</div>
               </div>
-              <Users className="h-6 w-6 text-green-600" />
+                <Users className="h-6 w-6 text-green-600" />
             </CardContent>
           </Card>
           <Card>
@@ -356,7 +356,7 @@ function RootUsers() {
                 <div className="text-xs text-muted-foreground">Total Organizations</div>
                 <div className="text-lg font-bold text-purple-600">{users.totalOrganizations || 0}</div>
               </div>
-              <UserCheck className="h-6 w-6 text-purple-600" />
+                <UserCheck className="h-6 w-6 text-purple-600" />
             </CardContent>
           </Card>
           <Card>
@@ -365,7 +365,7 @@ function RootUsers() {
                 <div className="text-xs text-muted-foreground">Verified Users</div>
                 <div className="text-lg font-bold text-blue-600">{(users.students?.filter(s => s.isVerified).length || 0) + (users.organizations?.filter(o => o.isVerified).length || 0)}</div>
               </div>
-              <CheckCircle className="h-6 w-6 text-blue-600" />
+                <CheckCircle className="h-6 w-6 text-blue-600" />
             </CardContent>
           </Card>
           <Card>
@@ -374,7 +374,7 @@ function RootUsers() {
                 <div className="text-xs text-muted-foreground">Active Users</div>
                 <div className="text-lg font-bold text-orange-600">{(users.students?.filter(s => s.isActive !== false).length || 0) + (users.organizations?.filter(o => o.isActive !== false).length || 0)}</div>
               </div>
-              <UserCheckIcon className="h-6 w-6 text-orange-600" />
+                <UserCheckIcon className="h-6 w-6 text-orange-600" />
             </CardContent>
           </Card>
         </div>
@@ -425,8 +425,8 @@ function RootUsers() {
                               <div>
                                 <div className="text-sm font-medium">{user.name}</div>
                                 <div className="text-xs text-muted-foreground">{user.email}</div>
-                              </div>
-                            </div>
+          </div>
+        </div>
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
                             <div className="text-xs">
@@ -455,31 +455,31 @@ function RootUsers() {
                               <Button variant="outline" size="icon" onClick={() => handleViewUser(user._id)} title="View"><Eye className="h-4 w-4" /></Button>
                               <Button variant="outline" size="icon" onClick={() => handleEditUser(user)} title="Edit"><Edit className="h-4 w-4" /></Button>
                               <Button variant="destructive" size="icon" onClick={() => handleDeleteUser(user._id)} title="Delete"><Trash2 className="h-4 w-4" /></Button>
-                            </div>
+          </div>
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                </div>
+        </div>
               </CardContent>
             </Card>
           </TabsContent>
           <TabsContent value="organizations">
-            {/* Search */}
+        {/* Search */}
             <div className="mb-4">
-              <div className="relative max-w-md">
+          <div className="relative max-w-md">
                 <Input
-                  type="text"
+              type="text"
                   placeholder="Search organizations..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
-                />
+            />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-              </div>
-            </div>
-            {/* Users Table */}
+          </div>
+        </div>
+        {/* Users Table */}
             <Card>
               <CardContent className="p-0">
                 <div className="overflow-x-auto rounded-lg border">
@@ -501,13 +501,13 @@ function RootUsers() {
                               <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
                                 <span className="text-xs font-medium text-foreground">
                                   {user.organizationName?.charAt(0)}
-                                </span>
-                              </div>
+                            </span>
+                          </div>
                               <div>
                                 <div className="text-sm font-medium">{user.organizationName}</div>
                                 <div className="text-xs text-muted-foreground">{user.email}</div>
-                              </div>
-                            </div>
+                        </div>
+                      </div>
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
                             <div className="text-sm">{user.phone}</div>
@@ -515,28 +515,28 @@ function RootUsers() {
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
                             <div className="text-xs">
-                              {user.city && <div>{user.city}</div>}
-                              {user.organizationType && <div>{user.organizationType}</div>}
-                            </div>
+                            {user.city && <div>{user.city}</div>}
+                            {user.organizationType && <div>{user.organizationType}</div>}
+                      </div>
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
                             <div className="flex flex-col gap-1">
                               <span className={`text-xs font-semibold ${user.isVerified ? 'text-green-600' : 'text-red-600'}`}>{user.isVerified ? 'Verified' : 'Unverified'}</span>
                               <span className={`text-xs font-semibold ${user.isActive !== false ? 'text-blue-600' : 'text-gray-400'}`}>{user.isActive !== false ? 'Active' : 'Inactive'}</span>
-                            </div>
+                      </div>
                           </TableCell>
                           <TableCell className="whitespace-nowrap">
                             <div className="flex gap-1">
                               <Button variant="outline" size="icon" onClick={() => handleViewUser(user._id)} title="View"><Eye className="h-4 w-4" /></Button>
                               <Button variant="outline" size="icon" onClick={() => handleEditUser(user)} title="Edit"><Edit className="h-4 w-4" /></Button>
                               <Button variant="destructive" size="icon" onClick={() => handleDeleteUser(user._id)} title="Delete"><Trash2 className="h-4 w-4" /></Button>
-                            </div>
+                      </div>
                           </TableCell>
                         </TableRow>
-                      ))}
+                ))}
                     </TableBody>
                   </Table>
-                </div>
+          </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -550,7 +550,7 @@ function RootUsers() {
             <DialogTitle>User Details</DialogTitle>
           </DialogHeader>
           {selectedUser && (
-            <div className="space-y-3">
+              <div className="space-y-3">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="font-semibold">Name:</div>
@@ -574,30 +574,30 @@ function RootUsers() {
                   </>
                 ) : (
                   <>
-                    <div>
+                      <div>
                       <div className="font-semibold">Short Name:</div>
                       <div>{selectedUser.user.shortName || '-'}</div>
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <div className="font-semibold">Type:</div>
                       <div>{selectedUser.user.organizationType || '-'}</div>
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <div className="font-semibold">City:</div>
                       <div>{selectedUser.user.city || '-'}</div>
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <div className="font-semibold">Phone:</div>
                       <div>{selectedUser.user.phone || '-'}</div>
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <div className="font-semibold">Website:</div>
                       <div>{selectedUser.user.website || '-'}</div>
-                    </div>
-                    <div>
+                      </div>
+                      <div>
                       <div className="font-semibold">Contact Person:</div>
                       <div>{selectedUser.user.contactPerson || '-'}</div>
-                    </div>
+                      </div>
                   </>
                 )}
                 <div>
@@ -609,11 +609,11 @@ function RootUsers() {
                   <div className="flex gap-2">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${selectedUser.user.isVerified ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{selectedUser.user.isVerified ? 'Verified' : 'Unverified'}</span>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${selectedUser.user.isActive !== false ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>{selectedUser.user.isActive !== false ? 'Active' : 'Inactive'}</span>
-                  </div>
-                </div>
               </div>
             </div>
-          )}
+          </div>
+        </div>
+      )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowUserModal(false)}>Close</Button>
             <Button variant="default" onClick={() => { setEditForm(selectedUser.user); setShowEditModal(true); setShowUserModal(false); }}>Edit</Button>
@@ -633,27 +633,27 @@ function RootUsers() {
           </DialogHeader>
           <form onSubmit={e => { e.preventDefault(); handleUpdateUser(); }} className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
-              <div>
+                <div>
                 <label className="block text-sm font-medium">Name</label>
-                <input
-                  type="text"
-                  value={editForm.name || editForm.organizationName || ''}
+                  <input
+                    type="text"
+                    value={editForm.name || editForm.organizationName || ''}
                   onChange={e => setEditForm({ ...editForm, [activeTab === 'students' ? 'name' : 'organizationName']: e.target.value })}
                   className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
-                />
-              </div>
-              <div>
+                  />
+                </div>
+                <div>
                 <label className="block text-sm font-medium">Email</label>
-                <input
-                  type="email"
-                  value={editForm.email || ''}
+                  <input
+                    type="email"
+                    value={editForm.email || ''}
                   onChange={e => setEditForm({ ...editForm, email: e.target.value })}
                   className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
-                />
-              </div>
-              {activeTab === 'students' ? (
-                <>
-                  <div>
+                  />
+                </div>
+                {activeTab === 'students' ? (
+                  <>
+                    <div>
                     <label className="block text-sm font-medium">Mobile</label>
                     <input
                       type="text"
@@ -682,26 +682,26 @@ function RootUsers() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium">Branch</label>
-                    <input
-                      type="text"
+                      <input
+                        type="text"
                       value={editForm.branch || ''}
                       onChange={e => setEditForm({ ...editForm, branch: e.target.value })}
                       className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
-                    />
-                  </div>
-                  <div>
+                      />
+                    </div>
+                    <div>
                     <label className="block text-sm font-medium">Year</label>
-                    <input
-                      type="text"
+                      <input
+                        type="text"
                       value={editForm.year || ''}
                       onChange={e => setEditForm({ ...editForm, year: e.target.value })}
                       className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div>
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
                     <label className="block text-sm font-medium">Short Name</label>
                     <input
                       type="text"
@@ -730,9 +730,9 @@ function RootUsers() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium">Phone</label>
-                    <input
-                      type="text"
-                      value={editForm.phone || ''}
+                      <input
+                        type="text"
+                        value={editForm.phone || ''}
                       onChange={e => setEditForm({ ...editForm, phone: e.target.value })}
                       className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
                     />
@@ -744,19 +744,19 @@ function RootUsers() {
                       value={editForm.website || ''}
                       onChange={e => setEditForm({ ...editForm, website: e.target.value })}
                       className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
-                    />
-                  </div>
-                  <div>
+                      />
+                    </div>
+                    <div>
                     <label className="block text-sm font-medium">Contact Person</label>
-                    <input
-                      type="text"
+                      <input
+                        type="text"
                       value={editForm.contactPerson || ''}
                       onChange={e => setEditForm({ ...editForm, contactPerson: e.target.value })}
                       className="mt-1 block w-full border border-muted rounded-md px-3 py-2 bg-background text-foreground"
-                    />
-                  </div>
-                </>
-              )}
+                      />
+                    </div>
+                  </>
+                )}
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => { setShowEditModal(false); setEditForm({}); }}>Cancel</Button>
