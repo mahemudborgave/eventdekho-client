@@ -99,11 +99,18 @@ function Eventt({ events }) {
   // Helper to get event status (Live or Closed based only on closing date)
   const getEventStatus = (event) => {
     const now = new Date();
-    const close = new Date(event.closeOn);
-    if (now <= close) {
+    const regStart = event.registrationStartOn ? new Date(event.registrationStartOn) : null;
+    const regClose = event.closeOn ? new Date(event.closeOn) : null;
+    if (regStart && now < regStart) {
+      return { label: 'Upcoming', color: 'bg-yellow-500 text-white', live: false };
+    }
+    if (regStart && regClose && now >= regStart && now <= regClose) {
       return { label: 'Live', color: 'bg-green-600 text-white', live: true };
     }
-    return { label: 'Closed', color: 'bg-gray-500 text-white', live: false };
+    if (regClose && now > regClose) {
+      return { label: 'Closed', color: 'bg-gray-500 text-white', live: false };
+    }
+    return { label: 'Upcoming', color: 'bg-yellow-500 text-white', live: false };
   };
 
   // Wishlist handlers
@@ -152,8 +159,8 @@ function Eventt({ events }) {
         })
         .map((eventt, idx) => {
           // Debug: Log event data and fee
-          console.log('Rendering event:', eventt);
-          console.log('Event fee value:', eventt.fee, 'Type:', typeof eventt.fee);
+          // console.log('Rendering event:', eventt);
+          // console.log('Event fee value:', eventt.fee, 'Type:', typeof eventt.fee);
           const status = getEventStatus(eventt);
           const isDetailPage = location.pathname.startsWith('/eventdetail') || location.pathname.startsWith('/admin/eventdetail');
           return (
@@ -167,9 +174,7 @@ function Eventt({ events }) {
               <div className="absolute top-2 right-2 flex items-center gap-1 z-20">
                 {/* Status Label */}
                 <div
-                  className={`flex items-center px-2 py-0.5 rounded-full font-semibold shadow border ${status.live
-                    ? 'bg-gradient-to-r from-green-400 to-green-600 text-white border-green-400'
-                    : 'bg-gradient-to-r from-gray-300 to-gray-500 text-gray-100 border-gray-400'} animate-fade-in`}
+                  className={`flex items-center px-2 py-0.5 rounded-full font-semibold shadow border ${status.color} animate-fade-in`}
                   style={{ fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.01em', minWidth: 0 }}
                 >
                   {status.live && (
@@ -214,7 +219,8 @@ function Eventt({ events }) {
                 <div className="flex flex-col text-gray-500 lg:mt-2">
                   <span className="text-yellow-500"><i className="fa-solid fa-clock mr-1.5"></i> {eventt.eventMode}</span>
                   <span className="text-blue-500"><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {formatEventDate(eventt.eventDate)}</span>
-                  <span className="text-red-500"><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span>
+                  {/* <span className="text-green-600"><i className="fa-solid fa-calendar-check mr-1.5"></i> Registration Opens: {eventt.registrationStartOn ? formatEventDate(eventt.registrationStartOn) : 'N/A'}</span> */}
+                  {/* <span className="text-red-500"><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span> */}
                   <span className="text-purple-800"><Users size={17} className='mr-1.5 text-purple-800 inline-block'/> Participants: {eventt.minParticipants == eventt.maxParticipants ? eventt.minParticipants : `${eventt.minParticipants} - ${eventt.maxParticipants}`}</span>
                 </div>
               </div>
@@ -285,7 +291,7 @@ function Eventt({ events }) {
                     </div>
                   )}
                 <p className="italic text-gray-400">
-                  posted on : {formatEventDate(eventt.postedOn)}
+                  Registration Opens: {eventt.registrationStartOn ? formatEventDate(eventt.registrationStartOn) : 'N/A'}
                 </p>
                 <p className="italic text-red-500">
                   closing on : {formatEventDate(eventt.closeOn)}

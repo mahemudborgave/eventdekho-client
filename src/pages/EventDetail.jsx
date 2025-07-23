@@ -13,8 +13,8 @@ import defaultPoster from '../assets/images/university-academy-school-svgrepo-co
 function Modal({ open, onClose, children }) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 bg-opacity-40">
-      <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 bg-opacity-40">
+      <div className="bg-white rounded-lg shadow-lg max-w-5xl w-full p-6 relative">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl font-bold"
           onClick={onClose}
@@ -309,33 +309,45 @@ function EventDetail() {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={handleClick}
-                  disabled={hasRegistered || (event && new Date(event.closeOn) < new Date())}
-                  className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 ${hasRegistered
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : (event && new Date(event.closeOn) < new Date())
+                {event.registrationPlatform === 'external' && event.registrationUrl ? (
+                  <a
+                    href={event.registrationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-center px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white shadow-lg hover:shadow-xl hover:scale-105`}
+                  >
+                    <Play className="w-5 h-5" />
+                    Register on Organizer's Website
+                  </a>
+                ) : (
+                  <button
+                    onClick={handleClick}
+                    disabled={hasRegistered || (event && new Date(event.closeOn) < new Date())}
+                    className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 ${hasRegistered
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105'
-                    }`}
-                >
-                  {hasRegistered ? (
-                    <>
-                      <CheckCircle className="w-4 h-4" />
-                      Already Registered
-                    </>
-                  ) : (event && new Date(event.closeOn) < new Date()) ? (
-                    <>
-                      <CheckCircle className="w-4 h-4" />
-                      Registration Closed
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-4 h-4" />
-                      {isShow ? 'Close Registration' : 'Participate Now'}
-                    </>
-                  )}
-                </button>
+                      : (event && new Date(event.closeOn) < new Date())
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                      }`}
+                  >
+                    {hasRegistered ? (
+                      <>
+                        <CheckCircle className="w-4 h-4" />
+                        Already Registered
+                      </>
+                    ) : (event && new Date(event.closeOn) < new Date()) ? (
+                      <>
+                        <CheckCircle className="w-4 h-4" />
+                        Registration Closed
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-4 h-4" />
+                        {isShow ? 'Close Registration' : 'Participate Now'}
+                      </>
+                    )}
+                  </button>
+                )}
 
                 <button
                   onClick={handleQueryClick}
@@ -359,11 +371,11 @@ function EventDetail() {
 
             {/* Poster Expand Modal */}
             <Modal open={showPosterModal} onClose={() => setShowPosterModal(false)}>
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center bg-transparent">
                 <img
                   src={event.posterUrl || defaultPoster}
                   alt="Event Poster Expanded"
-                  className="max-w-3xl w-full h-auto rounded-xl shadow-lg border"
+                  className="max-w-8xl w-full h-auto rounded-xl shadow-lg border-none"
                 />
                 {/* <button onClick={() => setShowPosterModal(false)} className="mt-4 px-6 py-2 bg-amber-500 text-white rounded-lg font-semibold">Close</button> */}
               </div>
@@ -625,7 +637,7 @@ function EventDetail() {
                 <h2 className="text-xl font-bold text-gray-900 text-center">Event Registration</h2>
                 <button
                   onClick={() => setIsShow(false)}
-                  className="hover:text-white text-2xl font-bold border rounded-full p-1 bg-amber-500"
+                  className="text-white hover:scale-107 transition-all duration-200 text-2xl font-bold border rounded-full p-1 bg-black"
                 >
                   <X />
                 </button>
