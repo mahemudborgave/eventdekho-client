@@ -6,7 +6,7 @@ import EventRegistration from '../components/EventRegistration';
 import { ToastContainer, toast } from 'react-toastify';
 import UserContext from '../context/UserContext';
 import QueryComp from '../components/QueryComp';
-import { Loader2, Calendar, MapPin, Clock, Users, Trophy, Award, BookOpen, MessageCircle, Play, CheckCircle, AlertCircle, Star, Zap, Target, Users2, Gift, Shield, Info, X, Backpack, IndianRupee } from 'lucide-react';
+import { Loader2, Calendar, MapPin, Clock, Users, Trophy, Award, BookOpen, MessageCircle, Play, CheckCircle, AlertCircle, Star, Zap, Target, Users2, Gift, Shield, Info, X, Backpack, IndianRupee, Building2 } from 'lucide-react';
 import defaultPoster from '../assets/images/university-academy-school-svgrepo-com.svg';
 
 // Simple Modal component
@@ -288,12 +288,12 @@ function EventDetail() {
                 <div className="text-center">
                   <Calendar className="h-5 mx-auto mb-1 opacity-80" />
                   <div className="text-xs opacity-75">Event Date</div>
-                  <div className="text-sm font-semibold">{new Date(event.eventDate).toLocaleDateString()}</div>
+                  <div className="text-sm font-semibold">{new Date(event.eventDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
                 </div>
                 <div className="text-center">
-                  <MapPin className="h-5 mx-auto mb-1 opacity-80" />
-                  <div className="text-xs opacity-75">Location</div>
-                  <div className="text-sm font-semibold">{event.eventLocation}</div>
+                  <Users className="h-5 mx-auto mb-1 opacity-80" />
+                  <div className="text-xs opacity-75">Participants</div>
+                  <div className="text-sm font-semibold">{event.minParticipants == event.maxParticipants ? event.minParticipants : `${event.minParticipants} to ${event.maxParticipants}`}</div>
                 </div>
                 <div className="text-center">
                   <Clock className="h-5 mx-auto mb-1 opacity-80" />
@@ -301,7 +301,7 @@ function EventDetail() {
                   <div className="text-sm font-semibold">{event.eventMode}</div>
                 </div>
                 <div className="text-center">
-                  <Users className="h-5 mx-auto mb-1 opacity-80" />
+                  <Building2 className="h-5 mx-auto mb-1 opacity-80" />
                   <div className="text-xs opacity-75">Organization</div>
                   <div className="text-sm font-semibold">{event.clubName}</div>
                 </div>
@@ -619,13 +619,13 @@ function EventDetail() {
       {/* Registration Form Modal */}
       {!hasRegistered && isShow && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div className="p-4 sm:p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Event Registration</h2>
+                <h2 className="text-xl font-bold text-gray-900 text-center">Event Registration</h2>
                 <button
                   onClick={() => setIsShow(false)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                  className="hover:text-white text-2xl font-bold border rounded-full p-1 bg-amber-500"
                 >
                   <X />
                 </button>
@@ -636,7 +636,9 @@ function EventDetail() {
                 organizationName={event.organizationName}
                 parentOrganization={event.parentOrganization}
                 setHasRegistered={setHasRegistered}
-                eventFee={event.fee || 0}
+                fee={event.fee || 0}
+                minParticipants={event.minParticipants || 1}
+                maxParticipants={event.maxParticipants || 1}
               />
             </div>
           </div>

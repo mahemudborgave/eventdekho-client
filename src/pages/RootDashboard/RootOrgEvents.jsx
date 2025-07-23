@@ -88,7 +88,7 @@ function RootOrgEvents() {
                       <TableHead>UPI ID</TableHead>
                       <TableHead>Total Amount Received</TableHead>
                       <TableHead>Transaction Count</TableHead>
-                      <TableHead>Total Charges (₹)</TableHead>
+                      <TableHead>Event Fee (₹)</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -104,7 +104,7 @@ function RootOrgEvents() {
                           <TableCell className="font-mono text-xs">{event.upiId || '-'}</TableCell>
                           <TableCell className="font-semibold">₹{(event.totalAmountReceived/100).toLocaleString('en-IN')}</TableCell>
                           <TableCell>{count}</TableCell>
-                          <TableCell>₹{(total/100).toLocaleString('en-IN')}</TableCell>
+                          <TableCell>₹{event.fee ? (event.fee).toLocaleString('en-IN') : '0'}</TableCell>
                           <TableCell>
                             <Button variant="outline" size="sm" onClick={() => navigate(`/root/org-event-transactions/${event._id}`)}>View Transactions</Button>
                           </TableCell>

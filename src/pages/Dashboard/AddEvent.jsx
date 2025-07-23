@@ -63,6 +63,8 @@ export default function AddEvent() {
     eventLocation: "",
     eventMode: "Onsite",
     eventDescription: "",
+    minParticipants: 1,
+    maxParticipants: 1,
     eventTags: "",
     stages: [{ title: "", description: "" }],
     prizes: [{ title: "", amount: "", description: "" }],
@@ -302,6 +304,8 @@ export default function AddEvent() {
         website: organizerProfile.website,
         organizationType: organizerProfile.organizationType,
         eventTags: form.eventTags.split(',').map(tag => tag.trim()).filter(Boolean),
+        minParticipants: Number(form.minParticipants),
+        maxParticipants: Number(form.maxParticipants),
       };
       if (isUpdate && eventData?._id) {
         await axios.put(`${baseURL}:${port}/eventt/updateevent/${eventData._id}`, eventData);
@@ -424,6 +428,36 @@ export default function AddEvent() {
                 <div>
                   <Label htmlFor="eventDescription" className="dark:text-gray-200 mb-2">Description *</Label>
                   <Textarea id="eventDescription" name="eventDescription" value={form.eventDescription} onChange={handleChange} required placeholder="Describe your event" className="dark:bg-gray-900 dark:text-gray-100" />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="minParticipants" className="dark:text-gray-200 mb-2">Min Participants *</Label>
+                    <Input
+                      id="minParticipants"
+                      name="minParticipants"
+                      type="number"
+                      min={1}
+                      value={form.minParticipants}
+                      onChange={e => setForm(f => ({ ...f, minParticipants: Math.max(1, Number(e.target.value)) }))}
+                      required
+                      placeholder="Minimum participants"
+                      className="dark:bg-gray-900 dark:text-gray-100"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="maxParticipants" className="dark:text-gray-200 mb-2">Max Participants *</Label>
+                    <Input
+                      id="maxParticipants"
+                      name="maxParticipants"
+                      type="number"
+                      min={form.minParticipants || 1}
+                      value={form.maxParticipants}
+                      onChange={e => setForm(f => ({ ...f, maxParticipants: Math.max(f.minParticipants || 1, Number(e.target.value)) }))}
+                      required
+                      placeholder="Maximum participants"
+                      className="dark:bg-gray-900 dark:text-gray-100"
+                    />
+                  </div>
                 </div>
                 <div>
                   <Label htmlFor="eventTags" className="dark:text-gray-200 mb-2">Tags (comma separated)</Label>

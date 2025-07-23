@@ -5,6 +5,8 @@ import { ScaleLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { BookmarkCheck, ShowerHead } from 'lucide-react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function MyParticipations() {
   const { user, email } = useContext(UserContext);
@@ -13,6 +15,7 @@ function MyParticipations() {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
   const [textMsg, setTextMsg] = useState("You haven't registered for any events yet.");
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     const fetchUserRegistrations = async () => {
@@ -56,17 +59,44 @@ function MyParticipations() {
   }, [email]);
 
   const handleDelete = async (eventId) => {
-    if (confirm("Are you sure you want to cancel registration?")) {
-      try {
-        const res = await axios.post(`${baseURL}:${port}/eventt/deleteRegistration`, { eventId, email });
-        if (res) {
-          toast.success("Registration cancelled successfully");
-          setRegistrations(prev => prev.filter(reg => reg.eventId !== eventId));
-        }
-      } catch (err) {
-        console.error('Error deleting registration:', err);
-        toast.error('Failed to delete registration. Please try again.');
+    const reg = registrations.find(r => r.eventId === eventId);
+    console.log('[DEBUG] Registration for cancel:', reg);
+    let result;
+    if (reg && reg.fee && Number(reg.fee) > 0) {
+      result = await MySwal.fire({
+        title: 'Paid Event',
+        text: 'This event is paid and the fee is non-refundable. Are you sure you want to cancel your registration?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Cancel Registration',
+        cancelButtonText: 'Keep Registration',
+        reverseButtons: true,
+      });
+    } else {
+      result = await MySwal.fire({
+        title: 'Cancel Registration',
+        text: 'Are you sure you want to cancel your registration?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Cancel Registration',
+        cancelButtonText: 'Keep Registration',
+        reverseButtons: true,
+      });
+    }
+    if (!result.isConfirmed) return;
+    try {
+      const res = await axios.post(`${baseURL}:${port}/eventt/deleteRegistration`, { eventId, email });
+      if (res) {
+        await MySwal.fire({
+          title: 'Registration Cancelled',
+          text: 'Your registration has been cancelled.',
+          icon: 'success',
+        });
+        setRegistrations(prev => prev.filter(reg => reg.eventId !== eventId));
       }
+    } catch (err) {
+      console.error('Error deleting registration:', err);
+      MySwal.fire('Error', 'Failed to delete registration. Please try again.', 'error');
     }
   };
 

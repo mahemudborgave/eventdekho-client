@@ -1,20 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react';
 import UserContext from '../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Label } from './ui/label';
+import { Loader2, CheckCircle2 } from 'lucide-react';
+import { Card } from './ui/card';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
-function EventRegistration({ eventId, eventName, organizationName, parentOrganization, setHasRegistered, eventFee = 0 }) {
+function EventRegistration({ eventId, eventName, organizationName, parentOrganization, setHasRegistered, fee = 0, minParticipants = 1, maxParticipants = 1 }) {
   const { user, email, token, role } = useContext(UserContext);
-
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
 
+  // Main registrant fields
   const [formData, setFormData] = useState({
-    eventId,
-    eventName,
-    organizationName: organizationName,
-    parentOrganization: parentOrganization,
-    email,
     studentName: user || '',
     gender: '',
     studentCollegeName: '',
@@ -23,26 +25,27 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
     year: '',
     mobno: ''
   });
+  // Extra participants (excluding main registrant)
+  const [extraParticipants, setExtraParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  // Fetch user profile details on mount
+  // Store original profile for comparison
+  const [originalProfile, setOriginalProfile] = useState(null);
+  const [profileStatus, setProfileStatus] = useState('fetching'); // 'fetching', 'fetched', 'error'
+  const [studentId, setStudentId] = useState(email);
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!token || !email) return;
       setLoading(true);
-      setError('');
+      setProfileStatus('fetching');
       try {
-        // Use the new auth profile endpoint
         const res = await axios.get(`${baseURL}:${port}/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data && res.data.user) {
           const userData = res.data.user;
-          setFormData(prev => ({
-            ...prev,
+          const profileObj = {
             studentName: userData.name || '',
             gender: userData.gender || '',
             studentCollegeName: userData.collegeName || '',
@@ -50,11 +53,17 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
             course: userData.course || '',
             year: userData.year || '',
             mobno: userData.mobileNumber || '',
-          }));
+          };
+          setFormData(profileObj);
+          setOriginalProfile(profileObj);
+          setStudentId(userData.email || email);
+          console.log('[DEBUG] studentId from profile:', userData.email || email);
+          setProfileStatus('fetched');
+        } else {
+          setProfileStatus('error');
         }
       } catch (err) {
-        console.error('Failed to fetch user details:', err);
-        setError('Failed to fetch user details.');
+        setProfileStatus('error');
       } finally {
         setLoading(false);
       }
@@ -63,304 +72,388 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
     // eslint-disable-next-line
   }, [token, email]);
 
-  const handleChange = e => {
+  const handleMainChange = e => {
     const { id, name, value, type } = e.target;
-    // For radio buttons, use the name attribute
     const fieldName = type === 'radio' ? name : (id || name);
-    setFormData(prev => ({
-      ...prev,
-      [fieldName]: value
-    }));
+    setFormData(prev => ({ ...prev, [fieldName]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    if (e && e.preventDefault) e.preventDefault();
+  // Extra participants handlers
+  const handleExtraChange = (idx, field, value) => {
+    setExtraParticipants(prev => prev.map((p, i) => i === idx ? { ...p, [field]: value } : p));
+  };
+  const addExtraParticipant = () => {
+    if (1 + extraParticipants.length < maxParticipants) {
+      setExtraParticipants(prev => [...prev, { name: '', gender: '', email: '', phone: '' }]);
+    }
+  };
+  const removeExtraParticipant = (idx) => {
+    setExtraParticipants(prev => prev.filter((_, i) => i !== idx));
+  };
 
+  // Validation
+  const validateAll = () => {
+    // Main registrant
+    const { studentName, gender, studentCollegeName, branch, course, year, mobno } = formData;
+    if (!studentName.trim() || !gender || !studentCollegeName.trim() || !branch || !course || !year || !mobno.trim()) {
+      toast.error('Please fill all main participant details.');
+      return false;
+    }
+    if (!/^\d{10}$/.test(mobno)) {
+      toast.warn('Invalid phone number for main participant.');
+      return false;
+    }
+    // Extra participants
+    for (let i = 0; i < extraParticipants.length; i++) {
+      const p = extraParticipants[i];
+      if (!p.name.trim() || !p.gender || !p.email.trim() || !p.phone.trim()) {
+        toast.warn(`Please fill all details for extra participant #${i + 2}.`);
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(p.email)) {
+        toast.warn(`Invalid email for extra participant #${i + 2}.`);
+        return false;
+      }
+      if (!/^\d{10}$/.test(p.phone)) {
+        toast.warn(`Invalid phone number for extra participant #${i + 2}.`);
+        return false;
+      }
+    }
+    // Total count
+    const total = 1 + extraParticipants.length;
+    if (total < minParticipants) {
+      toast.warn(`Please add at least ${minParticipants} participant${minParticipants > 1 ? 's' : ''}.`);
+      return false;
+    }
+    if (total > maxParticipants) {
+      toast.warn(`You can add up to ${maxParticipants} participant${maxParticipants > 1 ? 's' : ''}.`);
+      return false;
+    }
+    return true;
+  };
+
+  // Helper to update profile if changed
+  const maybeUpdateProfile = async () => {
+    if (!originalProfile) return;
+    const changed = Object.keys(originalProfile).some(
+      key => formData[key] !== originalProfile[key]
+    );
+    if (!changed) return;
+    try {
+      await axios.put(`${baseURL}:${port}/auth/profile`, {
+        name: formData.studentName,
+        gender: formData.gender,
+        collegeName: formData.studentCollegeName,
+        course: formData.course,
+        branch: formData.branch,
+        year: formData.year,
+        mobileNumber: formData.mobno,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.info('Profile updated with new details!');
+    } catch (err) {
+      // Optionally show error
+    }
+  };
+
+  const MySwal = withReactContent(Swal);
+
+  // Submission
+  const handleSubmit = async (e, skipConfirmation = false) => {
+    if (e && e.preventDefault) e.preventDefault();
     if (!token) {
       toast.error('Please log in to register for events.');
       return;
     }
-
+    if (!validateAll()) return;
+    if (!skipConfirmation) {
+      // SweetAlert2 confirmation
+      const total = 1 + extraParticipants.length;
+      const canAddMore = total < maxParticipants;
+      const result = await MySwal.fire({
+        title: 'Confirm Registration',
+        html: `<div style='text-align:left'>
+          <b>Participants filled:</b> ${total} <br/>
+          <b>Minimum required:</b> ${minParticipants} <br/>
+          <b>Maximum allowed:</b> ${maxParticipants} <br/>
+          ${canAddMore ? `<span style='color:#eab308'>You can add up to ${maxParticipants - total} more participant(s).</span>` : `<span style='color:#16a34a'>Maximum participants reached.</span>`}
+        </div>`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Proceed Registration',
+        cancelButtonText: 'Go Back',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'swal2-confirm btn btn-success',
+          cancelButton: 'swal2-cancel btn btn-secondary',
+        },
+      });
+      if (!result.isConfirmed) return;
+    }
+    setLoading(true);
     try {
-      setLoading(true);
-      const res = await axios.post(`${baseURL}:${port}/eventt/registerevent`, formData, {
+      const registrationPayload = {
+        eventId,
+        eventName,
+        organizationName,
+        parentOrganization,
+        studentName: formData.studentName,
+        gender: formData.gender,
+        email,
+        mobno: formData.mobno,
+        studentCollegeName: formData.studentCollegeName,
+        branch: formData.branch,
+        course: formData.course,
+        year: formData.year,
+        extraParticipants,
+        fee: fee,
+      };
+      console.log('[DEBUG] Registration payload:', registrationPayload);
+      const res = await axios.post(`${baseURL}:${port}/eventt/registerevent`, registrationPayload, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      toast.success('Registration successful!');
-      console.log('Response:', res.data);
+      console.log('[DEBUG] Registration response:', res.data);
+      await maybeUpdateProfile();
+      await MySwal.fire({
+        title: 'Registered!',
+        text: 'You have successfully registered for the event.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
       setHasRegistered(true);
-
-      // After registration, update user profile if any field is new or changed
-      if (token && email && role === 'student') {
-        try {
-          // Get current profile
-          const profileRes = await axios.get(`${baseURL}:${port}/auth/profile`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          
-          if (profileRes.data && profileRes.data.user) {
-            const currentProfile = profileRes.data.user;
-            
-            // Prepare fields to update
-            const profileFields = [
-              { formField: 'studentName', profileField: 'name' },
-              { formField: 'gender', profileField: 'gender' },
-              { formField: 'studentCollegeName', profileField: 'collegeName' },
-              { formField: 'branch', profileField: 'branch' },
-              { formField: 'course', profileField: 'course' },
-              { formField: 'year', profileField: 'year' },
-              { formField: 'mobno', profileField: 'mobileNumber' }
-            ];
-            
-            let shouldUpdate = false;
-            const updateData = {};
-            
-            profileFields.forEach(({ formField, profileField }) => {
-              const formVal = formData[formField] || '';
-              const profileVal = currentProfile[profileField] || '';
-              if (formVal && formVal !== profileVal) {
-                updateData[profileField] = formVal;
-                shouldUpdate = true;
-              }
-            });
-            
-            if (shouldUpdate) {
-              await axios.put(`${baseURL}:${port}/auth/profile`, updateData, {
-                headers: { Authorization: `Bearer ${token}` }
-              });
-              toast.info('Profile updated with new details.');
-            }
-          }
-        } catch (err) {
-          console.warn('Could not update profile with new details:', err);
-        }
-      }
     } catch (err) {
-      console.error('Registration error:', err);
-      if (err.response?.data?.message) {
-        toast.error(err.response.data.message);
+      console.error('[DEBUG] Registration error:', err.response?.data || err);
+      if (err.response && err.response.data && err.response.data.error) {
+        toast.error(err.response.data.error);
       } else {
-        toast.error('Something went wrong during registration.');
+        toast.error('Registration failed.');
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // Razorpay handler
-  const handleRazorpayPayment = async () => {
+  // Payment handler (if needed)
+  const handleRazorpayPayment = async (e) => {
+    e.preventDefault();
+    if (!validateAll()) return;
+    // SweetAlert2 confirmation before payment
+    const total = 1 + extraParticipants.length;
+    const canAddMore = total < maxParticipants;
+    const result = await MySwal.fire({
+      title: 'Confirm Registration',
+      html: `<div style='text-align:left'>
+        <b>Participants filled:</b> ${total} <br/>
+        <b>Minimum required:</b> ${minParticipants} <br/>
+        <b>Maximum allowed:</b> ${maxParticipants} <br/>
+        ${canAddMore ? `<span style='color:#eab308'>You can add up to ${maxParticipants - total} more participant(s).</span>` : `<span style='color:#16a34a'>Maximum participants reached.</span>`}
+      </div>`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Proceed to Payment',
+      cancelButtonText: 'Go Back',
+      reverseButtons: true,
+      customClass: {
+        confirmButton: 'swal2-confirm btn btn-success',
+        cancelButton: 'swal2-cancel btn btn-secondary',
+      },
+    });
+    if (!result.isConfirmed) return;
     setPaymentLoading(true);
     try {
-      // 1. Create order on backend
-      const { data } = await axios.post(`${baseURL}:${port}/api/payment/create-order`, {
-        amount: eventFee,
+      const orderPayload = {
+        amount: fee,
         eventId,
-        studentId: email,
-      }, {
+        studentName: formData.studentName,
+        gender: formData.gender,
+        email,
+        mobno: formData.mobno,
+        studentCollegeName: formData.studentCollegeName,
+        branch: formData.branch,
+        course: formData.course,
+        year: formData.year,
+        extraParticipants,
+      };
+      console.log('[DEBUG] Payment order payload:', orderPayload);
+      // 1. Create order on backend
+      const { data } = await axios.post(`${baseURL}:${port}/api/payment/create-order`, orderPayload, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('[DEBUG] Payment order response:', data);
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: data.currency,
         order_id: data.orderId,
         handler: async function (response) {
-          // 2. Verify payment on backend
-          await axios.post(`${baseURL}:${port}/api/payment/verify`, {
+          console.log('[DEBUG] studentId before payment verify:', studentId);
+          const verifyPayload = {
             ...response,
             eventId,
-            studentId: email,
-            amount: data.amount, // <-- send amount in paise
-          }, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setPaymentSuccess(true);
-          toast.success('Payment successful! Completing registration...');
-          // 3. Complete registration
-          await handleSubmit();
+            studentId,
+            studentName: formData.studentName,
+            gender: formData.gender,
+            email,
+            mobno: formData.mobno,
+            studentCollegeName: formData.studentCollegeName,
+            branch: formData.branch,
+            course: formData.course,
+            year: formData.year,
+            extraParticipants,
+            amount: data.amount,
+          };
+          console.log('[DEBUG] Payment verify payload:', verifyPayload);
+          try {
+            const verifyRes = await axios.post(`${baseURL}:${port}/api/payment/verify`, verifyPayload, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            console.log('[DEBUG] Payment verify response:', verifyRes.data);
+            await handleSubmit(null, true);
+            await maybeUpdateProfile();
+          } catch (err) {
+            console.error('[DEBUG] Payment verify error:', err.response?.data || err);
+            toast.error('Payment verification failed.');
+          }
         },
-        prefill: {
-          name: user,
-          email: email,
-        },
+        prefill: {},
         theme: { color: "#3399cc" },
       };
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      toast.error('Payment failed. Please try again.');
+      console.error('[DEBUG] Payment order error:', err.response?.data || err);
+      if (err.response && err.response.data && err.response.data.error) {
+        toast.error(err.response.data.error);
+      } else {
+        toast.error('Payment failed. Please try again.');
+      }
     } finally {
       setPaymentLoading(false);
     }
   };
 
-  // Helper to check if all profile fields are filled
-  const allProfileFieldsFilled = [
-    formData.studentName,
-    formData.gender,
-    formData.studentCollegeName,
-    formData.branch,
-    formData.course,
-    formData.year,
-    formData.mobno
-  ].every(val => val && val.trim() !== '');
-
   return (
-    <div className='my-10 bg-white lg:p-10 p-4 border-1 border-gray-400 text-gray-700'>
-      {loading && <div className="mb-4 text-blue-600">Loading user details...</div>}
-      {error && <div className="mb-4 text-red-600">{error}</div>}
-      {allProfileFieldsFilled ? (
-        <div className="mb-4 text-green-700 bg-green-100 rounded px-3 py-2 text-sm">Details are taken from your profile. You can edit if needed.</div>
-      ) : (
-        <div className="mb-4 text-yellow-800 bg-yellow-100 rounded px-3 py-2 text-sm">Some details are missing. Please <a href={role === "organizer" ? "/adminprofile" : "/studentprofile"} className="underline text-yellow-900">update your profile</a> for autofill next time.</div>
+    <form onSubmit={fee > 0 ? handleRazorpayPayment : handleSubmit} className="space-y-6">
+      {/* Profile Fetching Status */}
+      <div className="mb-2">
+        {profileStatus === 'fetching' && (
+          <div className="flex items-center gap-2 text-blue-600 text-sm"><Loader2 className="animate-spin w-4 h-4" /> Fetching details from profile...</div>
+        )}
+        {profileStatus === 'fetched' && (
+          <div className="flex items-center gap-2 text-green-600 text-sm"><CheckCircle2 className="w-4 h-4" /> Fetched details from profile</div>
+        )}
+        {profileStatus === 'error' && (
+          <div className="flex items-center gap-2 text-red-600 text-sm">Could not fetch profile details. Please fill manually.</div>
+        )}
+      </div>
+      {/* Payment Info */}
+      {fee > 0 && (
+        <Card className="mb-4 p-4 bg-yellow-50 border-yellow-300 gap-1">
+          <div className="text-lg font-semibold text-yellow-800">Amount to Pay: <span className="font-bold">₹{fee}</span></div>
+          <div className="text-sm text-yellow-700 mt-1">You will be redirected to Razorpay for payment.</div>
+        </Card>
       )}
-      {/* Show payment method if event has a fee */}
-      {eventFee > 0 && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-300 rounded">
-          <div className="font-semibold text-yellow-800">Event Fee: ₹{eventFee}</div>
-          <div className="text-yellow-700 text-sm">Pay securely with UPI, Netbanking, or Card via Razorpay</div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm lg:text-base mt-8">
+        <div>
+          <Label htmlFor="studentName" className='mb-1'>Full Name</Label>
+          <Input id="studentName" value={formData.studentName} onChange={handleMainChange} required placeholder="Full Name" />
         </div>
-      )}
-      <form onSubmit={eventFee > 0 ? (e) => { e.preventDefault(); handleRazorpayPayment(); } : handleSubmit}>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm lg:text-base'>
-          <p className='lg:text-2xl text-lg text-center mb-5 lg:[grid-column:span_2]'>Registration Form</p>
-          <div>
-            <label htmlFor="studentName" className='block mb-1'>Student Full Name</label>
-            <input
-              type="text"
-              id="studentName"
-              className='text-gray-500 block outline-none border border-gray-300 rounded w-full px-2 py-1'
-              value={formData.studentName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label className='block mb-1'>Select Gender</label>
-            <div className="flex items-center gap-6 mt-1">
-              <div className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="gender"
-                  id="gender-male"
-                  value="Male"
-                  checked={formData.gender === 'Male'}
-                  onChange={handleChange}
-                  required
-                />
-                <label htmlFor="gender-male" className="cursor-pointer">
-                  Male
-                </label>
+        <div>
+          <Label htmlFor="gender" className='mb-1'>Gender</Label>
+          <select className="w-full border rounded px-2 py-2" name="gender" value={formData.gender} onChange={handleMainChange} required>
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="studentCollegeName" className='mb-1'>College/University Name</Label>
+          <Input id="studentCollegeName" value={formData.studentCollegeName} onChange={handleMainChange} required placeholder="College/University Name" />
+        </div>
+        <div>
+          <Label htmlFor="course" className='mb-1'>Course</Label>
+          <select id="course" name="course" className="w-full border rounded px-2 py-2" value={formData.course} onChange={handleMainChange} required>
+            <option value="">-- Select --</option>
+            <option value="B.Tech">B.Tech</option>
+            <option value="B.E">B.E</option>
+            <option value="M.E">M.E</option>
+            <option value="Diploma">Diploma</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="branch" className='mb-1'>Branch</Label>
+          <select id="branch" name="branch" className="w-full border rounded px-2 py-2" value={formData.branch} onChange={handleMainChange} required>
+            <option value="">-- Select --</option>
+            <option value="IT">IT</option>
+            <option value="CS">CS</option>
+            <option value="Mech">Mech</option>
+            <option value="Trical">Trical</option>
+            <option value="Tronics">Tronics</option>
+            <option value="Civil">Civil</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="year" className='mb-1'>Year</Label>
+          <select id="year" name="year" className="w-full border rounded px-2 py-2" value={formData.year} onChange={handleMainChange} required>
+            <option value="">-- Select --</option>
+            <option value="First Year">First Year</option>
+            <option value="Second Year">Second Year</option>
+            <option value="Third Year">Third Year</option>
+            <option value="Fourth Year">Fourth Year</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="mobno" className='mb-1'>Mobile Number</Label>
+          <Input id="mobno" value={formData.mobno} onChange={handleMainChange} required placeholder="10-digit Mobile Number" maxLength={10} />
+        </div>
+      </div>
+      {/* Extra Participants Section */}
+      <div>
+        <Label className="font-bold text-lg">Extra Participants ({extraParticipants.length} / {maxParticipants - 1})</Label>
+        {extraParticipants.map((p, idx) => (
+          <div key={idx} className="border rounded-lg p-4 my-3 bg-gray-50 relative">
+            <div className='flex justify-end'>
+              <Button type="button" variant="destructive" size="sm" className="" onClick={() => removeExtraParticipant(idx)}>Remove</Button>
+            </div>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <Label htmlFor="name" className='mb-1'>Name</Label>
+                <Input value={p.name} onChange={e => handleExtraChange(idx, 'name', e.target.value)} required placeholder="Full Name" />
               </div>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="gender"
-                  id="gender-female"
-                  value="Female"
-                  checked={formData.gender === 'Female'}
-                  onChange={handleChange}
-                />
-                <label htmlFor="gender-female" className="cursor-pointer">
-                  Female
-                </label>
+              <div className="flex-1">
+                <Label htmlFor="gender" className='mb-1'>Gender</Label>
+                <select className="w-full border rounded px-2 py-2" value={p.gender} onChange={e => handleExtraChange(idx, 'gender', e.target.value)} required>
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row gap-4 mt-2">
+              <div className="flex-1">
+                <Label htmlFor="email" className='mb-1'>Email</Label>
+                <Input value={p.email} onChange={e => handleExtraChange(idx, 'email', e.target.value)} required placeholder="Email" type="email" />
+              </div>
+              <div className="flex-1">
+                <Label htmlFor="phone" className='mb-1'>Phone</Label>
+                <Input value={p.phone} onChange={e => handleExtraChange(idx, 'phone', e.target.value)} required placeholder="10-digit Phone" type="tel" maxLength={10} />
               </div>
             </div>
           </div>
-
-          <div>
-            <label htmlFor="studentCollegeName" className='block mb-1'>College/University Name</label>
-            <input
-              type="text"
-              id="studentCollegeName"
-              className='text-gray-500 block outline-none border border-gray-300 rounded w-full px-2 py-1'
-              value={formData.studentCollegeName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="course" className='block mb-1'>Your Course</label>
-            <select
-              id="course"
-              className='text-gray-500 block w-full border border-gray-300 rounded px-2 py-1 outline-none'
-              value={formData.course}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Select --</option>
-              <option value="B.Tech">B.Tech</option>
-              <option value="B.E">B.E</option>
-              <option value="M.E">M.E</option>
-              <option value="Diploma">Diploma</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="branch" className='block mb-1'>Your branch</label>
-            <select
-              id="branch"
-              className='text-gray-500 block w-full border border-gray-300 rounded px-2 py-1 outline-none'
-              value={formData.branch}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Select --</option>
-              <option value="IT">IT</option>
-              <option value="CS">CS</option>
-              <option value="Mech">Mech</option>
-              <option value="Trical">Trical</option>
-              <option value="Tronics">Tronics</option>
-              <option value="Civil">Civil</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="year" className='block mb-1'>Course Current Year</label>
-            <select
-              id="year"
-              className='text-gray-500 block w-full border border-gray-300 rounded px-2 py-1 outline-none'
-              value={formData.year}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Select --</option>
-              <option value="First Year">First Year</option>
-              <option value="Second Year">Second Year</option>
-              <option value="Third Year">Third Year</option>
-              <option value="Fourth Year">Fourth Year</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="mobno" className='block mb-1'>Mobile Number</label>
-            <input
-              className='text-gray-500 block outline-none border border-gray-300 rounded w-full px-2 py-1'
-              required
-              type="tel"
-              id="mobno"
-              pattern="[6-9]{1}[0-9]{9}"
-              maxLength={10}
-              value={formData.mobno}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className='lg:[grid-column:span_2] flex justify-center'>
-            <button
-              type='submit'
-              disabled={loading || paymentLoading}
-              className='cursor-pointer bg-amber-300 py-2 px-4 rounded-md hover:outline-5 hover:outline-amber-100 hover:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
-            >
-              {eventFee > 0 ? (paymentLoading ? 'Processing Payment...' : 'Pay & Register') : (loading ? 'Registering...' : 'Register')}
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+        ))}
+        {1 + extraParticipants.length < maxParticipants && (
+          <Button type="button" variant="outline" onClick={addExtraParticipant} className="mt-2">Add Extra Participant</Button>
+        )}
+      </div>
+      <div className="flex justify-center mt-10">
+        <Button type="submit" disabled={loading || paymentLoading} className="w-full max-w-xs">
+          {fee > 0 ? (paymentLoading ? 'Processing Payment...' : 'Pay & Register') : (loading ? 'Registering...' : 'Register')}
+        </Button>
+      </div>
+    </form>
   );
 }
 

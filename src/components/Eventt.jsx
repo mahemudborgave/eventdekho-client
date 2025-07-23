@@ -215,6 +215,7 @@ function Eventt({ events }) {
                   <span className="text-yellow-500"><i className="fa-solid fa-clock mr-1.5"></i> {eventt.eventMode}</span>
                   <span className="text-blue-500"><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {formatEventDate(eventt.eventDate)}</span>
                   <span className="text-red-500"><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span>
+                  <span className="text-purple-800"><Users size={17} className='mr-1.5 text-purple-800 inline-block'/> Participants: {eventt.minParticipants == eventt.maxParticipants ? eventt.minParticipants : `${eventt.minParticipants} - ${eventt.maxParticipants}`}</span>
                 </div>
               </div>
               <div className="flex flex-col text-sm w-full">

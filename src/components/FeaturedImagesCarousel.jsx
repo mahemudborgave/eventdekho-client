@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getFeaturedImages } from '../api/featuredImages';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -19,24 +19,27 @@ function FeaturedImagesCarousel() {
     });
   }, []);
 
+  const slidesToShow = Math.min(3, images.length || 1);
   const sliderSettings = {
     dots: true,
-    infinite: true,
+    infinite: images.length > slidesToShow,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, images.length || 1),
+          infinite: images.length > 2,
         },
       },
       {
         breakpoint: 640,
         settings: {
           slidesToShow: 1,
+          infinite: images.length > 1,
         },
       },
     ],
@@ -83,12 +86,12 @@ function FeaturedImagesCarousel() {
         <Slider ref={sliderRef} {...sliderSettings}>
           {images.map((img) => (
             <div key={img._id} className="px-2">
-              <div className="flex flex-col items-center bg-gray-50 rounded-lg h-60 flex-shrink-0 w-full overflow-hidden">
-                <img src={img.url} alt={img.title || 'Featured'} className="object-cover w-full h-full rounded" />
-                <div className="w-full bg-gray-200 bg-opacity-60 text-white flex justify-between items-center px-4 py-2">
+              <div className="flex flex-col items-center bg-gray-50 rounded-sm h-60 flex-shrink-0 w-full overflow-hidden">
+                <img src={img.url} alt={img.title || 'Featured'} className="object-cover w-full h-full" />
+                <div className="w-full border-t-none border-1 border-gray-300 text-white flex justify-between items-center px-4 py-2 rounded-b-sm">
                   <span className="truncate text-black font-semibold">{img.eventName}</span>
-                  <a href={img.eventUrl} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" className="text-black" size="sm">Visit</Button>
+                  <a href={img.eventUrl} target="_blank" rel="noopener noreferrer" className='flex items-center gap-2'>
+                    <Button variant="outline" className="text-black" size="sm">Visit <ArrowUpRight size={16} /></Button>
                   </a>
                 </div>
               </div>
