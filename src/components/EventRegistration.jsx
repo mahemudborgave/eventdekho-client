@@ -183,11 +183,7 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
         showCancelButton: true,
         confirmButtonText: 'Proceed Registration',
         cancelButtonText: 'Go Back',
-        reverseButtons: true,
-        customClass: {
-          confirmButton: 'swal2-confirm btn btn-success',
-          cancelButton: 'swal2-cancel btn btn-secondary',
-        },
+        reverseButtons: true
       });
       if (!result.isConfirmed) return;
     }
@@ -221,7 +217,7 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
         icon: 'success',
         confirmButtonText: 'OK',
       });
-      setHasRegistered(true);
+      // setHasRegistered(true); // Do not close the registration modal
     } catch (err) {
       console.error('[DEBUG] Registration error:', err.response?.data || err);
       if (err.response && err.response.data && err.response.data.error) {
@@ -253,11 +249,7 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
       showCancelButton: true,
       confirmButtonText: 'Proceed to Payment',
       cancelButtonText: 'Go Back',
-      reverseButtons: true,
-      customClass: {
-        confirmButton: 'swal2-confirm btn btn-success',
-        cancelButton: 'swal2-cancel btn btn-secondary',
-      },
+      reverseButtons: true
     });
     if (!result.isConfirmed) return;
     setPaymentLoading(true);
@@ -316,7 +308,7 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
               icon: 'success',
               confirmButtonText: 'OK',
             });
-            setHasRegistered(true);
+            // setHasRegistered(true); // Do not close the registration modal
           } catch (err) {
             console.error('[DEBUG] Payment verify error:', err.response?.data || err);
             toast.error('Payment verification failed.');

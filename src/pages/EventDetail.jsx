@@ -601,7 +601,11 @@ function EventDetail() {
 
       {/* Registration Form Modal */}
       <Dialog open={!hasRegistered && isShow} onOpenChange={v => setIsShow(!hasRegistered && v)}>
-        <DialogContent className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent 
+          className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+          onInteractOutside={e => e.preventDefault()}
+          onEscapeKeyDown={e => e.preventDefault()}
+        >
           <div className="p-3 sm:p-4">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-xl font-bold text-gray-900 text-center">Event Registration</h2>

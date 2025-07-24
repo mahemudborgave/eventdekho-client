@@ -2,3 +2,11 @@ body {
     /* background-color: rgba(0, 0, 0, 0.575); */
     font-family: "Mona Sans", sans-serif;
 }
+
+/* SweetAlert2 mobile fix */
+.swal2-container,
+.swal2-popup,
+.swal2-actions button {
+  pointer-events: auto !important;
+  z-index: 99999 !important;
+}
