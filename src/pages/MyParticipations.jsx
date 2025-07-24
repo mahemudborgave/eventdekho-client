@@ -111,7 +111,7 @@ function MyParticipations() {
   return (
     <div>
       <div className='flex justify-start mb-6'>
-        <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>My </span>Registrations</h2>
+        <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>My </span>Registrations</h2>
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 text-sm lg:text-base'>
         {(registrations.length === 0) ? (

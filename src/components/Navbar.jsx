@@ -197,7 +197,7 @@ function Navbar() {
                                     <div className="flex justify-between items-center">
                                         <div className="flex items-center gap-2">
                                             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                                            <span className="font-semibold text-gray-800 text-sm">Notifications</span>
+                                            <span className="font-semibold text-gray-800 text-sm">Notifications here</span>
                                         </div>
                                         {resolvedQueries.length > 0 && (
                                             <button
@@ -219,27 +219,25 @@ function Navbar() {
                                             <div className="text-gray-400 text-xs mt-1">We'll notify you when there's something new</div>
                                         </div>
                                     ) : (
-                                        resolvedQueries.map((q, index) => (
-                                            <div key={q._id} className={`p-4 relative transition-all duration-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 ${index !== resolvedQueries.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                                        resolvedQueries.map((q) => (
+                                            <div key={q._id} className="p-4 pb-0 relative transition-all duration-200 border-b border-gray-100 last:border-b-0">
                                                 <button
-                                                    className="absolute top-3 right-3 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
+                                                    className="absolute top-6 right-6 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
                                                     onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     title="Mark as read"
                                                 >
-                                                    ×
+                                                    <X size={16} />
                                                 </button>
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                <div className="flex items-start gap-3 border border-gray-300 p-2 rounded-lg">
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="font-medium text-green-700 text-sm leading-tight">
-                                                            Your query for <span className="font-bold text-green-800">{q.eventName}</span> has been resolved!
+                                                        <div className="font-medium text-gray-500 text-sm leading-tight">
+                                                            Query for <span className="font-bold text-gray-700">{q.eventName}</span> resolved!
                                                         </div>
-                                                        <div className="text-gray-600 mt-2 text-sm leading-relaxed bg-gray-50 p-3 rounded-lg border-l-4 border-green-200">
+                                                        <div className="text-blue-600 text-sm leading-relaxed bg-gray-50 p-1">
                                                             {q.resolution}
                                                         </div>
-                                                        <div className="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                                                            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                                                        <div className="text-xs text-gray-400 flex items-center gap-1">
                                                             {new Date(q.updatedAt).toLocaleString()}
                                                         </div>
                                                     </div>
@@ -410,26 +408,26 @@ function Navbar() {
                                         </div>
                                     ) : (
                                         resolvedQueries.map((q, index) => (
-                                            <div key={q._id} className={`p-4 relative transition-all duration-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 ${index !== resolvedQueries.length - 1 ? 'border-b border-gray-100' : ''}`}>
-                                                <button
-                                                    className="absolute top-3 right-3 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
+                                            <div key={q._id} className={`p-4 pb-0 relative transition-all duration-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 ${index !== resolvedQueries.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                                                <button 
+                                                    className="absolute top-6 right-6 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
                                                     onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     title="Mark as read"
                                                 >
-                                                    ×
+                                                    <X size={16} />
                                                 </button>
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                                <div className="flex items-start gap-3 border border-gray-300 p-2 rounded-lg">
+                                                    {/* <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div> */}
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="font-medium text-green-700 text-sm leading-tight">
-                                                            Your query for <span className="font-bold text-green-800">{q.eventName}</span> has been resolved!
+                                                        <div className="font-medium text-gray-500 text-sm leading-tight">
+                                                            Query for <span className="font-bold text-gray-700">{q.eventName}</span> resolved!
                                                         </div>
-                                                        <div className="text-gray-600 mt-2 text-sm leading-relaxed bg-gray-50 p-3 rounded-lg border-l-4 border-green-200">
+                                                        <div className="text-blue-600 text-sm leading-relaxed bg-gray-50 p-1">
                                                             {q.resolution}
                                                         </div>
-                                                        <div className="text-xs text-gray-400 mt-2 flex items-center gap-1">
-                                                            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                                                        <div className="text-xs text-gray-400 flex items-center gap-1">
+                                                            {/* <div className="w-1 h-1 bg-gray-300 rounded-full"></div> */}
                                                             {new Date(q.updatedAt).toLocaleString()}
                                                         </div>
                                                     </div>

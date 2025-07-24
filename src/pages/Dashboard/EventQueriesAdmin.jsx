@@ -104,7 +104,7 @@ function EventQueriesAdmin() {
               ) : respondingId === q._id ? (
                 <div className="mt-2">
                   <textarea
-                    className="w-full p-2 border rounded mb-2"
+                    className="w-full p-2 border rounded mb-2 border-2 border-gray-500 text-gray-700 outline-green-500 bg-green-50"
                     rows={2}
                     placeholder="Enter your resolution..."
                     value={resolution}

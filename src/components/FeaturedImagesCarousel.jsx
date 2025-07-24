@@ -62,7 +62,7 @@ function FeaturedImagesCarousel() {
   return (
     <div className="w-full bg-white">
       <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>Featured </span>events</h2>
+          <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>Featured </span>events</h2>
           <div className='flex gap-2'>
             <button
               onClick={() => sliderRef.current?.slickPrev()}

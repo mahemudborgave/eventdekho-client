@@ -309,8 +309,14 @@ function EventRegistration({ eventId, eventName, organizationName, parentOrganiz
               headers: { Authorization: `Bearer ${token}` }
             });
             console.log('[DEBUG] Payment verify response:', verifyRes.data);
-            await handleSubmit(null, true);
             await maybeUpdateProfile();
+            await MySwal.fire({
+              title: 'Registered!',
+              text: 'You have successfully registered for the event.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+            });
+            setHasRegistered(true);
           } catch (err) {
             console.error('[DEBUG] Payment verify error:', err.response?.data || err);
             toast.error('Payment verification failed.');

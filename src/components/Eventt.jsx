@@ -167,7 +167,6 @@ function Eventt({ events }) {
             <div
               className={`flex flex-col items-start p-4 bg-gradient-to-r from-white to-white-200 border border-gray-300 hover:outline outline-blue-500 gap-4 rounded-xl text-sm lg:text-base relative transition-shadow hover:shadow-lg ${!isDetailPage ? 'cursor-pointer' : ''}`}
               key={idx}
-              onClick={!isDetailPage ? () => window.location.href = `/eventdetail/${eventt._id}` : undefined}
               style={isDetailPage ? {} : { cursor: 'pointer' }}
             >
               {/* Top right: Heart and Status */}

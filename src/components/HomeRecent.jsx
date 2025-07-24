@@ -67,7 +67,7 @@ function HomeRecent() {
         <div>
             <div className="flex justify-between items-center mb-6">
                 {/* <div className="flex items-center gap-2"> */}
-                <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>Recently </span>Added</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>Recently </span>Added</h2>
                 <div className='flex gap-2'>
                     <button
                         className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50"

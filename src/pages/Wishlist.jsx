@@ -63,7 +63,7 @@ function Wishlist() {
     return (
         <div className="">
             <div className='flex justify-start mb-6'>
-                <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>My </span>Wishlist</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>My </span>Wishlist</h2>
             </div>
             {loading ? (
                 <div className="flex justify-center items-center min-h-[30vh]">

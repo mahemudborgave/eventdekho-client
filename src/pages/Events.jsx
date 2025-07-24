@@ -8,7 +8,7 @@ import Search from '../components/Search';
 import UserContext from '../context/UserContext';
 import SearchContext from '../context/SearchContext';
 import Marquee from 'react-fast-marquee';
-import { TrendingUp, ArrowRight, Calendar } from 'lucide-react';
+import { TrendingUp, ArrowRight, Calendar, ChevronDown } from 'lucide-react';
 import FeaturedImagesCarousel from '../components/FeaturedImagesCarousel';
 
 
@@ -48,6 +48,12 @@ function Events() {
   const dropdownRef = useRef(null);
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [loadingRegistered, setLoadingRegistered] = useState(true);
+
+  // Filter state
+  const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+  const [filterMode, setFilterMode] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterFee, setFilterFee] = useState('all');
 
   // Hide dropdown on click outside
   useEffect(() => {
@@ -100,7 +106,7 @@ function Events() {
         setEvents(sorted);
         setOriginalEvents(sorted);
         // Debug: Log all events after fetch and sort
-        console.log('Fetched and sorted events:', sorted);
+        // console.log('Fetched and sorted events:', sorted);
 
         // Calculate statistics
         const totalEvents = sorted.length;
@@ -228,6 +234,25 @@ function Events() {
     const bRegistered = registeredEventIdsSet.has(b._id);
     if (aRegistered === bRegistered) return 0;
     return aRegistered ? 1 : -1;
+  });
+
+  // Filtering logic (must be after sortedAllEvents is defined)
+  const filteredEvents = sortedAllEvents.filter(event => {
+    // Mode
+    if (filterMode !== 'all' && event.eventMode !== filterMode) return false;
+    // Status
+    const now = new Date();
+    const regStart = event.registrationStartOn ? new Date(event.registrationStartOn) : null;
+    const regClose = event.closeOn ? new Date(event.closeOn) : null;
+    let status = 'upcoming';
+    if (regStart && now < regStart) status = 'upcoming';
+    else if (regStart && regClose && now >= regStart && now <= regClose) status = 'live';
+    else if (regClose && now > regClose) status = 'closed';
+    if (filterStatus !== 'all' && status !== filterStatus) return false;
+    // Fee
+    if (filterFee === 'free' && Number(event.fee) > 0) return false;
+    if (filterFee === 'paid' && Number(event.fee) === 0) return false;
+    return true;
   });
 
   return (
@@ -380,10 +405,70 @@ function Events() {
         )} */}
 
         <div>
-          <div className='flex justify-start mb-6'>
-            <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
+          <div className='flex justify-between mb-6 items-center gap-4'>
+            <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
+            <div className="relative">
+              <button
+                className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium hover:bg-gray-50"
+                onClick={() => setFilterDropdownOpen(v => !v)}
+                type="button"
+              >
+                <span>Filter</span>
+                <ChevronDown size={16} />
+              </button>
+              {filterDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-30 p-4 flex flex-col gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold mb-1">Event Mode</label>
+                    <select
+                      className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                      value={filterMode}
+                      onChange={e => setFilterMode(e.target.value)}
+                    >
+                      <option value="all">All</option>
+                      <option value="Onsite">Onsite</option>
+                      <option value="Online">Online</option>
+                      <option value="Hybrid">Hybrid</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold mb-1">Registration Status</label>
+                    <select
+                      className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                      value={filterStatus}
+                      onChange={e => setFilterStatus(e.target.value)}
+                    >
+                      <option value="all">All</option>
+                      <option value="live">Live</option>
+                      <option value="upcoming">Upcoming</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold mb-1">Fee</label>
+                    <select
+                      className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
+                      value={filterFee}
+                      onChange={e => setFilterFee(e.target.value)}
+                    >
+                      <option value="all">All</option>
+                      <option value="free">Free</option>
+                      <option value="paid">Paid</option>
+                    </select>
+                  </div>
+                  <button
+                    className="mt-2 w-full bg-amber-500 text-white rounded py-1.5 font-semibold text-sm hover:bg-amber-600"
+                    onClick={() => setFilterDropdownOpen(false)}
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          <Eventt events={sortedAllEvents} />
+          <div className='px-2'>
+          <Eventt events={filteredEvents} />
+          </div>
         </div>
         {/* Registered Events List at Bottom */}
         {/* <div className="mt-16">

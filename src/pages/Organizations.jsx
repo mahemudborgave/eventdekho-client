@@ -283,7 +283,7 @@ function Organizations() {
       </div>
 
       {/* Search and Filter Section */}
-      <div className="mb-6 space-y-4">
+      <div className="mb-3 space-y-4">
         {/* Search Bar and Filter Button */}
         <div className="flex flex-row gap-3 items-center lg:w-1/2">
           <div className="relative w-full" ref={dropdownRef}>
@@ -392,9 +392,9 @@ function Organizations() {
       </div>
 
       {/* Results Section */}
-      <div className="mb-10">
+      <div className="mb-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
-          <h2 className="text-base text-gray-500">
+          <h2 className="text-base text-gray-500 ml-3">
             {organizations.length} Organization{organizations.length !== 1 ? 's' : ''} Found
           </h2>
           {activeFilters.length > 0 && (
@@ -411,12 +411,12 @@ function Organizations() {
       </div>
 
       <div className='flex justify-start mb-6'>
-        <h2 className="text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Organizations</h2>
+        <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Organizations</h2>
       </div>
 
       {/* Organizations section*/}
       {filteredOrganizations.length > 0 ? (
-        <div className="w-full">
+        <div className="w-full px-2">
           {/* Only show mobile card design for all devices */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
             {filteredOrganizations.map((organization, index) => (
