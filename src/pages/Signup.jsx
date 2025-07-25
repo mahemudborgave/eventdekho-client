@@ -48,6 +48,7 @@ function Signup() {
 
     const [loading, setLoading] = useState(false);
     const [organizations, setOrganizations] = useState([]);
+    const [colleges, setColleges] = useState([]);
     const [showOrganizationPopup, setShowOrganizationPopup] = useState(false);
     const [organizationForm, setOrganizationForm] = useState({
         organizationName: '',
@@ -75,6 +76,18 @@ function Signup() {
             }
         };
         fetchOrganizations();
+
+        // Fetch colleges for parent organization suggestions
+        const fetchColleges = async () => {
+            try {
+                const res = await axios.get(`${baseURL}:${port}/college/getallcolleges`);
+                setColleges(res.data);
+            } catch (err) {
+                console.error('Failed to fetch colleges:', err);
+                setColleges([]);
+            }
+        };
+        fetchColleges();
     }, []);
 
     // Handle student form changes
@@ -282,28 +295,19 @@ function Signup() {
         
         setOrganizationLoading(true);
         try {
-            const res = await axios.post(`${baseURL}:${port}/organization/registerorganization`, {
-                organizationName: organizationForm.organizationName,
-                organizationCode: organizationForm.dteCode,
-                shortName: organizationForm.organizationName.split(' ')[0], // Use first word as short name
+            const res = await axios.post(`${baseURL}:${port}/college/registerparentcollege`, {
+                collegeName: organizationForm.organizationName,
                 city: organizationForm.city,
+                shortName: organizationForm.organizationName.split(' ')[0], // Use first word as short name
                 type: organizationForm.type[0], // Take first type
                 tier: organizationForm.tier,
             });
-            
-            toast.success('Organization registered successfully!');
-            
-            // Update parent organization field with new organization name
+            toast.success('Parent organization registered as college!');
+            // Update parent organization field with new college name
             setOrgData(prev => ({ ...prev, parentOrganization: organizationForm.organizationName }));
-            
             // Reset form and close popup
             setOrganizationForm({ organizationName: '', dteCode: '', city: '', type: [], tier: '' });
             setShowOrganizationPopup(false);
-            
-            // Refresh organizations list
-            const organizationsRes = await axios.get(`${baseURL}:${port}/organization/getallorganizations`);
-            setOrganizations(organizationsRes.data);
-            
         } catch (err) {
             toast.error('Failed to register organization.');
         } finally {
@@ -563,26 +567,26 @@ function Signup() {
                                         {/* Organization Suggestions Dropdown */}
                                         {showOrganizationSuggestions && orgData.parentOrganization && (
                                             <div className='absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto'>
-                                                {organizations
-                                                    .filter(organization => 
-                                                        organization.organizationName.toLowerCase().includes(orgData.parentOrganization.toLowerCase()) ||
-                                                        organization.city.toLowerCase().includes(orgData.parentOrganization.toLowerCase())
+                                                {colleges
+                                                    .filter(college => 
+                                                        (college.collegeName && college.collegeName.toLowerCase().includes(orgData.parentOrganization.toLowerCase())) ||
+                                                        (college.city && college.city.toLowerCase().includes(orgData.parentOrganization.toLowerCase()))
                                                     )
                                                     .slice(0, 10) // Limit to 10 suggestions
-                                                    .map((organization, index) => (
+                                                    .map((college, index) => (
                                                         <div
                                                             key={index}
                                                             className='px-4 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0'
                                                             onClick={() => {
                                                                 setOrgData(prev => ({ 
                                                                     ...prev, 
-                                                                    parentOrganization: organization.organizationName 
+                                                                    parentOrganization: college.collegeName 
                                                                 }));
                                                                 setShowOrganizationSuggestions(false);
                                                             }}
                                                         >
-                                                            <div className='font-medium text-sm'>{organization.organizationName}</div>
-                                                            <div className='text-xs text-gray-500'>{organization.city}</div>
+                                                            <div className='font-medium text-sm'>{college.collegeName}</div>
+                                                            <div className='text-xs text-gray-500'>{college.city}</div>
                                                         </div>
                                                     ))
                                                 }
