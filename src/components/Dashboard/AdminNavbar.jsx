@@ -89,22 +89,21 @@ function AdminNavbar({ onToggle }) {
                 </VisuallyHidden>
                 <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
                   <div className='pb-3'>
-                  <Link to="/admin/dashboard" className="flex items-center group">
-                    <h1 className="text-lg font-bold text-amber-700 dark:text-amber-500 group-hover:underline">EventApply</h1>
-                    <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900/50 dark:text-amber-600 px-2 py-1 rounded">Admin</span>
-                  </Link>
-
+                    <Link to="/admin/dashboard" className="flex items-center group">
+                      <h1 className="text-lg font-bold text-amber-700 dark:text-amber-500 group-hover:underline">EventApply</h1>
+                      <span className="ml-2 text-sm text-white bg-amber-700 dark:bg-amber-900/50 dark:text-amber-600 px-2 py-1 rounded">Admin</span>
+                    </Link>
                   </div>
                   <SheetClose asChild>
                     <button
                       aria-label="Close menu"
-                      className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none"
+                      className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 focus:outline-none pb-3"
                     >
                       <X size={24} />
                     </button>
                   </SheetClose>
                 </div>
-                <div className="flex flex-col gap-2 mt-4">
+                <div className={`flex flex-col mt-4 gap-2`}>
                   {navLinks.map(link => (
                     <NavLink
                       key={link.to}

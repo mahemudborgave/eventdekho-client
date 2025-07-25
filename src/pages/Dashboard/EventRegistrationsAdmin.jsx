@@ -232,7 +232,6 @@ function EventRegistrationsAdmin() {
                       <tr key={reg._id + '-extra-' + idx} className="hover:bg-blue-50 dark:hover:bg-blue-950">
                         <td className="py-3 px-4 min-w-[120px] whitespace-nowrap text-gray-900 dark:text-gray-100">{p.name}</td>
                         <td className="py-3 px-4 min-w-[120px] break-words w-full">{p.email}</td>
-                        <td className="py-3 px-4 min-w-[120px] whitespace-nowrap">-</td>
                         <td className="py-3 px-4 min-w-[120px] break-words w-full">-</td>
                         <td className="py-3 px-4 min-w-[120px] break-words w-full">-</td>
                         <td className="py-3 px-4 min-w-[120px] break-words w-full">-</td>

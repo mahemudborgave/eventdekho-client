@@ -198,7 +198,7 @@ function Eventt({ events }) {
                   )}
                   {/* Wishlist Button */}
                   <button
-                    className="bg-white/80 hover:bg-pink-100 rounded-full p-1 shadow transition border border-gray-200 ml-1 z-30"
+                    className="bg-white/80 hover:bg-pink-100 rounded-full p-1 shadow transition border border-gray-200 ml-1 z-20"
                     onClick={e => { e.stopPropagation(); toggleWishlist(eventt._id, eventt.eventName); }}
                     title={isWishlisted(eventt._id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
                     style={{ lineHeight: 0, cursor: 'pointer' }}
@@ -242,9 +242,9 @@ function Eventt({ events }) {
               <div className="flex flex-col text-sm w-full mt-4">
                 {!location.pathname.startsWith('/eventdetail') &&
                   !location.pathname.startsWith('/admin/eventdetail') && (
-                    <div className="flex items-center mb-2 gap-2">
+                    <div className="flex items-center mb-2 gap-1">
                       <button
-                        className="inline-block flex-1 px-7 py-2 bg-gradient-to-r from-[#0d0c22] to-[#0d0c22]/85 rounded-full text-white transition-all duration-200 cursor-pointer text-white shadow hover:shadow-md hover:scale-105"
+                        className="inline-block flex-1 px-7 py-2 bg-gradient-to-r from-[#0d0c22] to-[#0d0c22]/80 rounded-full text-white transition-all duration-200 cursor-pointer text-white shadow hover:shadow-md hover:scale-105 border border-[#0d0c22]"
                         onClick={e => { e.stopPropagation(); window.location.href = `/eventdetail/${eventt._id}`; }}
                         style={{ cursor: 'pointer' }}
                       >
@@ -253,12 +253,12 @@ function Eventt({ events }) {
                       {/* Price/Free Badge and Registered Badge */}
                       <div className="flex items-center gap-2">
                         {Number(eventt.fee) > 0 ? (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 border border-yellow-400 text-yellow-800 font-semibold text-sm ml-2">
+                          <span className="inline-flex items-center px-3 py-2 rounded-full bg-yellow-100 border border-yellow-400 text-yellow-800 font-semibold text-sm ml-2">
                             <IndianRupee size={15} />
                             {Number(eventt.fee)}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm ml-2">
+                          <span className="inline-flex items-center px-3 py-2 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm ml-2">
                             FREE
                           </span>
                         )}

@@ -26,6 +26,8 @@ function FeaturedImagesCarousel() {
     speed: 500,
     slidesToShow,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 1500,
     arrows: false,
     responsive: [
       {

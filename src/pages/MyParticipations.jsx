@@ -153,7 +153,7 @@ function MyParticipations() {
                 <p className='text-gray-700 text-sm'>{reg.parentOrganization || ""}</p>
                 <div className="flex flex-wrap gap-3 mt-2 mb-1">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full font-semibold text-xs ${Number(reg.fee) > 0 ? 'bg-yellow-100 border border-yellow-400 text-yellow-800' : 'bg-green-100 border border-green-400 text-green-800'}`}>
-                    {Number(reg.fee) > 0 ? `Amount Paid: ₹${reg.fee}` : 'FREE'}
+                    {Number(reg.fee) > 0 ? `Paid: ₹${reg.fee}` : 'FREE'}
                   </span>
                   {eventDetail.eventDate && (
                     <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 border border-blue-300 text-blue-800 font-semibold text-xs">
@@ -170,12 +170,12 @@ function MyParticipations() {
                 </div>
               </div>
               <div className='flex justify-start gap-3 items-center mt-3'>
-                <Link className='lg:px-5 px-2 py-1 rounded-md border border-green-500 bg-green-500 text-white hover:bg-green-400'
+                <Link className='lg:px-5 flex-1 text-center px-2 py-1 rounded-md border border-green-500 bg-green-500 text-white hover:bg-green-400'
                   to={`/eventdetail/${reg.eventId}`}>
                   Get Detail
                 </Link>
                 <button onClick={() => handleDelete(reg.eventId)}
-                  className='lg:px-5 px-2 py-1 rounded-md border border-red-600 text-red-700 hover:bg-red-500 hover:text-white'>
+                  className='lg:px-5 flex-1 px-2 py-1 rounded-md border border-red-600 text-red-700 hover:bg-red-500 hover:text-white'>
                   Cancel Registration
                 </button>
               </div>
