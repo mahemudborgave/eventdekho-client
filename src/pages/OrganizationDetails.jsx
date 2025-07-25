@@ -7,6 +7,7 @@ import Eventt from '../components/Eventt';
 import collegeList from "../college_list.json";
 import { Calendar, Users, MapPin, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import defaultOrgLogo from '../assets/images/university-academy-school-svgrepo-com.svg';
 
 function OrganizationDetails() {
   const { organizationId } = useParams();
@@ -28,7 +29,7 @@ function OrganizationDetails() {
       try {
         const res = await fetch(`${baseURL}:${port}/eventt/getorganization/${organizationId}`);
         console.log(res);
-        
+
         const data = await res.json();
         setOrganization(data);
       } catch (err) {
@@ -114,36 +115,50 @@ function OrganizationDetails() {
       <div className='mb-8'>
         {/* Organization Header */}
         <div className='w-full text-[#1a093f]'>
-          <div className="flex items-center gap-3 mb-10 rounded-lg p-6 bg-gradient-to-r from-amber-200 to-amber-300">
-            <div>
-              <h1 className='text-lg md:text-3xl font-bold'>{organization.organizationName}</h1>
-              {
-                organization.parentOrganization && <h2 className='text-lg md:text-3xl mb-5'>{organization.parentOrganization}</h2>
-              }
-              <div className="flex flex-wrap gap-4">  
-                {/* <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-1 rounded-lg border border-gray-200">
+          <div className="mb-10 rounded-lg p-6 bg-gradient-to-r from-amber-200 to-amber-300">
+
+            <div className='flex items-center gap-3 mb-5'>
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-0 to-blue-100 flex items-center justify-center flex-shrink-0 overflow-hidden mr-4">
+                {organization.logo ? (
+                  <img src={organization.logo} alt="Logo" className="w-full h-full object-cover rounded-full" />
+                ) : (
+                  <img src={defaultOrgLogo} alt="Logo" className="w-16 h-16 object-cover rounded-full" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h1 className='text-lg md:text-3xl font-bold'>{organization.organizationName}</h1>
+                {organization.parentOrganization && <h2 className='text-sm md:text-xl mb-5 capitalize'>{organization.parentOrganization}</h2>}
+              </div>
+            </div>
+
+
+
+            <div className="flex flex-wrap gap-4">
+              {/* <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-1 rounded-lg border border-gray-200">
                   <span className="text-sm">Code</span>
                   <p className="font-semibold">{organization._id}</p>
                 </div> */}
-                <div className="flex items-center gap-2 bg-green-400 backdrop-blur-sm px-4 py-1 rounded-lg">
-                  <span className="text-sm">Total Events</span>
-                  <p className="font-semibold">{organizationEvents.length}</p>
-                </div>
-                <div className="flex items-center gap-2 bg-blue-400 backdrop-blur-sm px-4 py-1 rounded-lg">
-                  <span className="text-sm">Type</span>
-                  <p className="font-semibold">{organization.organizationType}</p>
-                </div>
-                <div className="flex items-center gap-2 bg-purple-400 backdrop-blur-sm px-4 py-1 rounded-lg">
-                  <span className="text-sm">City</span>
-                  <p className="font-semibold">{organization.city}</p>
-                </div>
+              <div className="flex items-center gap-2 bg-green-400 backdrop-blur-sm px-4 py-1 rounded-lg">
+                <span className="text-sm">Total Events</span>
+                <p className="font-semibold">{organizationEvents.length}</p>
+              </div>
+              <div className="flex items-center gap-2 bg-blue-400 backdrop-blur-sm px-4 py-1 rounded-lg">
+                <span className="text-sm">Type</span>
+                <p className="font-semibold">{organization.organizationType}</p>
+              </div>
+              <div className="flex items-center gap-2 bg-purple-400 backdrop-blur-sm px-4 py-1 rounded-lg">
+                <span className="text-sm">City</span>
+                <p className="font-semibold">{organization.city}</p>
               </div>
             </div>
           </div>
+
         </div>
         <h2 className="text-xl font-semibold mb-4">Events Hosted</h2>
         {organizationEvents.length > 0 ? (
-          (() => { console.log('Organization events:', organizationEvents); return <Eventt events={organizationEvents} /> })()
+          <div className='px-2 lg:px-4'>
+            <Eventt events={organizationEvents} />
+          </div>
         ) : (
           <div className="text-gray-500 text-center py-8">No events found for this organization.</div>
         )}

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import collegeLogo from '../assets/images/college-high-school-svgrepo-com.svg';
 import UserContext from '../context/UserContext';
-import { Users, Heart, IndianRupee } from 'lucide-react';
+import { Users, Heart, IndianRupee, BadgeCheck, CheckCircle2, TrendingUp } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 // Minimal inline spinner for wishlist loading
@@ -165,35 +165,51 @@ function Eventt({ events }) {
           const isDetailPage = location.pathname.startsWith('/eventdetail') || location.pathname.startsWith('/admin/eventdetail');
           return (
             <div
-              className={`flex flex-col items-start p-4 bg-gradient-to-r from-white to-white-200 border border-gray-300 hover:outline outline-blue-500 gap-4 rounded-xl text-sm lg:text-base relative transition-shadow hover:shadow-lg ${!isDetailPage ? 'cursor-pointer' : ''}`}
+              className={`flex flex-col items-start p-4 bg-gradient-to-r from-white to-white-200 border border-gray-300 hover:outline outline-blue-500 rounded-xl text-sm lg:text-base relative transition-shadow hover:shadow-lg ${!isDetailPage ? 'cursor-pointer' : ''}`}
               key={idx}
               style={isDetailPage ? {} : { cursor: 'pointer' }}
             >
-              {/* Top right: Heart and Status */}
-              <div className="absolute top-2 right-2 flex items-center gap-1 z-20">
-                {/* Status Label */}
-                <div
-                  className={`flex items-center px-2 py-0.5 rounded-full font-semibold shadow border ${status.color} animate-fade-in`}
-                  style={{ fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.01em', minWidth: 0 }}
-                >
-                  {status.live && (
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-lime-300 mr-1 animate-pulse" style={{ boxShadow: '0 0 4px 1px #bef264' }}></span>
-                  )}
-                  {status.label}
-                </div>
-                {/* Wishlist Button */}
-                <button
-                  className="bg-white/80 hover:bg-pink-100 rounded-full p-1 shadow transition border border-gray-200 ml-1 z-30"
-                  onClick={e => { e.stopPropagation(); toggleWishlist(eventt._id, eventt.eventName); }}
-                  title={isWishlisted(eventt._id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
-                  style={{ lineHeight: 0, cursor: 'pointer' }}
-                >
-                  {wishlistLoading[eventt._id] ? (
-                    <Spinner />
+              <div className="flex items-center justify-between gap-1 w-full">
+                {/* Reach badge */}
+                <span className="flex items-center gap-2 rounded-full text-gray-500 text-xs">
+                  <TrendingUp size={13} />
+                  Reach {eventt.participationsCount ?? 0}
+                </span>
+                <div className="flex items-center gap-1">
+                  {/* Status Label or Registered */}
+                  {registeredEventIds.includes(eventt._id) ? (
+                    <div
+                      className="flex items-center px-2 py-0.5 rounded-full font-semibold shadow bg-blue-700 text-white animate-fade-in"
+                      style={{ fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.01em', minWidth: 0 }}
+                    >
+                      <CheckCircle2 size={13} className='mr-1' />
+                      Registered
+                    </div>
                   ) : (
-                    <Heart size={18} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#aaa'} />
+                    <div
+                      className={`flex items-center px-2 py-0.5 rounded-full font-semibold shadow ${status.color} animate-fade-in`}
+                      style={{ fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.01em', minWidth: 0 }}
+                    >
+                      {status.live && (
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-lime-300 mr-1 animate-pulse" style={{ boxShadow: '0 0 4px 1px #bef264' }}></span>
+                      )}
+                      {status.label}
+                    </div>
                   )}
-                </button>
+                  {/* Wishlist Button */}
+                  <button
+                    className="bg-white/80 hover:bg-pink-100 rounded-full p-1 shadow transition border border-gray-200 ml-1 z-30"
+                    onClick={e => { e.stopPropagation(); toggleWishlist(eventt._id, eventt.eventName); }}
+                    title={isWishlisted(eventt._id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
+                    style={{ lineHeight: 0, cursor: 'pointer' }}
+                  >
+                    {wishlistLoading[eventt._id] ? (
+                      <Spinner />
+                    ) : (
+                      <Heart size={20} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#aaa'} />
+                    )}
+                  </button>
+                </div>
               </div>
               {/* Club Badge (now relative, inline at top of card content) */}
               {/* {eventt.clubName && (
@@ -206,12 +222,12 @@ function Eventt({ events }) {
               </div>
             )} */}
               <div className="lg:flex-grow">
-                <p className="text-lg lg:text-xl mb-1 text-[#0d0c22] font-medium">{eventt.eventName}</p>
+                <p className="text-lg lg:text-xl text-[#0d0c22] font-medium capitalize">{eventt.eventName}</p>
                 <p className="mt-2 text-gray-500">
                   {eventt.clubName}
                 </p>
                 {eventt.parentOrganization && (
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 mb-1.5">
                     {eventt.parentOrganization}
                   </p>
                 )}
@@ -220,73 +236,33 @@ function Eventt({ events }) {
                   <span className="text-blue-500"><i className="fa-duotone fa-solid fa-calendar-days mr-1.5"></i> {formatEventDate(eventt.eventDate)}</span>
                   {/* <span className="text-green-600"><i className="fa-solid fa-calendar-check mr-1.5"></i> Registration Opens: {eventt.registrationStartOn ? formatEventDate(eventt.registrationStartOn) : 'N/A'}</span> */}
                   {/* <span className="text-red-500"><i className="fa-solid fa-location-dot mr-1.5"></i> {eventt.eventLocation}</span> */}
-                  <span className="text-purple-800"><Users size={17} className='mr-1.5 text-purple-800 inline-block'/> Participants: {eventt.minParticipants == eventt.maxParticipants ? eventt.minParticipants : `${eventt.minParticipants} - ${eventt.maxParticipants}`}</span>
+                  <span className="text-purple-800"><Users size={17} className='mr-1.5 text-purple-800 inline-block' /> Participants: {eventt.minParticipants == eventt.maxParticipants ? eventt.minParticipants : `${eventt.minParticipants} - ${eventt.maxParticipants}`}</span>
                 </div>
               </div>
-              <div className="flex flex-col text-sm w-full">
+              <div className="flex flex-col text-sm w-full mt-4">
                 {!location.pathname.startsWith('/eventdetail') &&
                   !location.pathname.startsWith('/admin/eventdetail') && (
                     <div className="flex items-center mb-2 gap-2">
                       <button
-                        className="inline-block px-7 py-2 bg-[#0d0c22] rounded-full text-white hover:bg-[#0d0c22d2] transition-colors duration-200 cursor-pointer"
+                        className="inline-block flex-1 px-7 py-2 bg-gradient-to-r from-[#0d0c22] to-[#0d0c22]/85 rounded-full text-white transition-all duration-200 cursor-pointer text-white shadow hover:shadow-md hover:scale-105"
                         onClick={e => { e.stopPropagation(); window.location.href = `/eventdetail/${eventt._id}`; }}
                         style={{ cursor: 'pointer' }}
                       >
                         Get Detail
                       </button>
-                      {/* Register Button and Price/Free Badge */}
+                      {/* Price/Free Badge and Registered Badge */}
                       <div className="flex items-center gap-2">
-                        {registeredEventIds.includes(eventt._id) ? (
-                          <button
-                            className="inline-block px-5 py-2 bg-green-500 text-white rounded-full font-semibold shadow cursor-not-allowed opacity-70"
-                            disabled
-                            style={{ cursor: 'not-allowed' }}
-                          >
-                            Registered
-                          </button>
-                        ) : (() => {
-                          const closeDate = new Date(eventt.closeOn);
-                          const now = new Date();
-                          if (isNaN(closeDate.getTime())) {
-                            return null;
-                          }
-                          if (closeDate < now) {
-                            return (
-                              <button
-                                className="inline-block px-5 py-2 bg-gray-400 text-white rounded-full font-semibold shadow cursor-not-allowed opacity-70"
-                                disabled
-                                style={{ cursor: 'not-allowed' }}
-                              >
-                                Registration Closed
-                              </button>
-                            );
-                          }
-                          return (
-                            <>
-                              <button
-                                className="inline-block px-5 py-2 bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-full font-semibold shadow hover:from-orange-400 hover:to-pink-500 transition-colors duration-200 cursor-pointer"
-                                onClick={e => { e.stopPropagation(); window.location.href = `/eventdetail/${eventt._id}`; }}
-                                style={{ cursor: 'pointer' }}
-                              >
-                                Register
-                              </button>
-                              {Number(eventt.fee) > 0 ? (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 border border-yellow-400 text-yellow-800 font-semibold text-sm ml-2">
-                                  <IndianRupee size={15}/>
-                                  {Number(eventt.fee)}
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm ml-2">
-                                  FREE
-                                </span>
-                              )}
-                            </>
-                          );
-                        })()}
+                        {Number(eventt.fee) > 0 ? (
+                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-yellow-100 border border-yellow-400 text-yellow-800 font-semibold text-sm ml-2">
+                            <IndianRupee size={15} />
+                            {Number(eventt.fee)}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 border border-green-400 text-green-800 font-semibold text-sm ml-2">
+                            FREE
+                          </span>
+                        )}
                       </div>
-                      {registeredEventIds.includes(eventt._id) && (
-                        null
-                      )}
                     </div>
                   )}
                 <p className="italic text-gray-400">

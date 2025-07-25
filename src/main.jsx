@@ -43,6 +43,7 @@ import RootEventDetail from './pages/RootDashboard/RootEventDetail.jsx';
 import RootOrganizations from './pages/RootDashboard/RootOrganizations.jsx';
 import RootOrgEvents from './pages/RootDashboard/RootOrgEvents.jsx';
 import RootOrgEventTransactions from './pages/RootDashboard/RootOrgEventTransactions.jsx';
+import EventRegistrationPage from './pages/EventRegistrationPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,6 +71,7 @@ const router = createBrowserRouter(
         <Route path='register' element={<Register />} />
         <Route path='signup' element={<Signup />} />
         <Route path='login' element={<Login />} />
+        <Route path='eventregister/:eventId' element={<EventRegistrationPage />} />
         <Route path='admin' element={<AdminHome />}>
           <Route path='dashboard' element={<StatPage />} />
           <Route path='addevent' element={<AddEvent />} />

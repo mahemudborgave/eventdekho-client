@@ -290,7 +290,7 @@ function EventDetail() {
                 </div>
               </div>
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 justify-center mb-2">
+              <div className="flex flex-wrap gap-3 justify-center items-center mb-2">
                 {event.registrationPlatform === 'external' && event.registrationUrl ? (
                   <a
                     href={event.registrationUrl}
@@ -303,31 +303,31 @@ function EventDetail() {
                   </a>
                 ) : (
                   <Button
-                    onClick={handleClick}
+                    asChild
                     disabled={hasRegistered || (event && new Date(event.closeOn) < new Date())}
                     size="default"
-                    className={`px-6 py-2 rounded-lg font-semibold text-base flex items-center gap-2 ${hasRegistered
+                    className={`px-1 py-6 rounded-sm font-semibold text-base flex items-center gap-2 ${hasRegistered
                       ? 'bg-gray-400 cursor-not-allowed'
                       : (event && new Date(event.closeOn) < new Date())
                         ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow hover:shadow-md hover:scale-105'
+                        : 'border border-green-500 bg-gradient-to-r from-green-500 to-emerald-700 hover:from-green-600 hover:to-emerald-900 text-white shadow hover:shadow-md hover:scale-105'
                       }`}
                   >
                     {hasRegistered ? (
-                      <>
+                      <div className="flex items-center gap-2">
                         <CheckCircle className="w-5 h-5" />
                         Registered
-                      </>
+                      </div>
                     ) : (event && new Date(event.closeOn) < new Date()) ? (
                       <>
                         <CheckCircle className="w-5 h-5" />
                         Registration Closed
                       </>
                     ) : (
-                      <>
+                      <Link to={`/eventregister/${eventId}`} className="flex items-center gap-2">
                         <Play className="w-5 h-5" />
-                        {isShow ? 'Close' : 'Participate'}
-                      </>
+                        Participate
+                      </Link>
                     )}
                   </Button>
                 )}
@@ -335,7 +335,7 @@ function EventDetail() {
                   onClick={handleQueryClick}
                   size="default"
                   variant="outline"
-                  className="px-6 py-2 rounded-lg text-base flex items-center gap-2 text-gray-600 bg-white/60 border-none"
+                  className="px-6 py-2 rounded-sm text-base flex items-center gap-2 text-gray-600 bg-white/60 border-none"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Ask Query
@@ -344,7 +344,7 @@ function EventDetail() {
                   onClick={handleShowUserQueries}
                   size="default"
                   variant="outline"
-                  className="px-6 py-2 rounded-lg text-base flex items-center gap-2 text-gray-600 bg-white/60 border-none"
+                  className="px-6 py-2 rounded-sm text-base flex items-center gap-2 text-gray-600 bg-white/60 border-none"
                 >
                   <BookOpen className="w-5 h-5" />
                   My Queries
@@ -598,31 +598,6 @@ function EventDetail() {
           </div>
         </div>
       </div>
-
-      {/* Registration Form Modal */}
-      <Dialog open={!hasRegistered && isShow} onOpenChange={v => setIsShow(!hasRegistered && v)}>
-        <DialogContent 
-          className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
-          onInteractOutside={e => e.preventDefault()}
-          onEscapeKeyDown={e => e.preventDefault()}
-        >
-          <div className="p-3 sm:p-4">
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="text-xl font-bold text-gray-900 text-center">Event Registration</h2>
-            </div>
-            <EventRegistration
-              eventId={eventId}
-              eventName={event.eventName}
-              organizationName={event.organizationName}
-              parentOrganization={event.parentOrganization}
-              setHasRegistered={setHasRegistered}
-              fee={event.fee || 0}
-              minParticipants={event.minParticipants || 1}
-              maxParticipants={event.maxParticipants || 1}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Query Section */}
       <Dialog open={showQuery} onOpenChange={setShowQuery}>
