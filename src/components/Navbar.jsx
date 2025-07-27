@@ -38,6 +38,15 @@ function Navbar() {
                     }
                 } catch (e) {
                     console.log("Error ", e);
+                    // Clear invalid token from localStorage and state
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('role');
+                    setToken(null);
+                    setUser(null);
+                    setEmail(null);
+                    setRole(null);
                 }
             }
         };
@@ -320,10 +329,12 @@ function Navbar() {
                             </div>
                         ) : (
                             <div className=''>
-                                <Link to={role === "organizer" ? '/adminprofile' : '/studentprofile'} onClick={() => setMenuOpen(false)} className='hover:underline flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
-                                    Welcome, <span className='font-semibold ml-1'>{user}</span>
-                                    <User size={24} className='ml-2 bg-white/20 p-1 rounded-full' />
-                                </Link>
+                                {role === "student" && (
+                                    <Link to='/studentprofile' onClick={() => setMenuOpen(false)} className='hover:underline flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
+                                        Welcome, <span className='font-semibold ml-1'>{user}</span>
+                                        <User size={24} className='ml-2 bg-white/20 p-1 rounded-full' />
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>
@@ -459,14 +470,16 @@ function Navbar() {
                             <Link to="/signup" className='px-5 py-2 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium'>Sign up</Link>
                         </div>
                     ) : (
-                        <Link to={role === "organizer" ? '/adminprofile' : '/studentprofile'}>
-                            <div className='flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
-                                Welcome, <span className='font-semibold ml-1'>{user ? user.slice(0,10) + '...' : 'User'}</span>
-                                    <div className='ml-2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-all duration-200'>
-                                        <User size={20} />
-                                    </div>
-                            </div>
-                        </Link>
+                        role === "student" && (
+                            <Link to='/studentprofile'>
+                                <div className='flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
+                                    Welcome, <span className='font-semibold ml-1'>{user ? user.slice(0,10) + '...' : 'User'}</span>
+                                        <div className='ml-2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-all duration-200'>
+                                            <User size={20} />
+                                        </div>
+                                </div>
+                            </Link>
+                        )
                     )}
                 </div>
             </div>

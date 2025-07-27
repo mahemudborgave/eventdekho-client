@@ -165,9 +165,8 @@ function Eventt({ events }) {
           const isDetailPage = location.pathname.startsWith('/eventdetail') || location.pathname.startsWith('/admin/eventdetail');
           return (
             <div
-              className={`flex flex-col items-start p-4 bg-gradient-to-r from-white to-white-200 border border-gray-300 hover:outline outline-blue-500 rounded-xl text-sm lg:text-base relative transition-shadow hover:shadow-lg ${!isDetailPage ? 'cursor-pointer' : ''}`}
+              className="flex flex-col items-start p-4 bg-gradient-to-r from-white to-white-200 border border-gray-300 hover:outline outline-blue-500 rounded-xl text-sm lg:text-base relative transition-shadow hover:shadow-lg"
               key={idx}
-              style={isDetailPage ? {} : { cursor: 'pointer' }}
             >
               <div className="flex items-center justify-between gap-1 w-full">
                 {/* Reach badge */}

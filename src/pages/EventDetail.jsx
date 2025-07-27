@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import Eventt from '../components/Eventt';
 import EventRegistration from '../components/EventRegistration';
@@ -13,6 +13,7 @@ import { Button } from '../components/ui/button';
 
 function EventDetail() {
   const { eventId } = useParams();
+  const navigate = useNavigate();
   const { email, user, token, role } = useContext(UserContext);
 
   const [event, setEvent] = useState(null);
@@ -91,6 +92,12 @@ function EventDetail() {
     } catch (e) {
       console.log("Token verification error:", e);
       toast.warn("Please Log in to continue");
+      // Clear invalid token
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('email');
+      localStorage.removeItem('role');
+      window.location.reload(); // Reload to reset state
     }
   }
 
@@ -113,7 +120,8 @@ function EventDetail() {
   };
 
   const handleQueryClick = () => {
-    if (!token || !email) {
+    const currentToken = localStorage.getItem('token');
+    if (!token || !currentToken || !email) {
       toast.warn('Please Log in to continue');
       return;
     }
@@ -121,7 +129,8 @@ function EventDetail() {
   };
 
   const handleShowUserQueries = () => {
-    if (!token || !email) {
+    const currentToken = localStorage.getItem('token');
+    if (!token || !currentToken || !email) {
       toast.warn('Please Log in to continue');
       return;
     }
@@ -324,10 +333,20 @@ function EventDetail() {
                         Registration Closed
                       </>
                     ) : (
-                      <Link to={`/eventregister/${eventId}`} className="flex items-center gap-2">
+                      <div 
+                        onClick={() => {
+                          const currentToken = localStorage.getItem('token');
+                          if (!token || !currentToken) {
+                            toast.warn("Please Log in to continue");
+                            return;
+                          }
+                          navigate(`/eventregister/${eventId}`);
+                        }}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
                         <Play className="w-5 h-5" />
                         Participate
-                      </Link>
+                      </div>
                     )}
                   </Button>
                 )}
@@ -616,6 +635,36 @@ function EventDetail() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Poster Modal */}
+      {showPosterModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowPosterModal(false)}
+          />
+          
+          {/* Modal Content */}
+          <div className="relative w-full h-full md:w-[90%] md:h-[80%] max-w-6xl max-h-4xl flex items-center justify-center bg-white/20 rounded-lg shadow-2xl overflow-hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowPosterModal(false)}
+              className="absolute top-2 right-2 z-10 bg-black/70 text-white hover:bg-white hover:text-black rounded-full w-8 h-8 p-0"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+            {event.posterUrl && (
+              <img 
+                src={event.posterUrl} 
+                alt="Event Poster" 
+                className="w-full h-full object-contain p-3"
+              />
+            )}
+          </div>
+        </div>
+      )}
 
       {/* User Queries Modal */}
       <Dialog open={showUserQueries} onOpenChange={setShowUserQueries}>

@@ -47,6 +47,7 @@ function Signup() {
     });
 
     const [loading, setLoading] = useState(false);
+    const [collegesLoading, setCollegesLoading] = useState(true);
     const [organizations, setOrganizations] = useState([]);
     const [colleges, setColleges] = useState([]);
     const [showOrganizationPopup, setShowOrganizationPopup] = useState(false);
@@ -79,12 +80,15 @@ function Signup() {
 
         // Fetch colleges for parent organization suggestions
         const fetchColleges = async () => {
+            setCollegesLoading(true);
             try {
                 const res = await axios.get(`${baseURL}:${port}/college/getallcolleges`);
                 setColleges(res.data);
             } catch (err) {
                 console.error('Failed to fetch colleges:', err);
                 setColleges([]);
+            } finally {
+                setCollegesLoading(false);
             }
         };
         fetchColleges();
@@ -296,10 +300,9 @@ function Signup() {
         setOrganizationLoading(true);
         try {
             const res = await axios.post(`${baseURL}:${port}/college/registerparentcollege`, {
-                collegeName: organizationForm.organizationName,
+                organizationName: organizationForm.organizationName,
                 city: organizationForm.city,
-                shortName: organizationForm.organizationName.split(' ')[0], // Use first word as short name
-                type: organizationForm.type[0], // Take first type
+                type: organizationForm.type,
                 tier: organizationForm.tier,
             });
             toast.success('Parent organization registered as college!');
@@ -442,6 +445,7 @@ function Signup() {
                                                 value={studentData.password}
                                                 onChange={handleStudentChange}
                                                 required 
+                                                autoComplete="new-password"
                                             />
                                             <button
                                                 type="button"
@@ -468,6 +472,7 @@ function Signup() {
                                                 value={studentData.confirmPassword}
                                                 onChange={handleStudentChange}
                                                 required 
+                                                autoComplete="new-password"
                                             />
                                             <button
                                                 type="button"
@@ -547,20 +552,27 @@ function Signup() {
 
                                     <div className='relative'>
                                         <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
+                                            {collegesLoading && (
+                                                <div className="mr-2">
+                                                    <ScaleLoader color="#FF9C16" size={8} />
+                                                </div>
+                                            )}
                                             <input 
                                                 type="text" 
                                                 name="parentOrganization" 
-                                                placeholder='Search for parent organization (optional)' 
+                                                placeholder={collegesLoading ? 'Loading colleges...' : 'Search for parent organization (optional)'}
                                                 className='block focus:outline-0 text-sm flex-1' 
                                                 value={orgData.parentOrganization}
                                                 onChange={(e) => {
                                                     setOrgData(prev => ({ ...prev, parentOrganization: e.target.value }));
                                                 }}
-                                                onFocus={() => setShowOrganizationSuggestions(true)}
+                                                onFocus={() => !collegesLoading && setShowOrganizationSuggestions(true)}
                                                 onBlur={() => {
                                                     // Delay hiding suggestions to allow clicking on them
                                                     setTimeout(() => setShowOrganizationSuggestions(false), 200);
                                                 }}
+                                                autoComplete="off"
+                                                disabled={collegesLoading}
                                             />
                                         </div>
                                         
@@ -617,6 +629,7 @@ function Signup() {
                                             value={orgData.password}
                                             onChange={handleOrgChange}
                                             required 
+                                            autoComplete="new-password"
                                         />
                                         <button
                                             type="button"
@@ -643,6 +656,7 @@ function Signup() {
                                             value={orgData.confirmPassword}
                                             onChange={handleOrgChange}
                                             required 
+                                            autoComplete="new-password"
                                         />
                                         <button
                                             type="button"

@@ -88,7 +88,22 @@ export default function AddEvent() {
 
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
-  const [form, setForm] = useState(initialState);
+  // Load cached form data on component mount
+  const loadCachedFormData = () => {
+    const cached = localStorage.getItem('addEventFormData');
+    if (cached && !isUpdate) {
+      try {
+        const parsed = JSON.parse(cached);
+        return { ...initialState, ...parsed };
+      } catch (error) {
+        console.error('Error parsing cached form data:', error);
+        return initialState;
+      }
+    }
+    return initialState;
+  };
+
+  const [form, setForm] = useState(loadCachedFormData);
   const [organizerProfile, setOrganizerProfile] = useState({
     _id: '',
     organizationName: '',
@@ -265,6 +280,14 @@ export default function AddEvent() {
     }
   }, [isUpdate, eventData]);
 
+  // Clear cache when component unmounts (optional - you can remove this if you want to keep the draft)
+  useEffect(() => {
+    return () => {
+      // Uncomment the line below if you want to clear cache on unmount
+      // localStorage.removeItem('addEventFormData');
+    };
+  }, []);
+
   // --- Dynamic List Handlers ---
   const handleListChange = (section, idx, field, value) => {
     setForm(prev => {
@@ -274,20 +297,39 @@ export default function AddEvent() {
       } else {
         updated[idx] = { ...updated[idx], [field]: value };
       }
-      return { ...prev, [section]: updated };
+      const newForm = { ...prev, [section]: updated };
+      saveFormToCache(newForm);
+      return newForm;
     });
   };
   const handleAddListItem = (section, template) => {
-    setForm(prev => ({ ...prev, [section]: [...prev[section], template] }));
+    setForm(prev => {
+      const newForm = { ...prev, [section]: [...prev[section], template] };
+      saveFormToCache(newForm);
+      return newForm;
+    });
   };
   const handleRemoveListItem = (section, idx) => {
-    setForm(prev => ({ ...prev, [section]: prev[section].filter((_, i) => i !== idx) }));
+    setForm(prev => {
+      const newForm = { ...prev, [section]: prev[section].filter((_, i) => i !== idx) };
+      saveFormToCache(newForm);
+      return newForm;
+    });
+  };
+
+  // Save form data to cache
+  const saveFormToCache = (formData) => {
+    if (!isUpdate) {
+      localStorage.setItem('addEventFormData', JSON.stringify(formData));
+    }
   };
 
   // --- Form Submission ---
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    const newForm = { ...form, [name]: value };
+    setForm(newForm);
+    saveFormToCache(newForm);
   };
 
   const handleSubmit = async (e) => {
@@ -335,6 +377,8 @@ export default function AddEvent() {
       } else {
         const res = await axios.post(`${baseURL}:${port}/eventt/addevent`, eventData);
         setForm(initialState);
+        // Clear cached form data after successful submission
+        localStorage.removeItem('addEventFormData');
         if (res.data.success) {
           Swal.fire({
             icon: 'success',
@@ -408,12 +452,89 @@ export default function AddEvent() {
               }
             }}
           >
+            {/* Profile Completion Warning */}
+            {(!organizerProfile.organizationName || !organizerProfile.shortName || !organizerProfile.organizationType) && (
+              <Card className="mb-5 border-2 border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800">
+                <CardContent className="pt-6">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0">
+                      <AlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">
+                        Complete Your Organization Profile First!
+                      </h3>
+                      <p className="text-red-700 dark:text-red-300 mb-3">
+                        Before you can create events, you must complete your organization profile. This includes your organization name, short name, and other essential details.
+                      </p>
+                      <div className="bg-white dark:bg-gray-800 rounded-lg p-3 mb-3">
+                        <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Required Profile Fields:</h4>
+                        <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className={`h-4 w-4 ${organizerProfile.organizationName ? 'text-green-500' : 'text-red-500'}`} />
+                            Organization Name: {organizerProfile.organizationName || 'Missing'}
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className={`h-4 w-4 ${organizerProfile.shortName ? 'text-green-500' : 'text-red-500'}`} />
+                            Short Name: {organizerProfile.shortName || 'Missing'}
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className={`h-4 w-4 ${organizerProfile.organizationType ? 'text-green-500' : 'text-red-500'}`} />
+                            Organization Type: {organizerProfile.organizationType || 'Missing'}
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="flex gap-3">
+                        <Button 
+                          onClick={() => navigate('/organizerprofile')}
+                          className="bg-red-600 hover:bg-red-700 text-white"
+                        >
+                          Complete Profile Now
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={() => window.location.reload()}
+                          className="border-red-300 text-red-700 hover:bg-red-50"
+                        >
+                          Refresh Data
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="mb-5 dark:bg-gray-800 dark:text-gray-100">
               <CardHeader>
-                <h1 className="text-2xl font-bold tracking-tight mb-2 flex-1">
-                  <span className="text-[#BB4D00] dark:text-amber-400">Host</span> event
-                </h1>
-                <p className="text-gray-500 dark:text-gray-300 text-sm">Fill in all the details to host your event. Fields marked with * are required.</p>
+                <div className="">
+                  <div>
+                    <h1 className="text-2xl font-bold tracking-tight mb-2 flex-1">
+                      <span className="text-[#BB4D00] dark:text-amber-400">Host</span> event
+                    </h1>
+                    <p className="text-gray-500 dark:text-gray-300 text-sm">Fill in all the details to host your event. <span className="text-red-600 font-semibold">* Fields marked with red asterisk are required.</span> </p>
+                  </div>
+                  {!isUpdate && localStorage.getItem('addEventFormData') && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
+                        <CheckCircle className="h-4 w-4" />
+                        Draft Saved
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          localStorage.removeItem('addEventFormData');
+                          setForm(initialState);
+                          toast.success('Draft cleared');
+                        }}
+                        className="text-xs"
+                      >
+                        Clear Draft
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </CardHeader>
             </Card>
 
@@ -422,7 +543,6 @@ export default function AddEvent() {
                 <div>
                   <Label htmlFor="eventName" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                     Event Name <span className="text-red-600">*</span>
-                    <span className="text-xs text-red-500 ml-1">Required</span>
                   </Label>
                   <Input id="eventName" name="eventName" value={form.eventName} onChange={handleChange} required placeholder="Enter event name" className="dark:bg-gray-900 dark:text-gray-100" />
                   <div className="text-xs text-gray-500 italic mt-1">e.g. Tech Fest 2024, Hackathon, Workshop</div>
@@ -431,7 +551,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="registrationStartOn" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Registration Start On <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input id="registrationStartOn" name="registrationStartOn" type="date" value={form.registrationStartOn} onChange={handleChange} required className="dark:bg-gray-900 dark:text-gray-100" />
                     <div className="text-xs text-gray-500 italic mt-1">Date when registration opens for participants.</div>
@@ -439,7 +558,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="closeOn" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Registration Close On <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input id="closeOn" name="closeOn" type="date" value={form.closeOn} onChange={handleChange} required className="dark:bg-gray-900 dark:text-gray-100" />
                     <div className="text-xs text-gray-500 italic mt-1">Last date for participants to register.</div>
@@ -447,7 +565,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="eventDate" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Event Date <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input id="eventDate" name="eventDate" type="date" value={form.eventDate} onChange={handleChange} required className="dark:bg-gray-900 dark:text-gray-100" />
                     <div className="text-xs text-gray-500 italic mt-1">Select the date when the event will take place.</div>
@@ -457,7 +574,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="eventLocation" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Location <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input id="eventLocation" name="eventLocation" value={form.eventLocation} onChange={handleChange} required placeholder="Venue or online link" className="dark:bg-gray-900 dark:text-gray-100" />
                     <div className="text-xs text-gray-500 italic mt-1">e.g. Main Auditorium, Online (Zoom/Google Meet)</div>
@@ -465,7 +581,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="eventMode" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Mode <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Select value={form.eventMode} onValueChange={val => setForm(f => ({ ...f, eventMode: val }))}>
                       <SelectTrigger id="eventMode" name="eventMode" className="dark:bg-gray-900 dark:text-gray-100">
@@ -482,7 +597,7 @@ export default function AddEvent() {
                 </div>
                 <Card className="mb-4 dark:bg-gray-800 dark:text-gray-100">
                   <CardHeader>
-                    <span className="font-semibold flex items-center gap-2">Event Description <span className="text-red-600">*</span><span className="text-xs text-red-500 ml-1">Required</span></span>
+                    <span className="font-semibold flex items-center gap-2">Event Description <span className="text-red-600">*</span></span>
                   </CardHeader>
                   <CardContent className="flex flex-col gap-2">
                     <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">
@@ -496,7 +611,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="minParticipants" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Min Participants <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input
                       id="minParticipants"
@@ -514,7 +628,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="maxParticipants" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Max Participants <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input
                       id="maxParticipants"
@@ -636,7 +749,7 @@ export default function AddEvent() {
               <CardHeader>
                 <span className="font-semibold flex items-center gap-2">
                 <LandPlot className="text-red-600 dark:text-red-400" size={20} />
-                  Registration Platform <span className="text-red-600">*</span><span className="text-xs text-red-500 ml-1">Required</span>
+                  Registration Platform <span className="text-red-600">*</span>
                 </span>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
@@ -668,7 +781,6 @@ export default function AddEvent() {
                   <div>
                     <Label htmlFor="registrationUrl" className="dark:text-gray-200 mb-2 flex items-center gap-1">
                       Registration URL <span className="text-red-600">*</span>
-                      <span className="text-xs text-red-500 ml-1">Required</span>
                     </Label>
                     <Input
                       id="registrationUrl"

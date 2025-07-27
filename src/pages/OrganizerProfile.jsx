@@ -234,6 +234,7 @@ function OrganizerProfile() {
             const updateData = {
                 organizationName: profile.organizationName,
                 shortName: profile.shortName,
+                organizationType: profile.organizationType,
                 parentOrganization: profile.parentOrganization,
                 website: profile.website,
                 description: profile.description,
@@ -370,6 +371,14 @@ function OrganizerProfile() {
                 {/* Main Card */}
                 <main className="flex-1 w-full bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 flex flex-col gap-8 border border-blue-100 dark:border-gray-700 relative">
                     
+                    {/* Required Fields Note */}
+                    {editMode && (
+                        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4">
+                            <p className="text-sm text-blue-700 dark:text-blue-300">
+                                <span className="text-red-600 font-semibold">*</span> Fields marked with red asterisk are required
+                            </p>
+                        </div>
+                    )}
 
                     {/* About Section */}
                     <section>
@@ -395,6 +404,7 @@ function OrganizerProfile() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="flex items-center gap-2">
                                 <Building2 size={18} className="text-blue-400" />
+                                <span className="text-red-600">*</span>
                                 {editMode ? (
                                     <input
                                         type="text"
@@ -403,6 +413,7 @@ function OrganizerProfile() {
                                         value={profile.organizationName}
                                         onChange={handleChange}
                                         placeholder="Organization name"
+                                        required
                                     />
                                 ) : (
                                     <span className="font-medium text-gray-800 dark:text-gray-200">{profile.organizationName || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
@@ -429,6 +440,7 @@ function OrganizerProfile() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <User size={18} className="text-blue-400" />
+                                <span className="text-red-600">*</span>
                                 {editMode ? (
                                     <input
                                         type="text"
@@ -437,6 +449,7 @@ function OrganizerProfile() {
                                         value={profile.contactPerson}
                                         onChange={handleChange}
                                         placeholder="Contact person name"
+                                        required
                                     />
                                 ) : (
                                     <span className="font-medium text-gray-800 dark:text-gray-200">{profile.contactPerson || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
@@ -444,6 +457,7 @@ function OrganizerProfile() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <Phone size={18} className="text-blue-400" />
+                                <span className="text-red-600">*</span>
                                 {editMode ? (
                                     <input
                                         type="tel"
@@ -452,6 +466,7 @@ function OrganizerProfile() {
                                         value={profile.phone}
                                         onChange={handleChange}
                                         placeholder="Contact phone number"
+                                        required
                                     />
                                 ) : (
                                     <span className="font-medium text-gray-800 dark:text-gray-200">{profile.phone || <span className="text-gray-400 dark:text-gray-500">Not set</span>}</span>
