@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Button } from "../../components/ui/button";
 import { Dialog } from "../../components/ui/dialog";
 
-function EventRegistrationsAdmin() {
+function EventRegistrationsOrganizer() {
   const { eventId } = useParams();
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -255,4 +255,4 @@ function EventRegistrationsAdmin() {
   );
 }
 
-export default EventRegistrationsAdmin;
+export default EventRegistrationsOrganizer;

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import UserContext from '../../context/UserContext';
 
-function QueriesAdmin() {
+function QueriesOrganizer() {
     const [eventQueries, setEventQueries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isShow, setIsShow] = useState(true);
@@ -133,4 +133,4 @@ function QueriesAdmin() {
     );
 }
 
-export default QueriesAdmin; 
+export default QueriesOrganizer; 

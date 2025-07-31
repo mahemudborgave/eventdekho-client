@@ -16,17 +16,17 @@ import StudentProfile from './pages/StudentProfile.jsx'
 import MyParticipations from './pages/MyParticipations.jsx'
 import App2 from './App2.jsx'
 import Home from './pages/Home.jsx'
-import AdminHome from './pages/Dashboard/AdminHome.jsx'
-import AddEvent from './pages/Dashboard/AddEvent.jsx'
-import StatPage from './components/Dashboard/StatPage.jsx'
-import ShowEventsAdmin from './pages/Dashboard/ShowEventsAdmin.jsx'
-import EventRegistrationsAdmin from './pages/Dashboard/EventRegistrationsAdmin.jsx'
-import RegisterOrganization from './pages/Dashboard/RegisterOrganization.jsx'
+import OrganizerHome from './pages/OrganizerDashboard/OrganizerHome.jsx'
+import AddEvent from './pages/OrganizerDashboard/AddEvent.jsx'
+import StatPage from './components/OrganizerDashboard/StatPage.jsx'
+import ShowEventsOrganizer from './pages/OrganizerDashboard/ShowEventsOrganizer.jsx'
+import EventRegistrationsOrganizer from './pages/OrganizerDashboard/EventRegistrationsOrganizer.jsx'
+import RegisterOrganization from './pages/OrganizerDashboard/RegisterOrganization.jsx'
 import About from './pages/About.jsx'
 import ContactUs from './pages/ContactUs.jsx'
 import Blogs from './pages/Blogs.jsx'
-import QueriesAdmin from './pages/Dashboard/QueriesAdmin.jsx'
-import EventQueriesAdmin from './pages/Dashboard/EventQueriesAdmin.jsx'
+import QueriesOrganizer from './pages/OrganizerDashboard/QueriesOrganizer.jsx'
+import EventQueriesOrganizer from './pages/OrganizerDashboard/EventQueriesOrganizer.jsx'
 import OrganizerProfile from './pages/OrganizerProfile.jsx'
 import RootLogin from './pages/RootLogin.jsx'
 import RootDashboard from './pages/RootDashboard/RootDashboard.jsx'
@@ -37,7 +37,7 @@ import RootRegistrations from './pages/RootDashboard/RootRegistrations.jsx'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import Wishlist from './pages/Wishlist.jsx';
 import BlogRead from './pages/BlogRead.jsx';
-import TransactionsAdmin from './pages/Dashboard/TransactionsAdmin.jsx';
+import TransactionsOrganizer from './pages/OrganizerDashboard/TransactionsOrganizer.jsx';
 import { ThemeProvider } from './components/ui/ThemeProvider';
 import RootEventDetail from './pages/RootDashboard/RootEventDetail.jsx';
 import RootOrganizations from './pages/RootDashboard/RootOrganizations.jsx';
@@ -72,17 +72,17 @@ const router = createBrowserRouter(
         <Route path='signup' element={<Signup />} />
         <Route path='login' element={<Login />} />
         <Route path='eventregister/:eventId' element={<EventRegistrationPage />} />
-        <Route path='admin' element={<AdminHome />}>
+        <Route path='admin' element={<OrganizerHome />}>
           <Route path='dashboard' element={<StatPage />} />
           <Route path='addevent' element={<AddEvent />} />
-          <Route path='showeventsadmin' element={<ShowEventsAdmin />} />
+          <Route path='showeventsadmin' element={<ShowEventsOrganizer />} />
           <Route path='eventdetail/:eventId' element={<EventDetail />} />
-          <Route path='eventregistrationsadmin/:eventId' element={<EventRegistrationsAdmin />} />
+          <Route path='eventregistrationsadmin/:eventId' element={<EventRegistrationsOrganizer />} />
           <Route path='registerorganization' element={<RegisterOrganization />} />
           <Route path='profile' element={<OrganizerProfile />} />
-          <Route path='queries' element={<QueriesAdmin />} />
-          <Route path='eventqueries/:eventId' element={<EventQueriesAdmin />} />
-          {/* <Route path='transactions' element={<TransactionsAdmin />} /> */}
+          <Route path='queries' element={<QueriesOrganizer />} />
+          <Route path='eventqueries/:eventId' element={<EventQueriesOrganizer />} />
+          {/* <Route path='transactions' element={<TransactionsOrganizer />} /> */}
         </Route>
         {/* Root Routes */}
         <Route path='root/login' element={<RootLogin />} />

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import UserContext from '../../context/UserContext';
 
-function TransactionsAdmin() {
+function TransactionsOrganizer() {
   const { token } = useContext(UserContext);
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
@@ -68,4 +68,4 @@ function TransactionsAdmin() {
   );
 }
 
-export default TransactionsAdmin; 
+export default TransactionsOrganizer; 

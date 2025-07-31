@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 import { Button } from "../../components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
 
-function ShowEventsAdmin() {
+function ShowEventsOrganizer() {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
   const [events, setEvents] = useState([]);
@@ -271,4 +271,4 @@ function ShowEventsAdmin() {
   );
 }
 
-export default ShowEventsAdmin;
+export default ShowEventsOrganizer;

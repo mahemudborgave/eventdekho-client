@@ -54,12 +54,16 @@ function Events() {
   const [filterMode, setFilterMode] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterFee, setFilterFee] = useState('all');
+  const filterDropdownRef = useRef(null);
 
   // Hide dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
+      }
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
+        setFilterDropdownOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -77,6 +81,15 @@ function Events() {
     const clearDropdown = () => setSearchDropdown([]);
     window.addEventListener('beforeunload', clearDropdown);
     return () => window.removeEventListener('beforeunload', clearDropdown);
+  }, []);
+
+  // Hide filter dropdown on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setFilterDropdownOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -228,13 +241,114 @@ function Events() {
 
   // Compute a set of registered event IDs for sorting
   const registeredEventIdsSet = new Set(registeredEvents.map(e => e.eventId || e._id));
-  // Sort all events: unregistered first, then registered
+  
+  // Super efficient sorting algorithm with priority-based scoring
   const sortedAllEvents = [...originalEvents].sort((a, b) => {
-    const aRegistered = registeredEventIdsSet.has(a._id);
-    const bRegistered = registeredEventIdsSet.has(b._id);
-    if (aRegistered === bRegistered) return 0;
-    return aRegistered ? 1 : -1;
+    const now = new Date();
+    
+    // Helper function to get event status and score
+    const getEventScore = (event) => {
+      const regStart = event.registrationStartOn ? new Date(event.registrationStartOn) : null;
+      const regClose = event.closeOn ? new Date(event.closeOn) : null;
+      const postedDate = new Date(event.postedOn || event.createdAt);
+      const participations = event.participations || 0;
+      const isRegistered = registeredEventIdsSet.has(event._id);
+      
+      // Base score starts at 0
+      let score = 0;
+      
+      // Priority 1: Live events (highest priority - score 1000+)
+      if (regStart && regClose && now >= regStart && now <= regClose) {
+        score += 1000;
+        // Within live events, sort by participations (most popular first)
+        score += Math.min(participations * 10, 500); // Cap at 500 to keep live events together
+        // Then by recency of posting (newer posts first)
+        score += Math.max(0, (now - postedDate) / (1000 * 60 * 60 * 24)); // Days since posted
+      }
+      // Priority 2: Upcoming events (score 500-999)
+      else if (regStart && now < regStart) {
+        score += 500;
+        // Within upcoming, sort by how soon they start (earlier start = higher score)
+        const daysUntilStart = (regStart - now) / (1000 * 60 * 60 * 24);
+        score += Math.max(0, 30 - daysUntilStart); // Closer events get higher score
+        // Then by participations
+        score += Math.min(participations * 5, 200);
+      }
+      // Priority 3: Closed events (score 100-499)
+      else if (regClose && now > regClose) {
+        score += 100;
+        // Within closed, sort by recency of closure (recently closed first)
+        const daysSinceClosed = (now - regClose) / (1000 * 60 * 60 * 24);
+        score += Math.max(0, 30 - daysSinceClosed);
+      }
+      // Priority 4: Events without proper dates (score 0-99)
+      else {
+        score += 0;
+        // Sort by participations and recency
+        score += Math.min(participations * 2, 50);
+        score += Math.max(0, (now - postedDate) / (1000 * 60 * 60 * 24));
+      }
+      
+             // Final priority: Registered events go to the bottom regardless of status
+       if (isRegistered) {
+         score = -10000; // Force registered events to the very bottom
+       }
+      
+      return score;
+    };
+    
+    const scoreA = getEventScore(a);
+    const scoreB = getEventScore(b);
+    
+    // Higher score comes first
+    return scoreB - scoreA;
   });
+
+  // Debug: Log the first few events to verify sorting
+  console.log('🔍 Events sorted by priority:', sortedAllEvents.slice(0, 5).map(e => ({
+    name: e.eventName,
+    status: (() => {
+      const now = new Date();
+      const regStart = e.registrationStartOn ? new Date(e.registrationStartOn) : null;
+      const regClose = e.closeOn ? new Date(e.closeOn) : null;
+      if (regStart && regClose && now >= regStart && now <= regClose) return 'LIVE';
+      if (regStart && now < regStart) return 'UPCOMING';
+      if (regClose && now > regClose) return 'CLOSED';
+      return 'UNKNOWN';
+    })(),
+    participations: e.participations || 0,
+    registered: registeredEventIdsSet.has(e._id),
+    regStart: e.registrationStartOn ? new Date(e.registrationStartOn).toISOString() : 'null',
+    regClose: e.closeOn ? new Date(e.closeOn).toISOString() : 'null',
+    now: new Date().toISOString()
+  })));
+
+  // Special debug for Android Bootcamp
+  const androidBootcamp = sortedAllEvents.find(e => e.eventName && e.eventName.includes('Android Bootcamp'));
+  if (androidBootcamp) {
+    console.log('🔍 Android Bootcamp Debug:', {
+      name: androidBootcamp.eventName,
+      regStart: androidBootcamp.registrationStartOn,
+      regStartParsed: androidBootcamp.registrationStartOn ? new Date(androidBootcamp.registrationStartOn) : null,
+      regClose: androidBootcamp.closeOn,
+      regCloseParsed: androidBootcamp.closeOn ? new Date(androidBootcamp.closeOn) : null,
+      now: new Date(),
+      isRegistered: registeredEventIdsSet.has(androidBootcamp._id),
+      registeredEventIds: Array.from(registeredEventIdsSet),
+      eventId: androidBootcamp._id,
+      isLive: (() => {
+        const now = new Date();
+        const regStart = androidBootcamp.registrationStartOn ? new Date(androidBootcamp.registrationStartOn) : null;
+        const regClose = androidBootcamp.closeOn ? new Date(androidBootcamp.closeOn) : null;
+        return regStart && regClose && now >= regStart && now <= regClose;
+      })(),
+      isUpcoming: (() => {
+        const now = new Date();
+        const regStart = androidBootcamp.registrationStartOn ? new Date(androidBootcamp.registrationStartOn) : null;
+        return regStart && now < regStart;
+      })()
+    });
+  }
 
   // Filtering logic (must be after sortedAllEvents is defined)
   const filteredEvents = sortedAllEvents.filter(event => {
@@ -406,16 +520,30 @@ function Events() {
 
         <div>
           <div className='flex justify-between mb-6 items-center gap-4'>
-            <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
-            <div className="relative">
+            <div>
+              <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
+            </div>
+            <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium hover:bg-gray-50"
-                onClick={() => setFilterDropdownOpen(v => !v)}
+                className="flex items-center gap-1 px-3 py-1.5 bg-gray-500 text-white rounded-lg shadow-sm text-sm font-medium hover:bg-gray-600"
+                onClick={() => {
+                  setFilterMode('all');
+                  setFilterStatus('all');
+                  setFilterFee('all');
+                }}
                 type="button"
               >
-                <span>Filter</span>
-                <ChevronDown size={16} />
+                <span>Clear Filters</span>
               </button>
+              <div className="relative" ref={filterDropdownRef}>
+                <button
+                  className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium hover:bg-gray-50"
+                  onClick={() => setFilterDropdownOpen(v => !v)}
+                  type="button"
+                >
+                  <span>Filter</span>
+                  <ChevronDown size={16} />
+                </button>
               {filterDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-30 p-4 flex flex-col gap-3">
                   <div>
@@ -457,7 +585,7 @@ function Events() {
                     </select>
                   </div>
                   <button
-                    className="mt-2 w-full bg-amber-500 text-white rounded py-1.5 font-semibold text-sm hover:bg-amber-600"
+                    className="w-full bg-amber-500 text-white rounded py-1.5 font-semibold text-sm hover:bg-amber-600"
                     onClick={() => setFilterDropdownOpen(false)}
                   >
                     Apply Filters
@@ -466,6 +594,46 @@ function Events() {
               )}
             </div>
           </div>
+          </div>
+          {/* Filter Status Display */}
+          {(filterMode !== 'all' || filterStatus !== 'all' || filterFee !== 'all') && (
+                <div className="mb-6 flex flex-wrap gap-2"> 
+                <p className='text-base'>Filters - </p>
+                  {filterMode !== 'all' && (
+                    <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                      Mode: {filterMode}
+                      <button
+                        onClick={() => setFilterMode('all')}
+                        className="ml-1 text-blue-600 hover:text-blue-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {filterStatus !== 'all' && (
+                    <span className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                      Status: {filterStatus}
+                      <button
+                        onClick={() => setFilterStatus('all')}
+                        className="ml-1 text-green-600 hover:text-green-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {filterFee !== 'all' && (
+                    <span className="inline-flex items-center px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
+                      Fee: {filterFee}
+                      <button
+                        onClick={() => setFilterFee('all')}
+                        className="ml-1 text-purple-600 hover:text-purple-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )}
+                </div>
+              )}
           <div className='px-2'>
           <Eventt events={filteredEvents} />
           </div>

@@ -313,13 +313,15 @@ function EventDetail() {
                 ) : (
                   <Button
                     asChild
-                    disabled={hasRegistered || (event && new Date(event.closeOn) < new Date())}
+                    disabled={hasRegistered || (event && new Date(event.closeOn) < new Date()) || (event && new Date(event.registrationStartOn) > new Date())}
                     size="default"
                     className={`px-1 py-6 rounded-sm font-semibold text-base flex items-center gap-2 ${hasRegistered
                       ? 'bg-gray-400 cursor-not-allowed'
                       : (event && new Date(event.closeOn) < new Date())
                         ? 'bg-gray-400 cursor-not-allowed'
-                        : 'border border-green-500 bg-gradient-to-r from-green-500 to-emerald-700 hover:from-green-600 hover:to-emerald-900 text-white shadow hover:shadow-md hover:scale-105'
+                        : (event && new Date(event.registrationStartOn) > new Date())
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'border border-green-500 bg-gradient-to-r from-green-500 to-emerald-700 hover:from-green-600 hover:to-emerald-900 text-white shadow hover:shadow-md hover:scale-105'
                       }`}
                   >
                     {hasRegistered ? (
@@ -332,6 +334,11 @@ function EventDetail() {
                         <CheckCircle className="w-5 h-5" />
                         Registration Closed
                       </>
+                    ) : (event && new Date(event.registrationStartOn) > new Date()) ? (
+                      <div className='text-red-800 bg-red-300/30 px-2 py-3 rounded-md flex items-center gap-2'>
+                        <Clock className="w-5 h-5" />
+                        <span className="">Registration Not Started</span>
+                      </div>
                     ) : (
                       <div 
                         onClick={() => {
@@ -340,7 +347,7 @@ function EventDetail() {
                             toast.warn("Please Log in to continue");
                             return;
                           }
-                          navigate(`/eventregister/${eventId}`);
+                          navigate(`/eventregister/${eventId}`, { state: { fromEventDetail: true } });
                         }}
                         className="flex items-center gap-2 cursor-pointer"
                       >
@@ -423,8 +430,8 @@ function EventDetail() {
                     </h3>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Event Start:</span>
-                        <span className="font-semibold">{new Date(event.eventDate).toLocaleDateString()}</span>
+                        <span className="text-gray-600">Registration Start:</span>
+                        <span className="font-semibold">{new Date(event.registrationStartOn).toLocaleDateString()}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Registration Closes:</span>
@@ -442,7 +449,7 @@ function EventDetail() {
                       <MapPin className="w-3 h-3" />
                       Event Details
                     </h3>
-                    <div className="space-y-1 text-xs">
+                    <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Location:</span>
                         <span className="font-semibold">{event.eventLocation}</span>

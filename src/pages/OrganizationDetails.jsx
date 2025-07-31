@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Events from './Events'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import { HashLoader, ScaleLoader } from 'react-spinners';
@@ -22,6 +22,7 @@ function OrganizationDetails() {
   const [collapsedClubs, setCollapsedClubs] = useState(new Set());
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
   const [filterYear, setFilterYear] = useState('all');
+  const filterDropdownRef = useRef(null);
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
 
@@ -88,6 +89,28 @@ function OrganizationDetails() {
       setCollapsedClubs(new Set(clubEvents.map(club => club.clubName)));
     }
   }, [clubEvents]);
+
+  // Hide filter dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
+        setFilterDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Hide filter dropdown on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setFilterDropdownOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Compute year options (current and last 2 years)
   const yearOptions = useMemo(() => {
@@ -179,16 +202,28 @@ function OrganizationDetails() {
         </div>
         <div>
           <div className='flex justify-between mb-6 items-center gap-4'>
-            <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>All </span>Events</h2>
-            <div className="relative">
+            <div>
+              <h2 className="text-xl lg:text-2xl font-bold text-left border-b border-amber-600"><span className='text-amber-600'>Events </span>Hosted</h2>
+            </div>
+            <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium hover:bg-gray-50"
-                onClick={() => setFilterDropdownOpen(v => !v)}
+                className="flex items-center gap-1 px-3 py-1.5 bg-gray-500 text-white rounded-lg shadow-sm text-sm font-medium hover:bg-gray-600"
+                onClick={() => {
+                  setFilterYear('all');
+                }}
                 type="button"
               >
-                <span>Filter</span>
-                <ChevronDown size={16} />
+                <span>Clear Filter</span>
               </button>
+              <div className="relative" ref={filterDropdownRef}>
+                <button
+                  className="flex items-center gap-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium hover:bg-gray-50"
+                  onClick={() => setFilterDropdownOpen(v => !v)}
+                  type="button"
+                >
+                  <span>Filter</span>
+                  <ChevronDown size={16} />
+                </button>
               {filterDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-30 p-4 flex flex-col gap-3">
                   <div>
@@ -205,7 +240,7 @@ function OrganizationDetails() {
                     </select>
                   </div>
                   <button
-                    className="mt-2 w-full bg-amber-500 text-white rounded py-1.5 font-semibold text-sm hover:bg-amber-600"
+                    className="w-full bg-amber-500 text-white rounded py-1.5 font-semibold text-sm hover:bg-amber-600"
                     onClick={() => setFilterDropdownOpen(false)}
                   >
                     Apply Filter
@@ -214,6 +249,22 @@ function OrganizationDetails() {
               )}
             </div>
           </div>
+          </div>
+          {/* Filter Status Display */}
+          {filterYear !== 'all' && (
+                <div className="mb-6 flex flex-wrap gap-2">
+                  <p>Filter - </p>
+                  <span className="inline-flex items-center px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
+                    Year: {filterYear}
+                    <button
+                      onClick={() => setFilterYear('all')}
+                      className="ml-1 text-orange-600 hover:text-orange-800"
+                    >
+                      ×
+                    </button>
+                  </span>
+                </div>
+              )}
         </div>
         {filteredEvents.length > 0 ? (
           <div className='px-2 lg:px-4'>

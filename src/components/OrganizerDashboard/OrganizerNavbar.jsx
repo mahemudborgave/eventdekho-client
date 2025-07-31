@@ -22,7 +22,7 @@ import {
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { DialogTitle, DialogDescription } from '../ui/dialog';
 
-function AdminNavbar({ onToggle }) {
+function OrganizerNavbar({ onToggle }) {
   const { user, setUser, setToken, setEmail, setRole, role } = useContext(UserContext);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -84,8 +84,8 @@ function AdminNavbar({ onToggle }) {
                 style={{ willChange: 'transform' }}
               >
                 <VisuallyHidden>
-                  <DialogTitle>Admin Navigation Menu</DialogTitle>
-                  <DialogDescription>Mobile navigation for admin panel</DialogDescription>
+                  <DialogTitle>Organizer Navigation Menu</DialogTitle>
+                  <DialogDescription>Mobile navigation for organizer panel</DialogDescription>
                 </VisuallyHidden>
                 <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
                   <div className='pb-3'>
@@ -209,4 +209,4 @@ function AdminNavbar({ onToggle }) {
   );
 }
 
-export default AdminNavbar;
+export default OrganizerNavbar;

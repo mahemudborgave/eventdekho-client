@@ -373,7 +373,7 @@ export default function AddEvent() {
       if (isUpdate && eventData?._id) {
         await axios.put(`${baseURL}:${port}/eventt/updateevent/${eventData._id}`, eventData);
         toast.success("Event updated successfully");
-        navigate(-1);
+        navigate('/admin/showeventsadmin');
       } else {
         const res = await axios.post(`${baseURL}:${port}/eventt/addevent`, eventData);
         setForm(initialState);
@@ -386,7 +386,7 @@ export default function AddEvent() {
             text: res.data.message || 'Your event has been created successfully.',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK'
-          }).then(() => navigate(-1));
+          }).then(() => navigate('/admin/showeventsadmin'));
         }
       }
     } catch (error) {
@@ -618,7 +618,7 @@ export default function AddEvent() {
                       type="number"
                       min={1}
                       value={form.minParticipants}
-                      onChange={e => setForm(f => ({ ...f, minParticipants: Math.max(1, Number(e.target.value)) }))}
+                      onChange={handleChange}
                       required
                       placeholder="Minimum participants"
                       className="dark:bg-gray-900 dark:text-gray-100"
@@ -635,7 +635,7 @@ export default function AddEvent() {
                       type="number"
                       min={form.minParticipants || 1}
                       value={form.maxParticipants}
-                      onChange={e => setForm(f => ({ ...f, maxParticipants: Math.max(f.minParticipants || 1, Number(e.target.value)) }))}
+                      onChange={handleChange}
                       required
                       placeholder="Maximum participants"
                       className="dark:bg-gray-900 dark:text-gray-100"

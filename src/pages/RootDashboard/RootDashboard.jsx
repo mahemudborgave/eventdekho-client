@@ -15,7 +15,7 @@ import {
   Activity,
   X, Edit2, Trash2, Save, Search, Loader2
 } from 'lucide-react';
-import FeaturedImagesManager from '../../components/Dashboard/FeaturedImagesManager';
+import FeaturedImagesManager from '../../components/OrganizerDashboard/FeaturedImagesManager';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';

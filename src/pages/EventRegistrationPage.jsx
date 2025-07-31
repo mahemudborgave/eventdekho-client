@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -14,6 +14,7 @@ import withReactContent from 'sweetalert2-react-content';
 function EventRegistrationPage() {
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, email, token, role } = useContext(UserContext);
   const baseURL = import.meta.env.VITE_BASE_URL;
   const port = import.meta.env.VITE_PORT;
@@ -229,6 +230,12 @@ function EventRegistrationPage() {
         confirmButtonText: 'OK',
       });
       setHasRegistered(true);
+      // Navigate back to event detail page after successful registration
+      if (location.state?.fromEventDetail) {
+        navigate(-1);
+      } else {
+        navigate(`/eventdetail/${eventId}`);
+      }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
         toast.error(err.response.data.error);
@@ -354,7 +361,13 @@ function EventRegistrationPage() {
     <div className="min-h-screen flex flex-col bg-gray-200">
       {/* Sticky Top Bar */}
       <div className="sticky top-0 z-10 bg-[#B8CFCC] pt-4 pb-2 px-5 shadow-sm flex flex-col lg:mx-[200px]">
-        <Button variant="ghost" className="mb-1 w-fit" onClick={() => navigate(-1)}><ArrowLeft className="mr-1" /> Back to Event</Button>
+                        <Button variant="ghost" className="mb-1 w-fit" onClick={() => {
+                  if (location.state?.fromEventDetail) {
+                    navigate(-1);
+                  } else {
+                    navigate(`/eventdetail/${eventId}`);
+                  }
+                }}><ArrowLeft className="mr-1" /> Back to Event</Button>
         <h1 className="text-xl font-semibold text-left mb-2 ml-3">Register for {event.eventName}</h1>
         {event.fee > 0 && (
           <Card className="p-4 bg-yellow-50 border-yellow-300 mx-auto w-full max-w-lg gap-0 mb-2">

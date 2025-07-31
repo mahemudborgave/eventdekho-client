@@ -52,10 +52,10 @@ function FooterComp() {
         <div>
           <h3 className="font-semibold mb-2">Follow Us</h3>
           <div className="flex space-x-4 mt-2">
-            <a href="#"><FaFacebookF className="hover:text-black" /></a>
-            <a href="#"><FaInstagram className="hover:text-black" /></a>
-            <a href="#"><FaTwitter className="hover:text-black" /></a>
-            <a href="#"><FaLinkedinIn className="hover:text-black" /></a>
+            <a href="https://www.facebook.com/mahemud.borgave.5/" target='_blank'><FaFacebookF className="hover:text-black" /></a>
+            <a href="https://www.instagram.com/95_mahemud/#" target='_blank'><FaInstagram className="hover:text-black" /></a>
+            <a href="https://x.com/Mahemud_009" target='_blank'><FaTwitter className="hover:text-black" /></a>
+            <a href="https://www.linkedin.com/in/mahemud-borgave-b01762231/" target='_blank'><FaLinkedinIn className="hover:text-black" /></a>
           </div>
         </div>
       </div>

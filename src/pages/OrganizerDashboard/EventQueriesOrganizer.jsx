@@ -13,7 +13,7 @@ const cardColors = [
   'from-teal-100 to-teal-300',
 ];
 
-function EventQueriesAdmin() {
+function EventQueriesOrganizer() {
   const { eventId } = useParams();
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -146,4 +146,4 @@ function EventQueriesAdmin() {
   );
 }
 
-export default EventQueriesAdmin;
+export default EventQueriesOrganizer;
