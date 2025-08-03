@@ -7,9 +7,9 @@ import { Users, Heart, IndianRupee, BadgeCheck, CheckCircle2, TrendingUp } from 
 import { toast } from 'react-toastify';
 
 // Minimal inline spinner for wishlist loading
-function Spinner() {
+function Spinner({ className = "w-5 h-5 text-gray-300" }) {
   return (
-    <span className="inline-block w-5 h-5 align-middle">
+    <span className={`inline-block align-middle ${className}`}>
       <svg className="animate-spin" viewBox="0 0 24 24" width="20" height="20">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
@@ -222,7 +222,7 @@ function Eventt({ events }) {
                     style={{ lineHeight: 0, cursor: 'pointer' }}
                   >
                       {wishlistLoading[eventt._id] ? (
-                        <Spinner />
+                        <Spinner className='w-5 h-5 text-gray-300'/>
                       ) : (
                         <Heart size={20} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#ccc'} />
                       )}
