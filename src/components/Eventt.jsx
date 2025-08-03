@@ -179,9 +179,10 @@ function Eventt({ events }) {
           const status = getEventStatus(eventt);
           const isDetailPage = location.pathname.startsWith('/eventdetail') || location.pathname.startsWith('/admin/eventdetail');
           return (
-            <div className="flex flex-col items-start border border-gray-300 hover:border-black/40 rounded-xl text-sm lg:text-base relative transition-shadow hover:shadow-lg overflow-hidden"
+            <div className="flex flex-col items-start border border-gray-300 hover:outline-2 hover:outline-blue-500/60 rounded-xl text-sm lg:text-base relative transition-all duration-300 hover:shadow-lg overflow-hidden group"
               key={idx}>
-              <div className={`w-full ${getCardGradient(eventt)} p-4`}>
+                {/* ${getCardGradient(eventt)} */}
+              <div className={`w-full  p-4 pb-0`}>
                 <div className={`flex items-center justify-between gap-1 w-full pb-0 rounded-lg rounded-b-none text-white`}>
                   {/* Reach badge */}
                   <span className="flex items-center gap-2 rounded-full text-black/50 text-xs font-medium">
@@ -215,7 +216,7 @@ function Eventt({ events }) {
                   )}
                                       {/* Wishlist Button */}
                   <button
-                    className={`${getCardGradient(eventt)} hover:opacity-80 rounded-full p-1 shadow transition border border-white/30 ml-1 z-20`}
+                    className={`hover:opacity-80 rounded-full p-1 shadow transition border border-gray-300 ml-1 z-20`}
                     onClick={e => { e.stopPropagation(); toggleWishlist(eventt._id, eventt.eventName); }}
                     title={isWishlisted(eventt._id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
                     style={{ lineHeight: 0, cursor: 'pointer' }}
@@ -223,16 +224,16 @@ function Eventt({ events }) {
                       {wishlistLoading[eventt._id] ? (
                         <Spinner />
                       ) : (
-                        <Heart size={20} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : 'white'} />
+                        <Heart size={20} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#ccc'} />
                       )}
                     </button>
                   </div>
                 </div>
-                <p className={`text-lg lg:text-xl font-bold capitalize rounded-lg text-gray-800`}>{eventt.eventName}</p>
+                <p className={`text-lg lg:text-xl font-semibold capitalize rounded-lg text-gray-800`}>{eventt.eventName}</p>
               </div>
-              <div className='p-4 pt-3'>
+              <div className='p-4 pt-3 w-full'>
                 <div className="lg:flex-grow">
-                  <p className="text-gray-500 font-medium">
+                  <p className="text-gray-500">
                     {eventt.clubName || eventt.organizerName}
                   </p>
                   {eventt.parentOrganization && (
@@ -248,12 +249,12 @@ function Eventt({ events }) {
                     <span className="text-purple-800"><Users size={17} className='mr-1.5 text-purple-800 inline-block' /> Participants: {eventt.minParticipants == eventt.maxParticipants ? eventt.minParticipants : `${eventt.minParticipants} - ${eventt.maxParticipants}`}</span>
                   </div>
                 </div>
-                <div className="flex flex-col text-sm w-full mt-4">
+                <div className="flex flex-col text-sm w-[80%] mt-4">
                   {!location.pathname.startsWith('/eventdetail') &&
                     !location.pathname.startsWith('/admin/eventdetail') && (
                       <div className="flex items-center mb-2 gap-1">
                         <button
-                          className="inline-block flex-1 px-7 py-2 bg-gradient-to-r from-[#0d0c22] to-[#0d0c22]/80 rounded-full text-white transition-all duration-200 cursor-pointer text-white shadow hover:shadow-md hover:scale-105 border border-[#0d0c22]"
+                          className={`inline-block flex-1 px-7 py-2 bg-[#0D0C22] rounded-full text-white transition-all duration-300 cursor-pointer text-white shadow group-hover:scale-105 group-hover:shadow-md`}
                           onClick={e => { e.stopPropagation(); window.location.href = `/eventdetail/${eventt._id}`; }}
                           style={{ cursor: 'pointer' }}
                         >
