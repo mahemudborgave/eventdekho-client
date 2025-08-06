@@ -222,7 +222,7 @@ function Eventt({ events }) {
                     style={{ lineHeight: 0, cursor: 'pointer' }}
                   >
                       {wishlistLoading[eventt._id] ? (
-                        <Spinner className='w-5 h-5 text-gray-300'/>
+                        <Spinner className='w-5 h-5 text-gray-600'/>
                       ) : (
                         <Heart size={20} fill={isWishlisted(eventt._id) ? 'red' : 'none'} color={isWishlisted(eventt._id) ? 'red' : '#ccc'} />
                       )}
