@@ -421,7 +421,7 @@ function Organizations() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white overflow-hidden">
             {filteredOrganizations.map((organization, index) => (
               <div key={organization._id}
-                className="bg-gradient-to-r from-blue-100 to-blue-100 border border-blue-200 rounded-xl p-4 mb-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+                className="bg-gradient-to-r from-blue-100 to-blue-100 border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between">
                 {/* Header with Organization Info */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -433,11 +433,11 @@ function Organizations() {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-gray-900 text-base leading-tight mb-1">
-                        {organization.parentOrganization || organization.organizationName}
-                      </div>
-                      <div className="text-sm text-gray-600 mb-1">
+                      <div className="font-bold text-gray-900 text-base leading-tight mb-1 capitalize">
                         {organization.shortName} - {organization.organizationName}
+                      </div>
+                      <div className="text-sm text-gray-600 mb-1 capitalize">
+                        {organization.parentOrganization || organization.organizationName}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-600">
                         <span className="flex items-center gap-1">
