@@ -15,13 +15,14 @@ function MainSearch() {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  
   const testimonials = [
-    { name: "Amit S.", comment: "EventApply made it so easy to find and register for events. Loved the experience!" },
-    { name: "Priya K.", comment: "I discovered so many new opportunities through this platform. Highly recommended!" },
-    { name: "Rahul D.", comment: "The UI is super clean and the event reminders are a lifesaver." },
-    { name: "Sneha M.", comment: "I met amazing people at events I found here. Thank you EventApply!" },
+    { name: "Amit S.", comment: "Found the coolest college fests here — registering took just seconds!" },
+    { name: "Priya K.", comment: "Discovered hackathons, cultural fests & competitions I never knew existed!" },
+    { name: "Rahul D.", comment: "The UI is super clean and the event wishlist is a lifesaver." },
+    { name: "Sneha M.", comment: "EventApply made it so easy to find and register for events. Loved the experience!" },
   ];
+
   const [current, setCurrent] = useState(0);
   const [fade, setFade] = useState(true);
   useEffect(() => {

@@ -44,7 +44,7 @@ function FooterComp() {
         {/* Contact */}
         <div>
           <h3 className="font-semibold mb-2">Contact</h3>
-          <p className="text-sm">Email: mahemudborgave@gmail.com</p>
+          <p className="text-sm">Email: eventapplyltd@gmail.com</p>
           <p className="text-sm">Phone: +91-7775841645</p>
         </div>
 
