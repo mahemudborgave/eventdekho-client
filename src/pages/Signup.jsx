@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation} from 'react-router-dom';
 import Button from '@mui/material/Button';
 import PasswordIcon from '@mui/icons-material/Password';
 import MailIcon from '@mui/icons-material/Mail';
@@ -22,10 +22,13 @@ function Signup() {
     const baseURL = import.meta.env.VITE_BASE_URL;
     const port = import.meta.env.VITE_PORT;
     const navigate = useNavigate();
+    const location = useLocation();
     const { setUser, setToken, setRole, setEmail } = useContext(UserContext);
 
     // Tab state
-    const [activeTab, setActiveTab] = useState('student');
+    const [activeTab, setActiveTab] = useState(
+        location.state?.from === 'hostEvent' ? 'organization' : 'student'
+    );
 
     // Student form state
     const [studentData, setStudentData] = useState({

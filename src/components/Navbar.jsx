@@ -330,6 +330,7 @@ function Navbar() {
                                 </div>
                                 <Link 
                                     to="/signup" 
+                                    state={{ from: 'hostEvent' }}
                                     onClick={() => setMenuOpen(false)} 
                                     className="px-5 py-2 mt-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 font-medium flex items-center  justify-center gap-2"
                                 >
@@ -479,6 +480,7 @@ function Navbar() {
                             <Link to="/signup" className='px-5 py-2 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium'>Sign up</Link>
                             <Link
                                 to="/signup"
+                                state={{ from: 'hostEvent' }}
                                 className="px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 font-medium flex items-center gap-2"
                             >
                                 <Plus size={18} />
