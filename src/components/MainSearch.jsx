@@ -114,7 +114,7 @@ function MainSearch() {
             </p>
 
             <NavLink to="/events" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full flex justify-center items-center gap-2'>Events <ArrowUpRight className='size-5' /></NavLink>
-            <NavLink to="/organizations" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full flex justify-center items-center gap-2'>Organizations <ArrowUpRight className='size-5' /></NavLink>
+            <NavLink to="/organizations" className='grow px-3 py-2 lg:py-3 bg-gray-50 ml-2 rounded-full flex justify-center items-center gap-2'>Clubs <ArrowUpRight className='size-5' /></NavLink>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef, useCallback, useMemo } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { User, AlignRight, X, House, LogIn, LayoutDashboard, ChevronDown, Bell, Heart } from 'lucide-react';
+import { User, AlignRight, X, House, LogIn, LayoutDashboard, ChevronDown, Bell, Heart, Plus } from 'lucide-react';
 import { Tooltip } from 'react-tooltip';
 import eventdekhoLogo from '/eventapply.png';
 import UserContext from '../context/UserContext';
@@ -170,16 +170,16 @@ function Navbar() {
     return (
         <>
             <div className={
-              [
-                // Full width with small responsive paddings
-                "w-full",
-                "px-4",
-                "sm:px-4",
-                "2xl:px-30",
-                // Existing classes
-                "z-50 flex justify-between py-3 lg:py-6 text-md items-center fixed top-0 left-0 w-full lg:h-25 transition-all duration-300",
-                scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
-              ].join(' ')
+                [
+                    // Full width with small responsive paddings
+                    "w-full",
+                    "px-4",
+                    "sm:px-4",
+                    "2xl:px-30",
+                    // Existing classes
+                    "z-50 flex justify-between py-3 lg:py-6 text-md items-center fixed top-0 left-0 w-full lg:h-25 transition-all duration-300",
+                    scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+                ].join(' ')
             }>
                 <Link to='/' className='font-bold text-xl transition-transform duration-200'>
                     <img src={eventdekhoLogo} alt="logo" className='h-11 lg:h-13 drop-shadow-lg' />
@@ -281,7 +281,7 @@ function Navbar() {
                             <NavLink to="/events" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 lg:border-b-2 lg:border-blue-500 transition-all duration-200' : 'block text-gray-700 hover:text-blue-600 px-5 py-2 hover:bg-blue-50 lg:hover:bg-transparent rounded-lg lg:rounded-none transition-all duration-200'}>Events</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/organizations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 lg:border-b-2 lg:border-blue-500 transition-all duration-200' : 'block text-gray-700 hover:text-blue-600 px-5 py-2 hover:bg-blue-50 lg:hover:bg-transparent rounded-lg lg:rounded-none transition-all duration-200'}>Organizations</NavLink>
+                            <NavLink to="/organizations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 lg:border-b-2 lg:border-blue-500 transition-all duration-200' : 'block text-gray-700 hover:text-blue-600 px-5 py-2 hover:bg-blue-50 lg:hover:bg-transparent rounded-lg lg:rounded-none transition-all duration-200'}>Clubs</NavLink>
                         </li>
                         <li>
                             <NavLink to="/myParticipations" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'block text-blue-600 font-semibold px-5 py-2 lg:border-b-2 lg:border-blue-500 transition-all duration-200' : 'block text-gray-700 hover:text-blue-600 px-5 py-2 hover:bg-blue-50 lg:hover:bg-transparent rounded-lg lg:rounded-none transition-all duration-200'}>My Participations</NavLink>
@@ -323,9 +323,18 @@ function Navbar() {
                             </NavLink>
                         )}
                         {!isValid ? (
-                            <div className='flex justify-center items-center gap-2'>
-                                <Link to="/login" onClick={() => setMenuOpen(false)} className='flex items-center px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105'><LogIn size={18} className='mr-2' />Log in</Link>
-                                <Link to="/signup" onClick={() => setMenuOpen(false)} className='px-5 py-2 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium'>Sign up</Link>
+                            <div>
+                                <div className='flex justify-center items-center gap-2'>
+                                    <Link to="/login" onClick={() => setMenuOpen(false)} className='flex items-center px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105'><LogIn size={18} className='mr-2' />Log in</Link>
+                                    <Link to="/signup" onClick={() => setMenuOpen(false)} className='px-5 py-2 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium'>Sign up</Link>
+                                </div>
+                                <Link 
+                                    to="/signup" 
+                                    onClick={() => setMenuOpen(false)} 
+                                    className="px-5 py-2 mt-4 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 font-medium flex items-center  justify-center gap-2"
+                                >
+                                    <span className="inline-flex items-center gap-2"><Plus size={18} /> Host Event</span>
+                                </Link>
                             </div>
                         ) : (
                             <div className=''>
@@ -420,7 +429,7 @@ function Navbar() {
                                     ) : (
                                         resolvedQueries.map((q, index) => (
                                             <div key={q._id} className={`p-4 pb-0 relative transition-all duration-200 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 ${index !== resolvedQueries.length - 1 ? 'border-b border-gray-100' : ''}`}>
-                                                <button 
+                                                <button
                                                     className="absolute top-6 right-6 text-gray-400 hover:text-red-500 hover:bg-red-50 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 text-sm font-bold"
                                                     onClick={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
                                                     onTouchStart={e => { e.stopPropagation(); handleMarkAsRead(q._id); }}
@@ -468,15 +477,22 @@ function Navbar() {
                         <div className='flex justify-start items-center gap-3'>
                             <Link to="/login" className='flex items-center px-5 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105'><LogIn size={18} className='mr-2' />Log in</Link>
                             <Link to="/signup" className='px-5 py-2 rounded-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 font-medium'>Sign up</Link>
+                            <Link
+                                to="/signup"
+                                className="px-5 py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 font-medium flex items-center gap-2"
+                            >
+                                <Plus size={18} />
+                                Host Event
+                            </Link>
                         </div>
                     ) : (
                         role === "student" && (
                             <Link to='/studentprofile'>
                                 <div className='flex items-center px-5 py-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200'>
-                                    Welcome, <span className='font-semibold ml-1'>{user ? user.slice(0,10) + '...' : 'User'}</span>
-                                        <div className='ml-2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-all duration-200'>
-                                            <User size={20} />
-                                        </div>
+                                    Welcome, <span className='font-semibold ml-1'>{user ? user.slice(0, 10) + '...' : 'User'}</span>
+                                    <div className='ml-2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-all duration-200'>
+                                        <User size={20} />
+                                    </div>
                                 </div>
                             </Link>
                         )

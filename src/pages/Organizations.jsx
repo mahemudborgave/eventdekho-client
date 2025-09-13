@@ -290,7 +290,7 @@ function Organizations() {
             <div className='px-2 py-1 lg:px-4 lg:py-2 bg-gray-200 m-auto rounded-full flex items-center text-sm'>
               <input
                 type="text"
-                placeholder={`Search for organization`}
+                placeholder={`Search for club, college`}
                 className='focus:outline-none outline-0 flex-grow ml-2 text-sm lg:text-base'
                 onChange={e => { handleChange(e); if (e.target.value.trim() !== '') setDropdownVisible(true); }}
                 value={searchValue}
@@ -323,7 +323,7 @@ function Organizations() {
             )}
             {dropdownVisible && searchValue && searchValue.trim() !== '' && searchDropdown.length === 0 && (
               <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-30 p-4 text-gray-400 text-center">
-                No matching organizations found.
+                No matching club, college found.
               </div>
             )}
           </div>

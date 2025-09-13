@@ -327,7 +327,7 @@ function Signup() {
                         style={{
                             background: 'linear-gradient(90deg, hsla(34, 100%, 54%, 1) 2%, hsla(39, 100%, 58%, 1) 53%, hsla(43, 100%, 60%, 1) 87%)'
                         }}>
-                        <p className='text-3xl'>Join EventDekho!</p>
+                        <p className='text-3xl'>Join EventApply!</p>
                     </div>
                     <div className='lg:p-20 lg:w-1/2 w-full mx-auto border-3 border-amber-500 p-8'>
                         <p className='text-amber-300 font-bold text-3xl mb-4'>Sign Up</p>
@@ -355,7 +355,7 @@ function Signup() {
                                 onClick={() => setActiveTab('organization')}
                             >
                                 <BusinessIcon size={20} />
-                                <span>Organization</span>
+                                <span>Club</span>
                             </button>
                         </div>
 
@@ -505,7 +505,7 @@ function Signup() {
                         {activeTab === 'organization' && (
                             <form onSubmit={handleOrgSubmit}>
                                 <div className='text-xs text-gray-600 bg-blue-50 p-2 rounded-lg mb-4'>
-                                    <strong>Organization Registration:</strong> Create your organization account to start hosting events and managing registrations.
+                                    <strong>Club Registration:</strong> Create your club account to start hosting events and managing registrations.
                                 </div>
                                 <div className='space-y-4'>
                                     <div className='flex items-center justify-start bg-gray-100 w-full p-2'>
@@ -513,7 +513,7 @@ function Signup() {
                                         <input 
                                             type="text" 
                                             name="organizationName" 
-                                            placeholder='Enter organization name' 
+                                            placeholder='Enter club name' 
                                             className='block focus:outline-0 text-sm flex-1' 
                                             value={orgData.organizationName}
                                             onChange={handleOrgChange}
@@ -526,7 +526,7 @@ function Signup() {
                                         <input 
                                             type="email" 
                                             name="email" 
-                                            placeholder='Enter organization email address' 
+                                            placeholder='Enter club email address' 
                                             className='block focus:outline-0 text-sm flex-1' 
                                             value={orgData.email}
                                             onChange={handleOrgChange}
@@ -560,7 +560,7 @@ function Signup() {
                                             <input 
                                                 type="text" 
                                                 name="parentOrganization" 
-                                                placeholder={collegesLoading ? 'Loading colleges...' : 'Search for parent organization (optional)'}
+                                                placeholder={collegesLoading ? 'Loading colleges...' : 'Search for college (optional)'}
                                                 className='block focus:outline-0 text-sm flex-1' 
                                                 value={orgData.parentOrganization}
                                                 onChange={(e) => {
@@ -612,7 +612,7 @@ function Signup() {
                                                     }}
                                                 >
                                                     <div className='font-medium text-sm text-blue-600'>
-                                                        Not found? Register your organization
+                                                        Not found? Register your College
                                                     </div>
                                                 </div>
                                             </div>
@@ -679,7 +679,7 @@ function Signup() {
                                     variant="contained"
                                     sx={{ backgroundColor: '#FF9C16', mt: 4, display: 'block', fontWeight: 'bold', color: '#fff', width: '100%' }}
                                 >
-                                    Register Organization
+                                    Register Club
                                 </Button>
                             </form>
                         )}
@@ -706,11 +706,11 @@ function Signup() {
             >
                 <Box className="flex justify-center items-center h-screen p-4">
                     <div className="bg-white shadow-xl rounded-xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-2xl font-bold text-center text-amber-500 mb-6">Register Your Organization</h2>
+                        <h2 className="text-2xl font-bold text-center text-amber-500 mb-6">Register Your College</h2>
                         
                         <form onSubmit={handleOrganizationSubmit} className="space-y-4">
                             <div>
-                                <label className="block mb-1 font-medium">Organization Name <span className="text-red-500">*</span></label>
+                                <label className="block mb-1 font-medium">College Name <span className="text-red-500">*</span></label>
                                 <input 
                                     type="text" 
                                     name="organizationName" 
@@ -821,7 +821,7 @@ function Signup() {
                                     disabled={organizationLoading} 
                                     className="flex-1 bg-amber-400 hover:bg-amber-500 text-white font-semibold py-2 rounded transition disabled:opacity-60"
                                 >
-                                    {organizationLoading ? 'Submitting...' : 'Register Organization'}
+                                    {organizationLoading ? 'Submitting...' : 'Register College'}
                                 </button>
                             </div>
                         </form>

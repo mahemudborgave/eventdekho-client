@@ -462,7 +462,7 @@ export default function AddEvent() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">
-                        Complete Your Organization Profile First!
+                        Complete Your Club Profile First!
                       </h3>
                       <p className="text-red-700 dark:text-red-300 mb-3">
                         Before you can create events, you must complete your organization profile. This includes your organization name, short name, and other essential details.
@@ -486,7 +486,7 @@ export default function AddEvent() {
                       </div>
                       <div className="flex gap-3">
                         <Button 
-                          onClick={() => navigate('/organizerprofile')}
+                          onClick={() => navigate('/admin/profile')}
                           className="bg-red-600 hover:bg-red-700 text-white"
                         >
                           Complete Profile Now
